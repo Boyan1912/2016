@@ -1,0 +1,17 @@
+{
+  "name": "Dopamine.bg task",
+  "version": "0.0.0",
+  "authors": [
+    "Boyan Denkov <denkovb@gmail.com>"
+  ],
+  "description": "simple game",
+  "main": "app.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
