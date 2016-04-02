@@ -1,0 +1,23 @@
+﻿@model RichWords.Web.ViewModels.Home.IndexViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+<h1>Entries</h1>
+<div class="row">
+    @foreach (var quote in Model.Quotes)
+    {
+        <div class="col-md-6">
+            <p>@quote.Id</p>
+            <div>@quote.Content</div>
+        </div>
+    }
+</div>
+<h1>Categories</h1>
+<div class="row">
+    @foreach (var category in Model.Categories)
+    {
+        <div class="col-md-2">
+            @category.Name
+        </div>
+    }
+</div>
