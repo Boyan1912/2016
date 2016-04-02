@@ -69,6 +69,81 @@
             return this.quotes.All().Where(x => x.Content.IndexOf(content) >= 0).FirstOrDefault();
         }
 
+        public IQueryable<Quote> GetRandomQuotes(int count)
+        {
+            return this.quotes.All().OrderBy(x => Guid.NewGuid()).Take(count);
+        }
+
+        public double CalculateRating(Quote quote)
+        {
+            double sum = quote.Likes.Sum(l => l.Value);
+            double count = quote.Likes.Count;
+            double rating = sum / count;
+            return rating;
+        }
+
+        public IQueryable<Quote> GetHighestRated(int count)
+        {
+            return this.quotes
+                        .All()
+                        .OrderByDescending(q => this.CalculateRating(q))
+                        .Take(count);
+        }
+
+        public IQueryable<Quote> GetMostPopular(int count)
+        {
+            return this.quotes
+                        .All()
+                        .OrderByDescending(q => q.Likes.Count)
+                        .Take(count);
+        }
+
+        public IQueryable<Quote> GetMostLoved(int count)
+        {
+            return this.quotes
+                        .All()
+                        .OrderByDescending(q => q.Likes.Count(l => l.Value > 0))
+                        .Take(count);
+        }
+
+        public IQueryable<Quote> GetMostHated(int count)
+        {
+            return this.quotes
+                        .All()
+                        .OrderByDescending(q => q.Likes.Count(l => l.Value < 0))
+                        .Take(count);
+        }
+
+        public IQueryable<Quote> GetByAuthor(int authorId)
+        {
+            return this.quotes
+                        .All()
+                        .Where(q => q.AuthorId == authorId);
+        }
+
+        public IQueryable<Quote> GetByCategory(int categoryId)
+        {
+            return this.quotes
+                        .All()
+                        .Where(q => q.CategoryId == categoryId);
+        }
+
+        public IQueryable<Quote> GetByCreator(string creatorId)
+        {
+            return this.quotes
+                        .All()
+                        .Where(q => q.CreatorId == creatorId);
+        }
+
+        public IQueryable<Quote> GetByTagNames(params string[] tagNames)
+        {
+            return this.quotes
+                        .All()
+                        .Where(q => q.Tags
+                                    .Any(x => tagNames
+                                              .Any(t => t == x.Name)));
+        }
+
         public void Save()
         {
             this.quotes.Save();
