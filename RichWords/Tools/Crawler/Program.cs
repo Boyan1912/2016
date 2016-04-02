@@ -38,10 +38,11 @@
 
         public static void Main()
         {
-            AddAdminToDb();
-            AddRandomUsers();
-            var dataPerAuthor = GetQuotesAndCategoriesPerAuthorFromInternet();
-            GetAuthorsDetailsFromInternet(dataPerAuthor);
+            //AddAdminToDb();
+            //AddRandomUsers();
+            //GetQuotesAndCategoriesPerAuthorFromInternet();
+            var authors = authorsService.GetAll().ToList();
+            GetAuthorsDetailsFromInternet(authors);
         }
 
         private static void AddAdminToDb()
@@ -119,7 +120,7 @@
             }
         }
 
-        private static Dictionary<string, HashSet<string>> GetQuotesAndCategoriesPerAuthorFromInternet()
+        private static void GetQuotesAndCategoriesPerAuthorFromInternet()
         {
             Console.ForegroundColor = ConsoleColor.Green;
             var configuration = Configuration.Default.WithDefaultLoader();
@@ -141,14 +142,11 @@
 
             categoriesService.Save();
             Console.WriteLine("CATEGORIES ADDED OR PREVIOUSLY EXISTED");
-
-            var quotesPerAuthor = new Dictionary<string, HashSet<string>>();
-
+            
             for (int i = 9; i < authorsNames.Length; i++)
             {
                 string name = authorsNames[i].TextContent.Trim();
-                quotesPerAuthor[name] = new HashSet<string>();
-
+                
                 // Add Author to Db
                 var authorFromDb = authorsService.GetByName(name);
                 if (authorFromDb == null)
@@ -188,8 +186,7 @@
                     {
                         bool quoteAddedtoDb = false;
                         string quote = quotesAnckorElements[k].TextContent.Trim();
-                        quotesPerAuthor[name].Add(quote);
-
+                        
                         // Skip if no such page exists
                         if (categoriesPerQuoteDiv[k] == null)
                         {
@@ -270,7 +267,6 @@
                     quotesUrlByAuthor = $"http://www.brainyquote.com/quotes/authors/{startLetter}/{urlName}_{j + 1}.html";
                 }
             }
-            return quotesPerAuthor;
         }
 
         private static int GetCategoryFromTags(IHtmlCollection<IElement> tagsForQuote)
@@ -288,45 +284,63 @@
             return categoriesService.GetByName("others").Id;
         }
 
-        private static void GetAuthorsDetailsFromInternet(Dictionary<string, HashSet<string>> quotesPerAuthor)
+        private static void GetAuthorsDetailsFromInternet(IList<Author> authors)
         {
-            // Get Person's info details from google and wikipedia
-            foreach (KeyValuePair<string, HashSet<string>> author in quotesPerAuthor)
+            Console.ForegroundColor = ConsoleColor.Blue;
+            var configuration = Configuration.Default.WithDefaultLoader();
+            var browsingContext = BrowsingContext.New(configuration);
+
+            // Get Person's info details from wikipedia
+            foreach (Author author in authors)
             {
-                string name = author.Key;
-                var authorInfoUrl = $"https://www.google.bg/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q={name}";
-
-                var document = browsingContext.OpenAsync(authorInfoUrl).Result;
-                var birthDateArgs = document.QuerySelectorAll("#rhs_block ._Xbe.kno-fv")[0].TextContent.Split(',');
-                // Place Of Birth (Town or Country)
-                birthDateArgs[birthDateArgs.Length - 1] = null;
-
-                var deathDateArgs = document.QuerySelectorAll("#rhs_block ._Xbe.kno-fv")[1].TextContent.Split(',');
-
-                // Place Of Birth (Town or Country)
-                birthDateArgs[birthDateArgs.Length - 1] = null;
-                // Place Of Death if dead (Town or Country)
-                deathDateArgs[deathDateArgs.Length - 1] = null;
-
-                var birthDate = DataParser.ParseStringToDateTime(string.Join(" ", birthDateArgs));
-                var deathDate = DataParser.ParseStringToDateTime(string.Join(" ", deathDateArgs));
-
-                var occupation = document.QuerySelector("#rhs_block span").TextContent.Trim();
-
-                var description = document.QuerySelector("#rhs_block .kno-rdesc span").TextContent.Trim();
-                var nationality = GetNationalityFromGoogleSummary(description);
-
-                var wikipediaSummaryUrl = $"https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles={name}";
-
-                string personSummary = browsingContext.OpenAsync(authorInfoUrl).Result.TextContent;
+                string name = author.Name;
+                string urlName = name.Replace(" ", "%20");
+                // TODO SERIALIZE WITH NEWTONSOFT JSON
+                var wikipediaSummaryUrl = $"https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles={urlName}";
+                
+                string personSummary = browsingContext.OpenAsync(wikipediaSummaryUrl).Result.ToHtml();
+                Console.WriteLine(personSummary);
                 string startText = "\"extract\":";
                 int indexStartSummary = personSummary.IndexOf(startText);
-                string summary = personSummary.Substring(indexStartSummary + startText.Length + 1).Trim(new[] { '}', '{', ' ' });
-                var authorToUpdate = authorsService.GetByName(name);
 
-                authorsService.Update(authorToUpdate, null, summary, birthDate, deathDate, occupation, nationality);
-                authorsService.Save();
-                Console.WriteLine("AUTHOR UPDATED");
+                if (indexStartSummary > -1)
+                {
+                    string summary = personSummary.Substring(indexStartSummary + startText.Length + 1).Trim(new[] { '}', '{', ' ' });
+
+                    var authorToUpdate = authorsService.GetByName(name);
+
+                    try
+                    {
+                        authorsService.AddDescription(authorToUpdate.Id.ToString(), summary);
+                        authorsService.Save();
+                        Console.WriteLine("AUTHOR UPDATED: " + summary.Substring(0, 10));
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Failed to update author's description: " + ex.Message);
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        try
+                        {
+                            summary = summary.Substring(0, 2900);
+                            authorsService.AddDescription(authorToUpdate.Id.ToString(), summary);
+                            authorsService.Save();
+                            Console.WriteLine("AUTHOR UPDATED: " + summary.Substring(0, 10));
+                        }
+                        catch(Exception exc)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Failed to update author's description second time: " + exc.Message);
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Name not found: " + name);
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
             }
         }
 

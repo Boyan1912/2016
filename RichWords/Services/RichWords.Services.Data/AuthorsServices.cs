@@ -25,7 +25,7 @@
 
         public Author GetById(string id)
         {
-            var intId = this.identifierProvider.DecodeId(id);
+            var intId = int.Parse(id);
             return this.authors.GetById(intId);
         }
 
@@ -56,10 +56,7 @@
 
         public void Update(Author author, string name = "", string description = null, DateTime? birthDate = default(DateTime?), DateTime? diedOn = default(DateTime?), string occupation = "", string nationality = "")
         {
-            // TODO
-            // Validate with a Validator
-
-            author.Name = name;
+            if (!string.IsNullOrWhiteSpace(name)) { author.Name = name; }
             author.Description = description;
             author.BirthDate = birthDate;
             author.DateDeceased = diedOn;
@@ -68,6 +65,12 @@
 
             this.authors.Update(author);
             this.Save();
+        }
+
+        public void AddDescription(string authorId, string description)
+        {
+            Author author = this.GetById(authorId);
+            author.Description = description;
         }
 
         public void Save()

@@ -143,6 +143,20 @@
                                     .Any(x => tagNames
                                               .Any(t => t == x.Name)));
         }
+        
+        public IQueryable<Quote> GetLongest(int count)
+        {
+            return this.quotes.All()
+                               .OrderByDescending(q => q.Content.Length)
+                               .Take(count);
+        }
+
+        public IQueryable<Quote> GetShortest(int count)
+        {
+            return this.quotes.All()
+                               .OrderBy(q => q.Content.Length)
+                               .Take(count);
+        }
 
         public void Save()
         {

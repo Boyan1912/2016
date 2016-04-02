@@ -60,7 +60,10 @@
 
         public Category GetByName(string name)
         {
-            return this.categories.All().FirstOrDefault(c => c.Name.ToString().ToLower() == name.ToLower());
+            return this.categories.All().FirstOrDefault(c => c.Name.ToString().ToLower() == name.ToLower()
+            // account for plurals
+            || $"{c.Name.ToString().ToLower()}s" == name.ToLower()
+            || c.Name.ToString().ToLower() == $"{name.ToLower()}s");
         }
 
         public void Save()
