@@ -1,4 +1,4 @@
-var game = (function(){
+var gameController = (function(){
 
     function start(){
         showStartScreen();
@@ -21,8 +21,17 @@ var game = (function(){
         $('#wrapper').append($startScreen);
     }
 
-    return {
-        start: start
+    function initPlayField(){
+        var canvas = oCanvas.create({
+            canvas: "#canvas",
+            background: "#222"
+        });
+
+        return canvas;
     }
 
+    return {
+        start: start,
+        initPlayField: initPlayField
+    }
 }());

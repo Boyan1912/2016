@@ -15,7 +15,7 @@
     using RichWords.Services.Data;
     using RichWords.Services.Web;
     using AngleSharp.Dom;
-    using System.Text;
+
     public class Program
     {
         private static ApplicationDbContext db = new ApplicationDbContext();
@@ -40,7 +40,7 @@
         {
             //AddAdminToDb();
             //AddRandomUsers();
-            //GetQuotesAndCategoriesPerAuthorFromInternet();
+            GetQuotesAndCategoriesPerAuthorFromInternet();
             var authors = authorsService.GetAll().ToList();
             GetAuthorsDetailsFromInternet(authors);
         }
@@ -143,7 +143,7 @@
             categoriesService.Save();
             Console.WriteLine("CATEGORIES ADDED OR PREVIOUSLY EXISTED");
             
-            for (int i = 9; i < authorsNames.Length; i++)
+            for (int i = 42; i < authorsNames.Length; i++)
             {
                 string name = authorsNames[i].TextContent.Trim();
                 
@@ -299,7 +299,6 @@
                 var wikipediaSummaryUrl = $"https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles={urlName}";
                 
                 string personSummary = browsingContext.OpenAsync(wikipediaSummaryUrl).Result.ToHtml();
-                Console.WriteLine(personSummary);
                 string startText = "\"extract\":";
                 int indexStartSummary = personSummary.IndexOf(startText);
 
@@ -308,6 +307,10 @@
                     string summary = personSummary.Substring(indexStartSummary + startText.Length + 1).Trim(new[] { '}', '{', ' ' });
 
                     var authorToUpdate = authorsService.GetByName(name);
+                    if (authorToUpdate.Description != null)
+                    {
+                        continue;
+                    }
 
                     try
                     {
