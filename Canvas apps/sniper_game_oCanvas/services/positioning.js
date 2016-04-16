@@ -9,7 +9,37 @@ var positioningService = (function(){
         return theta;
     }
 
+    function calcNormalRocketTravelDuration(eX, mX, eY, mY, maxTime, sensitivity, maxLength, maxWidth){
+        maxTime = maxTime || Constants.MaxTimeForRocketToCrossField;
+        return calcSpeedOfTravelInSeconds(eX, mX, eY, mY, maxTime, sensitivity, maxLength, maxWidth);
+    }
+
+    function calcSpeedOfTravelInSeconds(eX, mX, eY, mY, maxTime, sensitivity, maxLength, maxWidth){
+        maxLength = maxLength || Constants.PlayFieldLength;
+        maxWidth = maxWidth || Constants.PlayFieldWidth;
+        maxTime = maxTime || Constants.MaxTimeForPlayerToCrossField;
+        sensitivity = sensitivity || Constants.DefaultSpeedSensitivity;
+
+        var diffX = Math.abs(eX - mX),
+            diffY = Math.abs(eY - mY),
+            distance = (diffX + diffY) / 2,
+            unitOfMeasure = ((maxLength / sensitivity) + (maxWidth / sensitivity)) / 2,
+            result;
+
+        for(var i = sensitivity - 1; i >= 0 ; i--){
+            var speedNormaliser = i + 1;
+            if (distance > unitOfMeasure * i && distance <=  unitOfMeasure * speedNormaliser){
+                result = maxTime * (speedNormaliser / sensitivity);
+                break;
+            }
+        }
+
+        return parseInt(result);
+    }
+
     return {
-        getAngle: getAngle
+        getAngle: getAngle,
+        calcSpeedOfTravelInSeconds: calcSpeedOfTravelInSeconds,
+        calcFireShellTravelDuration: calcNormalRocketTravelDuration
     }
 }());

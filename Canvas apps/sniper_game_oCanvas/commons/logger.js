@@ -1,23 +1,23 @@
 var logger = (function(){
 
-    function executeCommand(command){
+    function executeCommand(command, p1, p2, p3, p4, p5, p6){
         validator.validateFunction(command);
-        command();
+        command(p1, p2, p3, p4, p5, p6);
         console.log(command.name + ' successfully executed!');
     }
 
-    function executeSpriteCommand(sprite, command, p1, p2, p3){
+    function executeModelCommand(model, command, p1, p2, p3){
         //validator.validateSprite(sprite, command);
         if (p1 || p2 || p3){
-            sprite[command](p1, p2, p3);
+            model[command](p1, p2, p3);
         }else{
-            sprite[command]();
+            model[command]();
         }
-        console.log(sprite.name + ' succeeded in ' + command.toUpperCase());
+        console.log(model.name + ' succeeded in ' + command);
     }
 
     return {
         executeCommand: executeCommand,
-        executeSpriteCommand: executeSpriteCommand
+        executeModelCommand: executeModelCommand
     }
 }());

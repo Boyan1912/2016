@@ -21,17 +21,15 @@ var gameController = (function(){
         $('#wrapper').append($startScreen);
     }
 
-    function initPlayField(){
-        var canvas = oCanvas.create({
+    var playField = (function(){
+            return oCanvas.create({
             canvas: "#canvas",
             background: "#222"
-        });
-
-        return canvas;
-    }
+            });
+        }());
 
     return {
         start: start,
-        initPlayField: initPlayField
+        playField: playField
     }
 }());

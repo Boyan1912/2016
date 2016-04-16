@@ -3,6 +3,8 @@ var validator = (function(){
     function validateFunction(func){
         if (typeof func !== 'function'){
             console.log(func + ' IS NOT A FUNCTION! It is ' + typeof func);
+        }else{
+            return true;
         }
     }
 
@@ -17,6 +19,7 @@ var validator = (function(){
             console.log(data + ' IS NOT A STRING! It is ' + typeof data);
         }
     }
+
 
     //function validateSprite(sprite, command){
     //    validateObject(sprite);
