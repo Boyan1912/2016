@@ -10,7 +10,7 @@ var actionController = (function(actionService){
         model.startAnimation();
 
         if (model.name === 'sniper'){
-            gameEngine.setEnemiesToFollowPlayer(actionService);
+            gameEngine.setMummiesToFollowPlayerOnStartMove(actionService);
         }
 
         actionService.triggerActionEventSubscribers(moveToPoint.name, true, model);
@@ -23,6 +23,9 @@ var actionController = (function(actionService){
             duration: positioningService.calcSpeedOfTravelInSeconds(X, model.x, Y, model.y, maxTime, sensitivity, maxLength, maxWidth),
             callback: function(){
                 model.stopAnimation();
+                if (model.name === 'sniper'){
+                    gameEngine.setMummiesToFollowPlayerOnDestinationReached(actionService);
+                }
                 actionService.triggerActionEventSubscribers(moveToPoint.name, false, model);
             }
         });
@@ -53,7 +56,6 @@ var actionController = (function(actionService){
                 playField.removeChild(newFireShell);
             }
         });
-
     }
 
     return {

@@ -1,4 +1,4 @@
-var gameEngine = (function(field, player, enemies, actionCntrl){
+var gameEngine = (function(field, enemies, actionCntrl){
 
     function getAllCanvasElements(){
         return field.children;
@@ -10,8 +10,11 @@ var gameEngine = (function(field, player, enemies, actionCntrl){
         })
     }
 
-    function addMummiesToGame(count){
-        enemies.entities.addMummies(count);
+    function addMummiesToGame(count, settings){
+        var mummies = enemies.addMummies(count, settings);
+        for (var i = 0; i < mummies.length; i++) {
+            field.addChild(mummies[i]);
+        }
     }
 
     function getShooterFromField(){
@@ -20,7 +23,7 @@ var gameEngine = (function(field, player, enemies, actionCntrl){
         })
     }
 
-    function setEnemiesToFollowPlayer(actionService){
+    function setMummiesToFollowPlayerOnStartMove(actionService){
         var mummies = getAllMummies();
         var shooter = getShooterFromField();
         for (var i = 0; i < mummies.length; i++) {
@@ -29,11 +32,47 @@ var gameEngine = (function(field, player, enemies, actionCntrl){
         }
     }
 
-
-
-    return {
-        addMummiesToGame : addMummiesToGame,
-        setEnemiesToFollowPlayer : setEnemiesToFollowPlayer
+    function setMummiesToFollowPlayerOnDestinationReached(actionService){
+        var mummies = getAllMummies();
+        var shooter = getShooterFromField();
+        for (var i = 0; i < mummies.length; i++) {
+            actionService.addSubscriberToActionEvent('moveToPoint', false, actionCntrl.moveToPoint,
+                [mummies[i], shooter.x, shooter.y, Constants.MummyTimeToCrossField], shooter);
+        }
     }
 
-}(gameController.playField, playerModels, enemyModels, actionController));
+    function detectPlayerCollision(){
+        field.setLoop(function(){
+            var player = getShooterFromField();
+            var enemies = getAllMummies();
+            var collided = collisionDetectionService.detectCollision(player, enemies);
+            console.log(collided);
+        }).start();
+    }
+
+    function getRocketsFromField(){
+        return getAllCanvasElements().filter(function(model){
+            return model.name === 'rocket';
+        })
+    }
+    
+    function detectRocketsCollision(){
+        field.setLoop(function(){
+            var rockets = getRocketsFromField();
+            var enemies = getAllMummies();
+            for (var i = 0; i < rockets.length; i++) {
+                var obj = rockets[i];
+                
+            }
+            console.log(collided);
+        }).start();
+    }
+    
+    return {
+        addMummiesToGame: addMummiesToGame,
+        setMummiesToFollowPlayerOnStartMove: setMummiesToFollowPlayerOnStartMove,
+        setMummiesToFollowPlayerOnDestinationReached: setMummiesToFollowPlayerOnDestinationReached,
+        detectPlayerCollision: detectPlayerCollision
+    }
+
+}(gameController.playField, enemyModelsService, actionController));

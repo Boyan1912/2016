@@ -1,9 +1,9 @@
 var enemyModels = (function(field){
 
-    var entities = (function (){
+    var creatures = (function (){
         var mummy = field.display.sprite({
-            x: -100,
-            y: -100,
+            x: 10,
+            y: -10,
             origin: { x: "center", y: "center" },
             image: "img/mummy.png",
             generate: true,
@@ -16,26 +16,14 @@ var enemyModels = (function(field){
 
         field.addChild(mummy);
 
-        function addMummies(count, settings){
-            count = count || 1;
-            settings = settings || { y: mummy.y };
-
-            for(var i = 0; i < count; i++){
-                settings.x = Math.random() * Constants.PlayFieldLength;
-                var clone = mummy.clone(settings);
-                field.addChild(clone);
-            }
-        }
-
         return {
-            mummy: mummy,
-            addMummies: addMummies
+            mummy: mummy
         };
 
     }());
 
     return {
-        entities: entities
+        creatures: creatures
     }
 
 }(gameController.playField));

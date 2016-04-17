@@ -48,9 +48,10 @@ var actionEventsService = (function(){
 
     self.triggerActionEventSubscribers = function(actionName, isStarting, model){
         var eventSubscribers = updateSubscribers(actionName, isStarting, model);
-        for(var i = 0; i < eventSubscribers.length; i++){
-            var action = eventSubscribers[i].action,
-                params = eventSubscribers[i].params;
+        while(eventSubscribers.length > 0){
+            var obj = eventSubscribers.pop();
+            var action = obj.action;
+            var params = obj.params;
             validator.validateFunction(action);
             action(params[0], params[1], params[2], params[3], params[4], params[5], params[6]);
         }
