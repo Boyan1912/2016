@@ -16,8 +16,23 @@ var logger = (function(){
         console.log(model.name + ' succeeded in ' + command);
     }
 
+    function monitorHitDamage(model, damage){
+        console.log('hit model: ' + model.name);
+        console.log('hit model id: ' + model.id);
+        console.log('hit model health: ' + model.health);
+        console.log('damage: ' + damage)
+    }
+
+    function monitorBlastsDetection(blasts, victims, tolerance){
+        console.log('in blast collision detection');
+        console.log('blasts count: ' + blasts.length);
+        console.log('potential victims count: ' + victims.length);
+    }
+
     return {
         executeCommand: executeCommand,
-        executeModelCommand: executeModelCommand
+        executeModelCommand: executeModelCommand,
+        monitorHitDamage: monitorHitDamage,
+        monitorBlastsDetection: monitorBlastsDetection
     }
 }());

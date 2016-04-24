@@ -25,25 +25,42 @@ var modelsController = (function(field, models){
         return models.getAllEnemyModels();
     }
 
+    //TODO
     function monitorPlayerAdvance(){
         return setInterval(function(){
             var player = models.getOriginalShooter();
             if(player.points >= Settings.PointsNeededForNextStage){
-                alertProgressMade();
+                //alertProgressMade();
             }
 
         }, Settings.MonitorPlayersAdvanceInterval);
     }
 
-    function alertProgressMade(){
-
+    function updateModelHealth(model, damage, reviveIfDead){
+        model.health -= damage;
+        logger.monitorHitDamage(model, damage);
+        if(models.isDead(model) && model.name !== 'sniper'){
+            handleDeadEnemyModel(model, reviveIfDead);
+        }
     }
 
+    function handleDeadEnemyModel(model){
+        console.log('DEAD: ' + model.name);
+        var player = models.getOriginalShooter();
+        player.points += model.killValuePoints;
+        console.log('POINTS: ' + player.points);
+        model.stop();
 
+        field.removeChild(model);
+        //model.fadeOut('normal', Settings.DefaultModelFadeOutType, function () {
+        //
+        //})
+    }
 
     return {
         addEnemiesToGame: addEnemiesToGame,
-
+        //handleDeadEnemyModel: handleDeadEnemyModel,
+        updateModelHealth: updateModelHealth
     }
 
 }(gameController.playField, modelsService));

@@ -14,9 +14,11 @@ var Settings = {
     MaxTimeForPlayerToCrossField: 9000,
     DefaultSpeedSensitivity: 10,
     MaxTimeForRocketToCrossField: 2500,
-    RocketExplosionDuration: 3000,
+    DefaultExplosionDuration: 3000,
+    DefaultExplosionDamageArea: 60,
+    DefaultExplosionDamageWeight: 1,
     PlayerCollisionTolerance: 50,
-    RocketCollisionTolerance: 60,
+    //RocketCollisionTolerance: 60,
     ClickOnPlayerBugFixValue: 20,
 
 
@@ -39,7 +41,7 @@ var Settings = {
 
     // game performance:
     TravelDirectionRefreshTime: 3000,
-    DetectCollisionRefreshTime: 100,
+    DetectBlastDamageRefreshTime: 100,
     DetectPlayerCollisionRefreshTime: 800,
     DefaultModelFadeOutType: 'ease-in-out-bounce',
     DefaultModelFadeInType: 'ease-in-expo',

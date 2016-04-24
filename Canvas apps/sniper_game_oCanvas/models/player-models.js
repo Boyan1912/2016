@@ -13,7 +13,8 @@ var playerModels = (function(field){
             duration: Settings.DefaultSpriteDuration,
             name: 'sniper',
             health: Settings.PlayerInitialHealth,
-            points: 0
+            points: 0,
+            id: 0
         });
 
         field.addChild(sniper);
@@ -59,7 +60,8 @@ var playerModels = (function(field){
             duration: Settings.DefaultSpriteDuration,
             frame: 1,
             loop: false,
-            name: 'explosion'
+            name: 'explosion',
+            damageWeight: Settings.DefaultExplosionDamageWeight
         });
 
         explosion.id = 0;
@@ -67,11 +69,12 @@ var playerModels = (function(field){
 
         function explode(settings){
             var clone = explosion.clone({ x: settings.x, y: settings.y });
+            clone.id = modelsService.getUniqueId();
             field.addChild(clone);
             clone.startAnimation();
             setTimeout(function(){
                 clone.remove();
-            }, Settings.RocketExplosionDuration);
+            }, Settings.DefaultExplosionDuration);
         }
 
         return {

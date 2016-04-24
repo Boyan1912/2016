@@ -26,10 +26,22 @@ var modelsService = (function(field, plModels, enModels, calculations){
         })
     }
 
+    function getAllActiveExplosions(){
+        return getAllCanvasElements().filter(function(model){
+            return model.name === 'explosion' && model.id > 0 && model.active;
+        })
+    }
+
     function getAllEnemyModels(){
         return getAllCanvasElements().filter(function(model){
             return model.name !== 'sniper' && model.name !== 'rocket'
-                && model.name !== 'explosion' && model.id > 0;
+                && model.name !== 'explosion' && model.id > 0 && !!model.health;
+        })
+    }
+
+    function getAllDamageableModels(){
+        return getAllCanvasElements().filter(function(model){
+            return !!model.health && model.id > 0;
         })
     }
 
@@ -129,7 +141,9 @@ var modelsService = (function(field, plModels, enModels, calculations){
         isDead: isDead,
         isViable: isViable,
         getUniqueId: getUniqueId,
-        getAllEnemyModels: getAllEnemyModels
+        getAllEnemyModels: getAllEnemyModels,
+        getAllActiveExplosions: getAllActiveExplosions,
+        getAllDamageableModels: getAllDamageableModels
     }
 
 

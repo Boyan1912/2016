@@ -1,4 +1,4 @@
-var gameEngine = (function(modelsCntrl, actionCntrl){
+var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl){
 
     function startGame(){
         //modelsCntrl.addEnemiesToGame(Settings.InitialEnemiesCount, Settings.InitialEnemyType);
@@ -7,7 +7,7 @@ var gameEngine = (function(modelsCntrl, actionCntrl){
         //actionCntrl.setPlayerCollisionDetection();
 
         var jinns = modelsCntrl.addEnemiesToGame(Settings.InitialEnemiesCount, Settings.SecondaryEnemyType);
-        actionCntrl.sendModelsTowardsPlayer(jinns, Settings.JinnTimeToCrossField);
+        loopsCntrl.sendModelsTowardsPlayer(jinns, Settings.JinnTimeToCrossField);
         //actionCntrl.setPlayerCollisionDetection(jinns);
     }
 
@@ -17,4 +17,4 @@ var gameEngine = (function(modelsCntrl, actionCntrl){
         startGame: startGame
     }
 
-}(modelsController, actionController));
+}(modelsController, actionController, loopsController));

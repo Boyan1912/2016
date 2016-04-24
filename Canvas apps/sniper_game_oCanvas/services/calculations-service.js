@@ -34,24 +34,24 @@ var calculationsService = (function(){
 
 
 
-    function isHit(model, obj, tolerance){
-        if(!model || !obj){
+    function isHit(model, hitter, tolerance){
+        if(!model || !hitter){
             return false;
         }
         //console.log(obj.name);
         //console.log(model.name);
-        return Math.abs(obj.x - model.x) <= tolerance && Math.abs(obj.y - model.y) <= tolerance;
+        return Math.abs(hitter.x - model.x) <= tolerance && Math.abs(hitter.y - model.y) <= tolerance;
     }
 
-    function calculateDamage(model, obj, tolerance){
+    function calculateDamage(model, hitter, tolerance){
         var unit = tolerance * 1 / 3,
             damage;
-        if(Math.abs(obj.x - model.x) < unit && Math.abs(obj.y - model.y) < unit){
-            damage = (1 / 3) * obj.damageWeight;
-        }else if(Math.abs(obj.x - model.x) > unit * 2 && Math.abs(obj.y - model.y) > unit * 2){
-            damage = 1 * obj.damageWeight;
+        if(Math.abs(hitter.x - model.x) < unit && Math.abs(hitter.y - model.y) < unit){
+            damage = (1 / 3) * hitter.damageWeight;
+        }else if(Math.abs(hitter.x - model.x) > unit * 2 && Math.abs(hitter.y - model.y) > unit * 2){
+            damage = 1 * hitter.damageWeight;
         }else{
-            damage = (2 / 3) * obj.damageWeight;
+            damage = (2 / 3) * hitter.damageWeight;
         }
 
         return damage;
