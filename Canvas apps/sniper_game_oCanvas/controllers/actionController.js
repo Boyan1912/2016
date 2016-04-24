@@ -1,4 +1,4 @@
-var actionController = (function(field, loopsCntrl, calculations, models, actionService){
+var actionController = (function(field, loopsCntrl, calculations, models){
 
     function turnToPoint(model, X, Y){
         var angle = calculations.getAngle(model.x, model.y, X, Y);
@@ -19,7 +19,6 @@ var actionController = (function(field, loopsCntrl, calculations, models, action
             duration: animationDuration,
             callback: function(){
                 model.stopAnimation();
-                actionService.triggerActionEventSubscribers('moveToPoint', model);
             }
         });
     }
@@ -37,8 +36,6 @@ var actionController = (function(field, loopsCntrl, calculations, models, action
         gun.x = -Settings.PlayFieldWidth; // hide from screen
         gun.shellsCount--;
 
-        //var loopId = setRocketCollisionDetection(gunShell, models.getAllEnemyModels(), Settings.RocketCollisionTolerance);
-
         gunShell.startAnimation();
         gunShell.animate({
             x: target.x,
@@ -51,23 +48,14 @@ var actionController = (function(field, loopsCntrl, calculations, models, action
                 blast.explode(target);
 
                 var allExplosions = models.getAllActiveExplosions();
-                //console.log(allExplosions);
 
-                var loopId = loopsCntrl.setBlastCollisionDetection(allExplosions,
+                loopsCntrl.setBlastCollisionDetection(allExplosions,
                     models.getAllDamageableModels(), Settings.DefaultExplosionDamageArea);
 
                 field.removeChild(gunShell);
-
-                setTimeout(function(){
-                    clearInterval(loopId);
-                }, Settings.DefaultExplosionDuration + Settings.MaxTimeForRocketToCrossField);
             }
         });
     }
-
-
-
-
 
 
     return {
@@ -76,4 +64,4 @@ var actionController = (function(field, loopsCntrl, calculations, models, action
         fireOnTarget: fireOnTarget
     }
 
-}(gameController.playField, loopsController, calculationsService, modelsService, actionEventsService));
+}(gameController.playField, loopsController, calculationsService, modelsService));

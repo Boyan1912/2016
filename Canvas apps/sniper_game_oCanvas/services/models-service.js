@@ -8,7 +8,7 @@ var modelsService = (function(field, plModels, enModels, calculations){
 
     function getModelsByName(name){
         return getAllCanvasElements().filter(function(model){
-            return model.name === name && model.id !== 0;
+            return model.name === name && model.id > 0;
         })
     }
 
@@ -24,6 +24,15 @@ var modelsService = (function(field, plModels, enModels, calculations){
         return getModelsByName(name).find(function(model){
             return model.id === id;
         })
+    }
+
+    function getVariousTypesByName(names){
+        var result = [];
+        for (var i = 0; i < names.length; i++) {
+            var models = getModelsByName(names[i]);
+            result = result.concat(models);
+        }
+        return result;
     }
 
     function getAllActiveExplosions(){
@@ -66,26 +75,26 @@ var modelsService = (function(field, plModels, enModels, calculations){
             return model.name === 'sniper';
         })
     }
-
-    function getHitObjects(model, others, tolerance){
-        var hitObjects = [];
-        for (var i = 0; i < others.length; i++) {
-            var obj = others[i];
-
-            if (calculations.isHit(model, obj, tolerance)){
-                obj.violator = model;
-                obj.damaged = calculations.calculateDamage(model, obj, tolerance);
-                hitObjects.push(obj);
-            }
-        }
-
-        return hitObjects;
-    }
+    //
+    //function getHitObjects(model, others, tolerance){
+    //    var hitObjects = [];
+    //    for (var i = 0; i < others.length; i++) {
+    //        var obj = others[i];
+    //
+    //        if (calculations.isHit(model, obj, tolerance)){
+    //            obj.violator = model;
+    //            obj.damaged = calculations.calculateDamage(model, obj, tolerance);
+    //            hitObjects.push(obj);
+    //        }
+    //    }
+    //
+    //    return hitObjects;
+    //}
 
     function getRandomCoordinatesAroundPlace(place, marginX, marginY){
         marginY = marginY || marginX;
         var sign = Math.random() > 0.5;
-        var x = sign ? (place.x + Math.random() * marginX) : (place.x - Math.random() * marginX);
+        var x = sign ? ((place.x + Math.random() * marginX)) : (place.x - Math.random() * marginX);
         sign = Math.random() > 0.5;
         var y = sign ? (place.y + Math.random() * marginY) : (place.y - Math.random() * marginY);
 
@@ -125,13 +134,14 @@ var modelsService = (function(field, plModels, enModels, calculations){
         getOriginalEnemyModel: getOriginalEnemyModel,
         getOriginalPlayerItem: getOriginalPlayerItem,
         getOriginalShooter: getOriginalShooter,
-        getHitObjects: getHitObjects,
+        //getHitObjects: getHitObjects,
         isDead: isDead,
         isViable: isViable,
         getUniqueId: getUniqueId,
         getAllEnemyModels: getAllEnemyModels,
         getAllActiveExplosions: getAllActiveExplosions,
-        getAllDamageableModels: getAllDamageableModels
+        getAllDamageableModels: getAllDamageableModels,
+        getVariousTypesByName: getVariousTypesByName
     }
 
 

@@ -32,8 +32,6 @@ var calculationsService = (function(){
         return parseInt(result);
     }
 
-
-
     function isHit(model, hitter, tolerance){
         if(!model || !hitter){
             return false;

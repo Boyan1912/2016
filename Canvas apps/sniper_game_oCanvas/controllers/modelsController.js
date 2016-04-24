@@ -22,12 +22,12 @@ var modelsController = (function(field, models){
             field.addChild(enemies[i]);
         }
 
-        return models.getAllEnemyModels();
+        return models.getModelsByName(type);
     }
 
     function updateModelHealth(model, damage){
         model.health -= damage;
-        logger.monitorHitDamage(model, damage);
+        //logger.monitorHitDamage(model, damage);
         if(models.isDead(model) && model.name !== 'sniper'){
             handleDeadEnemyModel(model);
         }else if(models.isDead(model) && model.name === 'sniper'){
@@ -36,13 +36,13 @@ var modelsController = (function(field, models){
     }
 
     function handleDeadEnemyModel(model){
-        console.log('DEAD: ' + model.name);
+        //console.log('DEAD: ' + model.name);
         var player = models.getOriginalShooter();
         player.points += model.killValuePoints;
-        console.log('POINTS: ' + player.points);
+        //console.log('POINTS: ' + player.points);
         model.stop();
 
-        field.removeChild(model);
+        model.remove();
     }
 
     return {

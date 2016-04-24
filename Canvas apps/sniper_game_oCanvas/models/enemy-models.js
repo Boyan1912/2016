@@ -37,7 +37,7 @@ var enemyModels = (function(field){
             killValuePoints: Settings.JinnKillValuePoints
         });
 
-        jinn.id = -1;
+        jinn.id = 0;
         field.addChild(jinn);
 
 

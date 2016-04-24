@@ -1,17 +1,26 @@
-var loopsController = (function(modelsCntrl, models, actionService, calculations){
+var loopsController = (function(modelsCntrl, models, calculations){
 
     function sendModelsTowardsPlayer(enemies, speedTime, areaSize){
         enemies = enemies || models.getAllEnemyModels();
         speedTime = speedTime || Settings.DefaultEnemyTimeToCrossField;
-        areaSize = areaSize || Settings.RadiusEnemiesDestinationAroundPlayer;
+        areaSize = areaSize || Settings.RadiusJinnsDestinationAroundPlayer;
         // returns interval Id
-        return setInterval(function(){
+        var loopId = setInterval(function(){
             var shooter = models.getOriginalShooter();
-            console.log('in sendModelsTowardsPlayer');
+
             for (var i = 0; i < enemies.length; i++) {
+                var enemy = enemies[i];
                 var rndPlace = models.getRandomCoordinatesAroundPlace(shooter, areaSize);
-                actionController.moveToPoint(enemies[i], rndPlace.x, rndPlace.y, speedTime);
+                actionController.moveToPoint(enemy, rndPlace.x, rndPlace.y, speedTime);
             }
+
+            var loopingObjectsCount = getActiveLoopingObjects(enemies).length;
+            var loopDetails = {
+                loopingObjectsCount: loopingObjectsCount,
+                loopId: loopId
+            };
+
+            stopLoopIfNotNeeded(loopDetails);
         }, Settings.TravelDirectionRefreshTime);
     }
 
@@ -28,7 +37,7 @@ var loopsController = (function(modelsCntrl, models, actionService, calculations
     //}
 
     function setBlastCollisionDetection(blasts, victims, tolerance){
-        return setInterval(function(){
+        var loopId = setInterval(function(){
             //logger.monitorBlastsDetection(blasts, victims, tolerance);
             for (var i = 0; i < victims.length; i++) {
                 var potentialVictim = victims[i];
@@ -40,11 +49,18 @@ var loopsController = (function(modelsCntrl, models, actionService, calculations
                     }
                 }
             }
+            var loopingObjectsCount = getActiveLoopingObjects(blasts).length;
+            var loopDetails = {
+                loopingObjectsCount: loopingObjectsCount,
+                loopId: loopId
+            };
+
+            stopLoopIfNotNeeded(loopDetails);
         }, Settings.DetectBlastDamageRefreshTime);
     }
 
     function setPlayerCollisionDetection(others, tolerance){
-        return setInterval(function(){
+        var loopId = setInterval(function(){
             var player = models.getOriginalShooter();
             others = others || models.getAllEnemyModels();
             tolerance = tolerance || Settings.PlayerCollisionTolerance;
@@ -52,14 +68,39 @@ var loopsController = (function(modelsCntrl, models, actionService, calculations
             if(damage){
                 modelsCntrl.updateModelHealth(player, damage);
             }
+
+            var loopingObjectsCount = getActiveLoopingObjects(others).length;
+            var loopDetails = {
+                loopingObjectsCount: loopingObjectsCount,
+                loopId: loopId
+            };
+            stopLoopIfNotNeeded(loopDetails);
         }, Settings.DetectPlayerCollisionRefreshTime);
     }
 
+    function stopLoopIfNotNeeded(loopDetails){
+        if(loopDetails.loopingObjectsCount < 1){
+            clearInterval(loopDetails.loopId);
+            console.log('stopped ' + loopDetails.loopId);
+        }
+    }
+
+    function getActiveLoopingObjects(objects){
+        var names = [];
+        for (var i = 0; i < objects.length; i++) {
+            var loopObj = objects[i];
+            if(names.indexOf(loopObj.name) < 0){
+                names.push(loopObj.name);
+            }
+        }
+
+        return models.getVariousTypesByName(names);
+    }
 
     return {
         sendModelsTowardsPlayer: sendModelsTowardsPlayer,
         setPlayerCollisionDetection: setPlayerCollisionDetection,
-        setBlastCollisionDetection: setBlastCollisionDetection
+        setBlastCollisionDetection: setBlastCollisionDetection,
     };
 
-}(modelsController, modelsService, actionEventsService, calculationsService));
+}(modelsController, modelsService, calculationsService));

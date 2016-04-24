@@ -22,9 +22,10 @@ var gameController = (function(){
     }
 
     var playField = (function(){
-            return oCanvas.create({
+        return oCanvas.create({
             canvas: "#canvas",
-            background: "#222"
+            //background: 'image(img/bg/wolf.jpg)'
+            background: '#000'
             });
         }());
 
