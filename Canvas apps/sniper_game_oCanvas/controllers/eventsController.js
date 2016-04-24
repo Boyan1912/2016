@@ -1,45 +1,56 @@
-var eventsController = (function(field){
+var eventsController = (function(field, actionCntrl, models){
 
-    function onMouseMove(model){
+    function onMouseMove(){
         field.bind('mousemove', function(e){
-            actionController.turnToPoint(model, e.x, e.y);
+            var player = models.getOriginalShooter();
+            actionCntrl.turnToPoint(player, e.x, e.y);
         })
     }
 
-    function onRightButtonClick(model){
+    function onRightButtonClick(){
+        var canvas = document.getElementById('canvas'),
+            player = models.getOriginalShooter(),
+            tolerance = Settings.ClickOnPlayerBugFixValue;
         // remove context menu from mouse's right click
-        var canvas = document.getElementById('canvas');
         canvas.addEventListener('contextmenu', function(event) {
             event.preventDefault();
         }, false);
 
         field.bind('mousedown', function(e){
             if (e.which === 2){
-                actionController.moveToPoint(model, e.x, e.y);
+                // clicking on the player gives a bug
+                if(Math.abs(e.x - player.x) <= tolerance && Math.abs(e.y - player.y) <= tolerance){
+                    e.x += tolerance;
+                    e.y += tolerance;
+                }
+
+                actionCntrl.moveToPoint(player, e.x, e.y);
             }
         });
     }
 
-    function onClick(playerItems){
+    function onClick(){
         field.bind('mousedown', function(e){
             if (e.which === 1){
                 var target = {
                     x: e.x,
                     y: e.y
-                };
-                actionController.fireOnTarget(field, playerItems.shooter, playerItems.weapon, target, playerItems.blast);
+                    },
+                    player = models.getOriginalShooter();
+
+                actionCntrl.fireOnTarget(player, target);
             }
         });
     }
 
-    function init(playerItems){
-        onMouseMove(playerItems.shooter);
-        onRightButtonClick(playerItems.shooter);
-        onClick(playerItems);
+    function init(){
+        onMouseMove();
+        onRightButtonClick();
+        onClick();
     }
 
     return {
         init: init
     }
 
-}(gameController.playField));
+}(gameController.playField, actionController, modelsService));

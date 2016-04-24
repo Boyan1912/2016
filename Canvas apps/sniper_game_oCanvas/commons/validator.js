@@ -20,6 +20,16 @@ var validator = (function(){
         }
     }
 
+    function validateId(id){
+        var message = 'ID must be a numeric integer value or parsable string! Got: ' + id;
+        if(id === true || id === false){
+            console.log(message);
+        }
+        id = +id;
+        if(!id){
+            console.log(message);
+        }
+    }
 
     //function validateSprite(sprite, command){
     //    validateObject(sprite);
@@ -41,6 +51,7 @@ var validator = (function(){
         validateFunction: validateFunction,
         validateObject: validateObject,
         //validateSprite: validateSprite
+        validateId: validateId
     }
 
 }());

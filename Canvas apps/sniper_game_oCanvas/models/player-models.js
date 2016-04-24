@@ -10,8 +10,10 @@ var playerModels = (function(field){
             width: 53,
             height: 63,
             direction: "x",
-            duration: Constants.DefaultSpriteDuration,
-            name: 'sniper'
+            duration: Settings.DefaultSpriteDuration,
+            name: 'sniper',
+            health: Settings.PlayerInitialHealth,
+            points: 0
         });
 
         field.addChild(sniper);
@@ -29,12 +31,19 @@ var playerModels = (function(field){
             width: 26,
             height: 49,
             direction: "x",
-            duration: Constants.DefaultSpriteDuration,
-            name: 'rocket'
+            duration: Settings.DefaultSpriteDuration,
+            name: 'rocket',
+            damageWeight: Settings.DefaultInitialRocketDamageWeight
         });
 
+        rocket.id = 0;
         field.addChild(rocket);
-        return rocket;
+        var gunShellsCount = Settings.PlayerInitialGunShellsCount;
+
+        return {
+            gun: rocket,
+            shellsCount: gunShellsCount
+        }
     }());
 
     var blast = (function (){
@@ -47,12 +56,13 @@ var playerModels = (function(field){
             width: 128,
             height: 128,
             direction: "x",
-            duration: Constants.DefaultSpriteDuration,
+            duration: Settings.DefaultSpriteDuration,
             frame: 1,
             loop: false,
             name: 'explosion'
         });
 
+        explosion.id = 0;
         field.addChild(explosion);
 
         function explode(settings){
@@ -61,7 +71,7 @@ var playerModels = (function(field){
             clone.startAnimation();
             setTimeout(function(){
                 clone.remove();
-            }, Constants.RocketExplosionDuration);
+            }, Settings.RocketExplosionDuration);
         }
 
         return {

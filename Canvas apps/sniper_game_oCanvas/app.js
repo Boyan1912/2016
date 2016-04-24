@@ -1,9 +1,5 @@
 gameController.start();
-
-eventsController.init(playerModels);
-
+eventsController.init();
 actionEventsService.getPossibleActions(actionController);
 
-gameEngine.addMummiesToGame(5);
-
-gameEngine.detectPlayerCollision();
+gameEngine.startGame();

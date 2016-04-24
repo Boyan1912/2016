@@ -9,35 +9,40 @@ var actionEventsService = (function(){
         var actionNames = Object.keys(actionCntrl);
         for(var i = 0; i < actionNames.length; i++){
             if (validator.validateFunction(actionCntrl[actionNames[i]])){
-                self.subscribers[actionNames[i]] = {};
-                self.subscribers[actionNames[i]].started = [];
-                self.subscribers[actionNames[i]].finished = [];
+                self.subscribers[actionNames[i]] = [];
             }
         }
     };
 
-    function updateSubscribers(actionName, isStarting, model){
-        var eventListenersSlot;
+    function updateSubscribers(actionName, model){
         if(!actionName){
             return;
         }
         if (model){
+            if(model.id){
+                var modelId = model.id;
+                if(!self.subscribers[actionName][modelId]){
+                    self.subscribers[actionName][modelId] = [];
+                }
+                return self.subscribers[actionName][modelId];
+            }
             var modelName = model.name;
             if(!self.subscribers[actionName][modelName]){
-                self.subscribers[actionName][modelName] = {};
-                self.subscribers[actionName][modelName].started = [];
-                self.subscribers[actionName][modelName].finished = [];
+                self.subscribers[actionName][modelName] = [];
             }
-            eventListenersSlot = isStarting ? self.subscribers[actionName][modelName].started : self.subscribers[actionName][modelName].finished;
-        }else{
-            eventListenersSlot = isStarting ? self.subscribers[actionName].started : self.subscribers[actionName].finished;
+            return self.subscribers[actionName][modelName];
+        }else if(!self.subscribers[actionName]){
+            self.subscribers[actionName] = [];
         }
-
-        return eventListenersSlot;
+        return self.subscribers[actionName];
     }
 
-    self.addSubscriberToActionEvent = function(actionName, isStarting, action, params, model){
-        var queue = updateSubscribers(actionName, isStarting, model);
+    // actionName - the name of the function that triggers the event
+    // model - the model that executes the above (actionName) - optional
+    // action - the function to be executed at the event occurrence
+    // params - params for the 'action'
+    self.addSubscriberToActionEvent = function(actionName, action, params, model){
+        var queue = updateSubscribers(actionName, model);
         if (action && validator.validateFunction(action)){
             queue.push({
                 action: action,
@@ -46,10 +51,10 @@ var actionEventsService = (function(){
         }
     };
 
-    self.triggerActionEventSubscribers = function(actionName, isStarting, model){
-        var eventSubscribers = updateSubscribers(actionName, isStarting, model);
+    self.triggerActionEventSubscribers = function(actionName, model){
+        var eventSubscribers = updateSubscribers(actionName, model);
         while(eventSubscribers.length > 0){
-            var obj = eventSubscribers.pop();
+            var obj = eventSubscribers.shift();
             var action = obj.action;
             var params = obj.params;
             validator.validateFunction(action);
