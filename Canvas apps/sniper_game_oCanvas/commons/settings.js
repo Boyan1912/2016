@@ -7,8 +7,7 @@ var Settings = {
     PointsNeededForNextStage: 120,
 
 
-    // player
-    DefaultInitialRocketDamageWeight: 50,
+    // player:
     PlayerInitialHealth: 100,
     PlayerInitialGunShellsCount: 50,
     MaxTimeForPlayerToCrossField: 9000,
@@ -18,7 +17,6 @@ var Settings = {
     DefaultExplosionDamageArea: 60,
     DefaultExplosionDamageWeight: 1,
     PlayerCollisionTolerance: 50,
-    //RocketCollisionTolerance: 60,
     ClickOnPlayerBugFixValue: 20,
 
 
@@ -29,23 +27,20 @@ var Settings = {
     JinnTimeToCrossField: 40000,
     DefaultEnemyTimeToCrossField: 35000,
     InitialEnemiesCount: 5,
-    MummyKillValuePoints: 25,
+    MummyKillValuePoints: 2,
     RadiusEnemiesDestinationAroundPlayer: 150,
     DefaultInitialEnemyHealth: 100,
     DefaultInitialMummyDamageWeight: 10,
     MinViabilityHealthPoints: 40,
-    DefaultInitialJinnDamageWeight: 40,
-    JinnKillValuePoints: 35,
+    DefaultInitialJinnDamageWeight: 15,
+    JinnKillValuePoints: 5,
     SlowDownDamagedModelsRate: 2,
 
 
     // game performance:
     TravelDirectionRefreshTime: 3000,
-    DetectBlastDamageRefreshTime: 100,
-    DetectPlayerCollisionRefreshTime: 800,
-    DefaultModelFadeOutType: 'ease-in-out-bounce',
-    DefaultModelFadeInType: 'ease-in-expo',
-    EnemiesShowUpMarginAroundUpperYAxis: 100,
-    MonitorPlayersAdvanceInterval: 7000
+    DetectBlastDamageRefreshTime: 300,
+    DetectPlayerCollisionRefreshTime: 400,
+    EnemiesShowUpMarginAroundUpperYAxis: 100
 
 };

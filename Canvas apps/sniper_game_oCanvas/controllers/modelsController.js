@@ -25,22 +25,13 @@ var modelsController = (function(field, models){
         return models.getAllEnemyModels();
     }
 
-    //TODO
-    function monitorPlayerAdvance(){
-        return setInterval(function(){
-            var player = models.getOriginalShooter();
-            if(player.points >= Settings.PointsNeededForNextStage){
-                //alertProgressMade();
-            }
-
-        }, Settings.MonitorPlayersAdvanceInterval);
-    }
-
-    function updateModelHealth(model, damage, reviveIfDead){
+    function updateModelHealth(model, damage){
         model.health -= damage;
         logger.monitorHitDamage(model, damage);
         if(models.isDead(model) && model.name !== 'sniper'){
-            handleDeadEnemyModel(model, reviveIfDead);
+            handleDeadEnemyModel(model);
+        }else if(models.isDead(model) && model.name === 'sniper'){
+            console.log('DEAD!!!!');
         }
     }
 
@@ -52,14 +43,10 @@ var modelsController = (function(field, models){
         model.stop();
 
         field.removeChild(model);
-        //model.fadeOut('normal', Settings.DefaultModelFadeOutType, function () {
-        //
-        //})
     }
 
     return {
         addEnemiesToGame: addEnemiesToGame,
-        //handleDeadEnemyModel: handleDeadEnemyModel,
         updateModelHealth: updateModelHealth
     }
 

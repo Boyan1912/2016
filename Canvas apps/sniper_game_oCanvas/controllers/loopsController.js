@@ -36,7 +36,7 @@ var loopsController = (function(modelsCntrl, models, actionService, calculations
                     var blast = blasts[j];
                     if(calculations.isHit(potentialVictim, blast, tolerance) && !models.isDead(potentialVictim)){
                         var damage = calculations.calculateDamage(potentialVictim, blast, tolerance);
-                        modelsCntrl.updateModelHealth(potentialVictim, damage, true);
+                        modelsCntrl.updateModelHealth(potentialVictim, damage);
                     }
                 }
             }
@@ -48,19 +48,13 @@ var loopsController = (function(modelsCntrl, models, actionService, calculations
             var player = models.getOriginalShooter();
             others = others || models.getAllEnemyModels();
             tolerance = tolerance || Settings.PlayerCollisionTolerance;
-            var hitValue = models.detectManyToOneCollision(player, others, tolerance);
-            if(hitValue){
-                updateModelState(player, hitValue);
+            var damage = calculations.detectManyToOneCollision(player, others, tolerance);
+            if(damage){
+                modelsCntrl.updateModelHealth(player, damage);
             }
         }, Settings.DetectPlayerCollisionRefreshTime);
     }
 
-    function stopLoopIfNoObjectsOnField(loopId, objType){
-        if (models.getModelsByName(objType).length <= 2){
-            console.log('rockets: ' + models.getModelsByName(objType).length);
-            clearInterval(loopId);
-        }
-    }
 
     return {
         sendModelsTowardsPlayer: sendModelsTowardsPlayer,

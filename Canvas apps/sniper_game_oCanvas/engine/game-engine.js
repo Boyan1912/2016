@@ -1,14 +1,12 @@
 var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl){
 
     function startGame(){
-        //modelsCntrl.addEnemiesToGame(Settings.InitialEnemiesCount, Settings.InitialEnemyType);
-        //
-        //actionCntrl.sendModelsTowardsPlayer();
-        //actionCntrl.setPlayerCollisionDetection();
+        var mummies = modelsCntrl.addEnemiesToGame(Settings.InitialEnemiesCount, Settings.InitialEnemyType);
+        loopsCntrl.sendModelsTowardsPlayer(mummies, Settings.JinnTimeToCrossField);
 
         var jinns = modelsCntrl.addEnemiesToGame(Settings.InitialEnemiesCount, Settings.SecondaryEnemyType);
         loopsCntrl.sendModelsTowardsPlayer(jinns, Settings.JinnTimeToCrossField);
-        //actionCntrl.setPlayerCollisionDetection(jinns);
+        loopsCntrl.setPlayerCollisionDetection();
     }
 
 

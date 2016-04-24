@@ -57,6 +57,18 @@ var calculationsService = (function(){
         return damage;
     }
 
+    function detectManyToOneCollision(model, hitters, tolerance){
+        var damage = 0;
+        for (var i = 0; i < hitters.length; i++) {
+            var hitter = hitters[i];
+            if (isHit(model, hitter, tolerance)){
+                damage += calculateDamage(model, hitter, tolerance);
+            }
+        }
+
+        return damage;
+    }
+
     function positionWeaponInFrontOfModel(weapon, model, angle){
         weapon.x = angle < -90 ? model.x - 40 : angle > 90 ? model.x - 40 : model.x + 30;
         weapon.y = angle < 0 ? model.y - 40 : model.y + 30;
@@ -67,6 +79,7 @@ var calculationsService = (function(){
         calcSpeedOfTravelInSeconds: calcSpeedOfTravelInSeconds,
         positionWeaponInFrontOfModel: positionWeaponInFrontOfModel,
         isHit: isHit,
-        calculateDamage: calculateDamage
+        calculateDamage: calculateDamage,
+        detectManyToOneCollision: detectManyToOneCollision
     }
 }());

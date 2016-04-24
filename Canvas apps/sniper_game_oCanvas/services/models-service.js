@@ -67,17 +67,6 @@ var modelsService = (function(field, plModels, enModels, calculations){
         })
     }
 
-    function detectManyToOneCollision(model, others, tolerance){
-        for (var i = 0; i < others.length; i++) {
-            var obj = others[i];
-            if (calculations.isHit(model, obj, tolerance)){
-                return calculations.calculateDamage(model, obj, tolerance);
-            }
-        }
-
-        return false;
-    }
-
     function getHitObjects(model, others, tolerance){
         var hitObjects = [];
         for (var i = 0; i < others.length; i++) {
@@ -108,7 +97,7 @@ var modelsService = (function(field, plModels, enModels, calculations){
 
     function cloneModel(settings, model){
         var clone = model.clone(settings);
-        clone.id = ++Id;
+        clone.id = getUniqueId();
         return clone;
     }
 
@@ -136,7 +125,6 @@ var modelsService = (function(field, plModels, enModels, calculations){
         getOriginalEnemyModel: getOriginalEnemyModel,
         getOriginalPlayerItem: getOriginalPlayerItem,
         getOriginalShooter: getOriginalShooter,
-        detectManyToOneCollision: detectManyToOneCollision,
         getHitObjects: getHitObjects,
         isDead: isDead,
         isViable: isViable,
