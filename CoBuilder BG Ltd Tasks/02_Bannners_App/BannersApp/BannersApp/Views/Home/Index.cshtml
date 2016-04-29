@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@using BannersApp.Helpers
+@model List<BannersApp.Models.BannerViewModel>
+
+<div class="jumbotron">
+    <h1 class="cool-font">Banners Application</h1>
+    <p class="lead">Welcome to Banners Application. View, Add, Modify or Remove your banners here.</p>
+    <p><a href="Banners/All" class="btn btn-primary btn-lg">View All &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <i><h4 class="text-center page-description">Random Banners Exampples</h4></i>
+    </div>
+
+    <div class="col-md-4">
+        <h3>@Model[0].Name</h3>
+        <img src="@Model[0].ImageAddress" class="img-rounded" alt="Banner's Picture" width="304" height="236">
+    </div>
+    <div class="col-md-4">
+        <p>@Model[1].Name</p>
+        <img src="@Model[1].ImageAddress" alt="Banner's Picture" class="img-rounded" width="304" height="236">
+    </div>
+    <div class="col-md-4">
+        <p>@Model[2].Name</p>
+        <img src="@Model[2].ImageAddress" alt="Banner's Drawing" class="img-rounded" width="304" height="236">
+    </div>
+</div>

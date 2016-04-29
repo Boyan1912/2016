@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BannersApp", "BannersApp\BannersApp.csproj", "{7012B174-0D17-473B-9CCE-DE7834E828A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BannersApp.Data", "Data\BannersApp.Data\BannersApp.Data.csproj", "{B92425AC-F669-475C-8022-3585D474E232}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7012B174-0D17-473B-9CCE-DE7834E828A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7012B174-0D17-473B-9CCE-DE7834E828A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7012B174-0D17-473B-9CCE-DE7834E828A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7012B174-0D17-473B-9CCE-DE7834E828A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B92425AC-F669-475C-8022-3585D474E232}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B92425AC-F669-475C-8022-3585D474E232}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B92425AC-F669-475C-8022-3585D474E232}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B92425AC-F669-475C-8022-3585D474E232}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
