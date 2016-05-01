@@ -33,7 +33,10 @@
         [HttpGet]
         public ActionResult All()
         {
-            return View();
+            var allBanners = banners.GetAll()
+                                    .ToList()
+                                    .ToViewModels(); 
+            return View(allBanners);
         }
 
         public ActionResult Random()
@@ -83,6 +86,16 @@
 
             var vm = banner.ToViewModel();
 
+            return RedirectToAction("All");
+        }
+
+        [HttpPost]
+        public ActionResult Remove(string id)
+        {
+            int bannerId = int.Parse(id);
+            var banner = this.banners.GetById(bannerId);
+            this.banners.Delete(banner);
+            this.banners.SaveChanges();
             return RedirectToAction("All");
         }
 

@@ -24,7 +24,6 @@
         public void Delete(Banner banner)
         {
             this.banners.Delete(banner);
-            this.banners.SaveChanges();
         }
 
         public IQueryable<Banner> GetAll()
@@ -48,13 +47,7 @@
         {
             this.banners.Add(banner);
         }
-
-        //public async void CreateAsync(Banner banner)
-        //{
-        //    this.banners.Add(banner);
-
-        //}
-
+        
         public int SaveChanges()
         {
             return this.banners.SaveChanges();

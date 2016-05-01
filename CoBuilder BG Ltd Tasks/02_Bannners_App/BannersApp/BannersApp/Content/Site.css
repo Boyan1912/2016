@@ -50,3 +50,21 @@ footer{
 .page-description{
     color: #ddbbbb;
 }
+
+.panel {
+    border-radius:15px;
+}
+
+img {
+    width:100%;
+    height: 100%;
+}
+
+.table tbody>tr>td.vert-align{
+    vertical-align: middle;
+    font-size:1.5em;
+}
+
+#delete-warning{
+    display:none;
+}

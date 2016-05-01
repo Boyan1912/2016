@@ -2,8 +2,10 @@
 {
     using Data.Models;
     using Models;
+    using System;
     using System.Collections.Generic;
     using System.Drawing;
+    using System.Drawing.Imaging;
     using System.IO;
     using System.Web;
 
@@ -26,6 +28,7 @@
         {
             BannerViewModel vm = new BannerViewModel()
             {
+                Id = banner.Id,
                 Name = banner.Name,
                 ValidFrom = banner.ValidFrom,
                 ValidTo = banner.ValidTo
@@ -33,18 +36,23 @@
 
             var fileName = banner.Picture.Name;
             var path = Path.Combine(HttpContext.Current.Server.MapPath(Constants.TempResoursesStorageFolder), fileName);
-            banner.Picture.Data.ToImage().Save(path);
+
+            if (!File.Exists(path))
+            {
+                SaveImageToFile(banner, path);
+            }
 
             vm.ImageAddress = path;
-            
             return vm;
         }
 
-        public static Image ToImage(this byte[] arr)
+        private static void SaveImageToFile(Banner banner, string path)
         {
-            MemoryStream ms = new MemoryStream(arr);
-            Image returnImage = Image.FromStream(ms, true);
-            return returnImage;
+            using (var ms = new MemoryStream(banner.Picture.Data))
+            {
+                var img =  Image.FromStream(ms);
+                img.Save(path);
+            }
         }
     }
 }

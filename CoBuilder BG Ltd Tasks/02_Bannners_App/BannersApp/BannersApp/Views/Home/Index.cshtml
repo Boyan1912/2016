@@ -12,19 +12,51 @@
 
 <div class="row">
     <div class="col-md-12">
-        <i><h4 class="text-center page-description">Random Banners Exampples</h4></i>
+        <h4 class="text-center page-description"><i>Random Banners Examples</i></h4>
     </div>
 
-    <div class="col-md-4">
-        <h3>@Model[0].Name</h3>
-        <img src="@Model[0].ImageAddress" class="img-rounded" alt="Banner's Picture" width="304" height="236">
-    </div>
-    <div class="col-md-4">
-        <p>@Model[1].Name</p>
-        <img src="@Model[1].ImageAddress" alt="Banner's Picture" class="img-rounded" width="304" height="236">
-    </div>
-    <div class="col-md-4">
-        <p>@Model[2].Name</p>
-        <img src="@Model[2].ImageAddress" alt="Banner's Drawing" class="img-rounded" width="304" height="236">
-    </div>
+    <a href="/Banners/Details/@Model[0].Id">
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">@Model[0].Name</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="image-container">
+                        <img src="@Model[0].ExampleImageUrlAddress" class="img-rounded" alt="Banner's Picture" width="304" height="236">
+                    </div>
+                </div>
+            </div>
+        </div>
+        </a>
+
+        <a href="/Banners/Details/@Model[1].Id">
+            <div class="col-md-4">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">@Model[1].Name</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="image-container">
+                            <img src="@Model[1].ExampleImageUrlAddress" class="img-rounded" alt="Banner's Picture">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+    <a href="/Banners/Details/@Model[2].Id">
+        <div class="col-md-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">@Model[2].Name</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="image-container">
+                        <img src="@Model[2].ExampleImageUrlAddress" class="img-rounded" alt="Banner's Picture" width="304" height="236">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
 </div>
