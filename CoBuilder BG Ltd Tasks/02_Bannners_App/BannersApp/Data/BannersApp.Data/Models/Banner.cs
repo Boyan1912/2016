@@ -1,15 +1,14 @@
 ﻿namespace BannersApp.Data.Models
 {
     using System;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     
     public class Banner
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Name is required!")]
-        [StringLength(500, ErrorMessage ="Banner name is too long!")]
+        [Required(ErrorMessage = "{0} is required!")]
+        [StringLength(500, ErrorMessage ="Banner {0} is too long!")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Date and time to start from is required!")]
@@ -20,7 +19,7 @@
 
         public int PictureId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "An image file is required!")]
         public virtual Picture Picture { get; set; }
         
     }

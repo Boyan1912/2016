@@ -4,13 +4,10 @@
     using Data.Interfaces;
     using Data.Services;
     using Helpers;
-    using Models;
     using Ninject;
     using System;
-    using System.Collections.Specialized;
     using System.IO;
     using System.Linq;
-    using System.Net;
     using System.Web;
     using System.Web.Mvc;
 
@@ -27,20 +24,22 @@
             this.pictures = pictures;
         }
 
-        public BannersController()
-            : this(new BannersServices(), new PicturesServices())
-        {
-        }
+        //public BannersController()
+        //    : this(new BannersServices(), new PicturesServices())
+        //{
+        //}
 
         [HttpGet]
         public ActionResult All()
         {
             var allBanners = banners.GetAll()
                                     .ToList()
-                                    .ToViewModels(); 
+                                    .ToViewModels();
+
             return View(allBanners);
         }
 
+        [HttpGet]
         public ActionResult Random()
         {
 
@@ -56,27 +55,32 @@
 
         [HttpPost]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Banner model, HttpPostedFileBase picture)
         {
-            
-            //if (!IsPicture(picture))
-            //{
-            //    //TODO Return a Error view
-            //} 
+
+            if (!IsImage(picture))
+            {
+                HandleErrorInfo err = new HandleErrorInfo(new FormatException("File must be of image type"), "Banners", "Create");
+                return View("Error", err);
+            }
 
             // add image to database
             Picture pic = MakeDbPictureFromFile(picture);
             this.pictures.Add(pic);
-
-            // add database model to db
+            
             model.Picture = pic;
-            this.banners.Add(model);
-            this.banners.SaveChanges();
 
-            var vm = model.ToViewModel();
+            if (ModelState.IsValid)
+            {
+                // add database model to db
+                this.banners.Add(model);
+                this.banners.SaveChanges();
+                
+                return RedirectToAction("All");
+            }
 
-            return RedirectToAction("All");
+            return View(model);
         }
 
         [HttpPost]
@@ -113,8 +117,13 @@
             return picture;
         }
 
-        private bool IsPicture(HttpPostedFileBase file)
+        private bool IsImage(HttpPostedFileBase file)
         {
+            if(file == null)
+            {
+                return false;
+            }
+
             if (file.ContentType.Contains("image"))
             {
                 return true;
@@ -122,7 +131,7 @@
 
             string[] formats = new string[] { ".jpg", ".png", ".gif", ".jpeg", ".bmp", ".tif", "eps" };
 
-            return formats.Any(item => file.FileName.EndsWith(item, StringComparison.OrdinalIgnoreCase));
+            return formats.Any(item => file.FileName.ToLower().EndsWith(item, StringComparison.OrdinalIgnoreCase));
         }
     }
 }
