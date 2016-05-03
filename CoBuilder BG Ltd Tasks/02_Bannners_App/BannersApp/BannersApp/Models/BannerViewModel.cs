@@ -23,14 +23,7 @@
 
         // Doesnt Work - Browsers do not want to download files from PC location
         public string ImageAddress { get; set; }
-
-        public string ExampleImageUrlAddress
-        {
-            get
-            {
-                return Constants.OnlineImagesUrls[this.Id % Constants.OnlineImagesUrls.Length];
-            }
-        }
+        
 
     }
 }

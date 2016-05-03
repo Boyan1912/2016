@@ -11,6 +11,8 @@
 
         void Delete(Banner banner);
 
+        void Delete(int id);
+
         IQueryable<Banner> GetRandomBanners(int count);
 
         void Add(Banner banner);

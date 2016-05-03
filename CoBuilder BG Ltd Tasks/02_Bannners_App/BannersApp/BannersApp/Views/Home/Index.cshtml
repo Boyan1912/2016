@@ -12,51 +12,26 @@
 
 <div class="row">
     <div class="col-md-12">
+        @*@Html.Action("PopulateDb")*@
         <h4 class="text-center page-description"><i>Random Banners Examples</i></h4>
     </div>
 
-    <a href="/Banners/Details/@Model[0].Id">
-        <div class="col-md-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">@Model[0].Name</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="image-container">
-                        <img src="@Model[0].ExampleImageUrlAddress" class="img-rounded" alt="Banner's Picture" width="304" height="236">
-                    </div>
-                </div>
-            </div>
-        </div>
-        </a>
-
-        <a href="/Banners/Details/@Model[1].Id">
+    @foreach (var banner in Model)
+    {
+        <a href="/Banners/Details/@banner.Id">
             <div class="col-md-4">
-                <div class="panel panel-success">
+                <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h3 class="panel-title">@Model[1].Name</h3>
+                        <h3 class="panel-title">@banner.Name</h3>
                     </div>
                     <div class="panel-body">
                         <div class="image-container">
-                            <img src="@Model[1].ExampleImageUrlAddress" class="img-rounded" alt="Banner's Picture">
+                            <img src="@banner.ImageAddress" class="img-rounded" alt="Banner's Picture">
                         </div>
                     </div>
                 </div>
             </div>
         </a>
+    }
 
-    <a href="/Banners/Details/@Model[2].Id">
-        <div class="col-md-4">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">@Model[2].Name</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="image-container">
-                        <img src="@Model[2].ExampleImageUrlAddress" class="img-rounded" alt="Banner's Picture" width="304" height="236">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </a>
 </div>

@@ -11,9 +11,8 @@
 
         [Required]
         public byte[] Data { get; set; }
-
+ 
         [StringLength(50, ErrorMessage ="Content-type seems too long for an image!")]
-        public string ContentType { get; set; }
-        
+        public string ContentType { get; set; }       
     }
 }

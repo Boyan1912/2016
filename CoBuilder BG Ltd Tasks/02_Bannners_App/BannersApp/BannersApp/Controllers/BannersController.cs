@@ -7,8 +7,10 @@
     using Models;
     using Ninject;
     using System;
+    using System.Collections.Specialized;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Web;
     using System.Web.Mvc;
 
@@ -55,48 +57,39 @@
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
-        public ActionResult Create(BannerViewModel model)
+        public ActionResult Create(Banner model, HttpPostedFileBase picture)
         {
-            var file = HttpContext.Request.Files["picture"];
-
-            var fileName = Path.GetFileName(file.FileName);
-            var path = Path.Combine(Server.MapPath("~/App_Data/Images/"), fileName);
-            file.SaveAs(path);
-
-            if (!IsPicture(file))
-            {
-                //TODO Return a Error view
-            }
+            
+            //if (!IsPicture(picture))
+            //{
+            //    //TODO Return a Error view
+            //} 
 
             // add image to database
-            Picture pic = MakeDbPictureFromFile(file);
-            this.pictures.Add(pic); 
-
-            Banner banner = new Banner()
-            {
-                Name = model.Name,
-                ValidFrom = model.ValidFrom,
-                ValidTo = model.ValidTo,
-                Picture = pic
-            };
+            Picture pic = MakeDbPictureFromFile(picture);
+            this.pictures.Add(pic);
 
             // add database model to db
-            this.banners.Add(banner);
+            model.Picture = pic;
+            this.banners.Add(model);
             this.banners.SaveChanges();
 
-            var vm = banner.ToViewModel();
+            var vm = model.ToViewModel();
 
             return RedirectToAction("All");
         }
 
         [HttpPost]
-        public ActionResult Remove(string id)
+        public void Remove(string id)
         {
             int bannerId = int.Parse(id);
             var banner = this.banners.GetById(bannerId);
-            this.banners.Delete(banner);
+            int picId = banner.PictureId;
+            this.pictures.Delete(picId);
+            this.pictures.SaveChanges();
+            this.banners.Delete(bannerId);
             this.banners.SaveChanges();
-            return RedirectToAction("All");
+            
         }
 
         private Picture MakeDbPictureFromFile(HttpPostedFileBase file)
@@ -119,7 +112,6 @@
 
             return picture;
         }
-
 
         private bool IsPicture(HttpPostedFileBase file)
         {

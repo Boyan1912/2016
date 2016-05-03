@@ -12,4 +12,5 @@
             BannersAppDbContext.Create().Database.Initialize(true);
         }
     }
+
 }

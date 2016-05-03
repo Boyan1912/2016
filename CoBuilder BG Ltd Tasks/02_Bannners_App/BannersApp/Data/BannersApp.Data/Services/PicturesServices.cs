@@ -24,6 +24,16 @@
             this.pictures.Add(pic);
         }
 
+        public void Delete(int id)
+        {
+            this.pictures.Delete(id);
+        }
+
+        public void Delete(Picture pic)
+        {
+            this.pictures.Delete(pic);
+        }
+
         public int SaveChanges()
         {
             return this.pictures.SaveChanges();

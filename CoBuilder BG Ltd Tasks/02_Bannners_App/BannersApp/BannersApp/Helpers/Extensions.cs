@@ -42,7 +42,8 @@
                 SaveImageToFile(banner, path);
             }
 
-            vm.ImageAddress = path;
+            string pathToFolder = Constants.TempResoursesStorageFolder.Replace("~", "");
+            vm.ImageAddress = $"{Constants.ProtocolHostPort}{pathToFolder}{fileName}";
             return vm;
         }
 

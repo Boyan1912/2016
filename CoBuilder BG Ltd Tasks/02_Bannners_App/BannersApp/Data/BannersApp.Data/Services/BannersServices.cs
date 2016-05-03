@@ -4,7 +4,6 @@
     using System.Linq;
     using Interfaces;
     using Models;
-    using System.Threading.Tasks;
     using Repositories;
 
     public class BannersServices : IBannersServices
@@ -19,6 +18,11 @@
         public BannersServices()
             : this(new GenericRepository<Banner>())
         {
+        }
+
+        public void Delete(int id)
+        {
+            this.banners.Delete(id);
         }
 
         public void Delete(Banner banner)

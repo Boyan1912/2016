@@ -1,4 +1,4 @@
-﻿@model BannersApp.Models.BannerViewModel
+﻿@model BannersApp.Data.Models.Banner
 @{
     ViewBag.Title = "Add a new Banner";
     ViewBag.Message = "Fill in the informaion needed for a new banner to be added";
@@ -21,10 +21,18 @@
     </div>
 
     @*@Html.ValidationMessageFor(m => m.ImageData, "", new { @class = "text-danger" })*@
-    <div class="form-group">
+    @*<div class="form-group">
         @Html.Label("Picture", new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBox("picture", "Choose a picture", new { @class = "form-control", id="Picture", type="file" })
+            @Html.TextBox("picture", "Choose a picture", new { @class = "form-control", type="file" })
+        </div>
+    </div>*@
+
+    @Html.ValidationMessageFor(m => m.Picture, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Picture, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBox("Picture", "Choose a picture", new { @class = "form-control", name = "picture", type = "file" })
         </div>
     </div>
 

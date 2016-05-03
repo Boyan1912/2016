@@ -6,6 +6,10 @@
     {
         void Add(Picture pic);
 
+        void Delete(Picture pic);
+
+        void Delete(int id);
+
         int SaveChanges();
     }
 }

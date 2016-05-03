@@ -30,7 +30,7 @@
                 <tr>
                         <td class="vert-align">@(++row)</td>
                         <td class="vert-align">@banner.Name</td>
-                        <td class="vert-align"><img src="@banner.ExampleImageUrlAddress" /></td>
+                        <td class="vert-align"><img src="@banner.ImageAddress" /></td>
                         <td class="vert-align">@banner.ValidFrom</td>
                         <td class="vert-align">@banner.ValidTo</td>
                         <td class="vert-align">
@@ -67,8 +67,11 @@
         <script>
             $('#table-all').click(function (event) {
                 if (event.target.nodeName === 'BUTTON' || event.target.nodeName === 'SPAN') {
-                    $('#banner-id').text(event.target.value);
+                    // pass banner id to warning panel
+                    $('#banner-id').text(event.target.value || event.target.parentNode.value);
                     showWarningPanel();
+                } else if (event.target.nodeName === 'TD') {
+                    window.location = '/Banners/Details/' + $('#banner-id').text();
                 }
             })
 
@@ -77,17 +80,19 @@
                     if (e.target.nodeName === 'BUTTON') {
                         $('#delete-warning').hide('scale');
                         if (e.target.id === 'delete') {
-                            sendDeleteRequest($('#banner-id').text());                        }
+                            sendDeleteRequest($('#banner-id').text());
+                        }
                     }
                 })
             }
 
             function sendDeleteRequest(id) {
                 $.ajax({
-                    url: "/Banners/Remove/",
-                    type: "POST",
-                    data: { id: id }
-                });
+                    url: '/Banners/Remove/',
+                    type: 'POST',
+                    data: { id: id },
+                    success: window.location.reload(true)
+                })
             }
 
         </script>

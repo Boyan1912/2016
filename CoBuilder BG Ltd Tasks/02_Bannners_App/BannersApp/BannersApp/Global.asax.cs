@@ -10,6 +10,8 @@
     {
         protected void Application_Start()
         {
+            
+
             DbConfig.Initialize();
             NinjectConfig.Initialize();
             AreaRegistration.RegisterAllAreas();
