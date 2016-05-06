@@ -10,10 +10,7 @@
     {
         protected void Application_Start()
         {
-            
-
-            DbConfig.Initialize();
-            NinjectConfig.Initialize();
+            DbConfig.Initialize();   
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

@@ -1,4 +1,6 @@
-﻿@{
+﻿@using BannersApp.Infrastructure
+
+@{
     ViewBag.Title = "All Banners";
     ViewBag.Message = "Here you will find all currently available banners";
 }
@@ -8,42 +10,60 @@
 <h2 class="crush-font">@ViewBag.Title</h2>
 <h3 class="page-description"><i>@ViewBag.Message</i></h3>
 
-<p>Click on a banner to view details. You'll have the options to modify or delete a banner.</p>
+<p>Click on a banner to view details, and/or modify it. Click on "Remove" to delete selected banner.</p>
 
-
-<table class="table table-striped table-hover" id="table-all">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Banner's Name</th>
-            <th>Banner's Picture</th>
-            <th>Valid From</th>
-            <th>Valid To</th>
-            <th>Delete</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int row=0;
-            foreach (var banner in Model)
-            {
-                <tr>
+    <table class="table table-striped table-hover" id="table-all">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Banner's Name</th>
+                <th>Banner's Picture</th>
+                <th>Valid From</th>
+                <th>Valid To</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int row = (ViewBag.Page - 1) * Constants.AllItemsPageSize;
+                foreach (var banner in Model)
+                {
+                    <tr>
                         <td class="vert-align">@(++row)</td>
                         <td class="vert-align">@banner.Name</td>
                         <td class="vert-align"><img src="@banner.ImageAddress" /></td>
                         <td class="vert-align">@banner.ValidFrom</td>
                         <td class="vert-align">@banner.ValidTo</td>
                         <td class="vert-align">
-                            <button class="btn btn-info btn-lg" value="@banner.Id">
+                            <button class="btn btn-danger btn-lg" value="@banner.Id">
                                 <span class="glyphicon glyphicon-remove"></span> Remove
                             </button>
                         </td>
-                </tr>
+                    </tr>
+                }
             }
-        }
-        
-    </tbody>
-</table>
+        </tbody>
+    </table>
+
+@{
+    int page = ViewBag.Page;
+    <div class="pager">
+        <ul class="pagination pagination-lg">
+            @if (page > 2)
+            {
+                <li>@Html.ActionLink($"{page - 2}", "All", "Banners", new { @page = page - 2 }, null)</li>
+            }
+            @if (page > 1)
+            {
+                <li>@Html.ActionLink($"{page - 1}", "All", "Banners", new { @page = page - 1 }, null)</li>
+            }
+            <li class="active">@Html.ActionLink($"{page}", "All", "Banners", new { @page = page }, null)</li>
+            <li>@Html.ActionLink($"{ViewBag.Page + 1}", "All", "Banners", new { @page = page + 1 }, null)</li>
+            <li>@Html.ActionLink($"{ViewBag.Page + 2}", "All", "Banners", new { @page = page + 2 }, null)</li>
+        </ul>
+    </div>
+    }
+
 
 <div class="modal" id="delete-warning">
     <div class="modal-dialog">
@@ -65,12 +85,19 @@
 
 @section scripts{
         <script>
+            
+            // pass banner id to warning panel
+            $('tr').hover(function (e) {
+                if(($(this).find('button')[0])){
+                    $('#banner-id').text($(this).find('button')[0].value);
+                }
+            })
+
+
             $('#table-all').click(function (event) {
                 if (event.target.nodeName === 'BUTTON' || event.target.nodeName === 'SPAN') {
-                    // pass banner id to warning panel
-                    $('#banner-id').text(event.target.value || event.target.parentNode.value);
                     showWarningPanel();
-                } else if (event.target.nodeName === 'TD') {
+                } else if (event.target.nodeName === 'TD' || event.target.nodeName === 'IMG') {
                     window.location = '/Banners/Details/' + $('#banner-id').text();
                 }
             })

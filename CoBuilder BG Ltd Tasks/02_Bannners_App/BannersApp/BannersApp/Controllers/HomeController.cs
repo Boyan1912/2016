@@ -2,7 +2,7 @@
 {
     using Data.Interfaces;
     using Data.Services;
-    using Helpers;
+    using Infrastructure;
     using System;
     using System.Collections.Specialized;
     using System.IO;
@@ -18,12 +18,7 @@
         {
             this.banners = banners;
         }
-
-        public HomeController()
-            : this(new BannersServices())
-        {
-        }
-
+        
         public ActionResult Index()
         {
             Constants.ProtocolHostPort = Request.Url.GetLeftPart(System.UriPartial.Authority);

@@ -2,9 +2,9 @@
 {
     using BannersApp.Data.Models;
     using Data.Interfaces;
-    using Data.Services;
-    using Helpers;
+    using Infrastructure;
     using Ninject;
+
     using System;
     using System.IO;
     using System.Linq;
@@ -23,33 +23,61 @@
             this.banners = banners;
             this.pictures = pictures;
         }
-
-        //public BannersController()
-        //    : this(new BannersServices(), new PicturesServices())
-        //{
-        //}
-
+        
         [HttpGet]
-        public ActionResult All()
+        public ActionResult All(int? page)
         {
-            var allBanners = banners.GetAll()
-                                    .ToList()
-                                    .ToViewModels();
+            page = page ?? 1;
+            int size = Constants.AllItemsPageSize;
 
-            return View(allBanners);
+            var data = banners.GetAll()
+                              .OrderBy(b => b.Id)
+                              .Skip((int)(page - 1) * size)
+                              .Take(size)
+                              .ToList()
+                              .ToViewModels();
+
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetNoStore();
+
+            ViewBag.Page = page;
+
+            return View(data);
         }
+
+        //[HttpPost]
+        //public ActionResult All(int? page)
+        //{
+        //    page = page ?? 1;
+        //    int size = Constants.AllItemsPageSize;
+
+        //    var data = banners.GetAll()
+        //                      .OrderBy(b => b.Id)
+        //                      .Skip((int)(page - 1) * size)
+        //                      .Take(size)
+        //                      .ToList()
+        //                      .ToViewModels();
+
+        //    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        //    Response.Cache.SetNoStore();
+
+        //    return PartialView(data);
+        //}
 
         [HttpGet]
         public ActionResult Random()
         {
+            var randomBanners = this.banners
+                                    .GetRandomBanners(Constants.RandomItemsCount)
+                                    .ToList()
+                                    .ToViewModels();
 
-            return View();
+            return View(randomBanners);
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-
             return View();
         }
 
@@ -61,7 +89,7 @@
 
             if (!IsImage(picture))
             {
-                HandleErrorInfo err = new HandleErrorInfo(new FormatException("File must be of image type"), "Banners", "Create");
+                HandleErrorInfo err = new HandleErrorInfo(new FormatException(Constants.NotAnImageErrorMessage), "Banners", "Create");
                 return View("Error", err);
             }
 
@@ -71,7 +99,7 @@
             
             model.Picture = pic;
 
-            if (ModelState.IsValid)
+            if (!string.IsNullOrEmpty(model.Name) && model.ValidTo > model.ValidFrom)
             {
                 // add database model to db
                 this.banners.Add(model);
@@ -80,6 +108,7 @@
                 return RedirectToAction("All");
             }
 
+            // show invalid input data
             return View(model);
         }
 
@@ -128,10 +157,10 @@
             {
                 return true;
             }
-
-            string[] formats = new string[] { ".jpg", ".png", ".gif", ".jpeg", ".bmp", ".tif", "eps" };
-
-            return formats.Any(item => file.FileName.ToLower().EndsWith(item, StringComparison.OrdinalIgnoreCase));
+            
+            return Constants.AcceptableImageFormats.Any(item => file.FileName
+                                                                    .ToLower()
+                                                                    .EndsWith(item, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

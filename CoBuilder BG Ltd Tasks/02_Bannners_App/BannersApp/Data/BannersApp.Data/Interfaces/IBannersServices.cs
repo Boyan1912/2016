@@ -8,7 +8,7 @@
         Banner GetById(int id);
 
         IQueryable<Banner> GetAll();
-
+        
         void Delete(Banner banner);
 
         void Delete(int id);

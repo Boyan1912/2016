@@ -1,8 +1,9 @@
 ﻿namespace BannersApp.Data.Models
 {
+    using Attributes;
     using System;
     using System.ComponentModel.DataAnnotations;
-    
+
     public class Banner
     {
         public int Id { get; set; }
@@ -15,6 +16,7 @@
         public DateTime ValidFrom { get; set; }
 
         [Required(ErrorMessage = "Date and time to end on is required!")]
+        [IsDateAfter("ValidFrom", allowEqualDates: false, ErrorMessage ="\"Valid To\" property should be greater than \"Valid From\"")]
         public DateTime ValidTo { get; set; }
 
         public int PictureId { get; set; }

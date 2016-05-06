@@ -60,6 +60,10 @@ img{
     height: 100%;
 }
 
+.table{
+    cursor: pointer;
+}
+
 .table tbody>tr>td>img {    
     max-width:600px;
     max-height:170px;

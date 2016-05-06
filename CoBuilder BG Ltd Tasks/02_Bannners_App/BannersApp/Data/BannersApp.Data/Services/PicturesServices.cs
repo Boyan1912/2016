@@ -13,12 +13,7 @@
         {
             this.pictures = pictures;
         }
-
-        public PicturesServices()
-            : this(new GenericRepository<Picture>())
-        {
-        }
-
+        
         public void Add(Picture pic)
         {
             this.pictures.Add(pic);
