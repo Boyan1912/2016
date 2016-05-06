@@ -24,8 +24,8 @@
             Constants.ProtocolHostPort = Request.Url.GetLeftPart(System.UriPartial.Authority);
 
             var randomItems = banners.GetRandomBanners(3)
-                                     .ToList()
-                                     .ToViewModels();
+                                     .ToViewModels()
+                                     .ToList();
 
             return View(randomItems);
         }

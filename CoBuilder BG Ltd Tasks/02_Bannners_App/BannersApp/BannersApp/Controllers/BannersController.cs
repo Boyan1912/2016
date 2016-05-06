@@ -3,9 +3,11 @@
     using BannersApp.Data.Models;
     using Data.Interfaces;
     using Infrastructure;
+    using Models;
     using Ninject;
 
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Web;
@@ -34,45 +36,45 @@
                               .OrderBy(b => b.Id)
                               .Skip((int)(page - 1) * size)
                               .Take(size)
-                              .ToList()
-                              .ToViewModels();
+                              .ToViewModels()
+                              .ToList();
+                              
 
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            Response.Cache.SetNoStore();
+            //Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            //Response.Cache.SetNoStore();
 
             ViewBag.Page = page;
 
             return View(data);
         }
-
-        //[HttpPost]
-        //public ActionResult All(int? page)
-        //{
-        //    page = page ?? 1;
-        //    int size = Constants.AllItemsPageSize;
-
-        //    var data = banners.GetAll()
-        //                      .OrderBy(b => b.Id)
-        //                      .Skip((int)(page - 1) * size)
-        //                      .Take(size)
-        //                      .ToList()
-        //                      .ToViewModels();
-
-        //    Response.Cache.SetCacheability(HttpCacheability.NoCache);
-        //    Response.Cache.SetNoStore();
-
-        //    return PartialView(data);
-        //}
-
+        
         [HttpGet]
         public ActionResult Random()
         {
             var randomBanners = this.banners
                                     .GetRandomBanners(Constants.RandomItemsCount)
-                                    .ToList()
-                                    .ToViewModels();
-
+                                    .ToViewModels()
+                                    .Where(x => x.IsActive)
+                                    .ToList();
+            
             return View(randomBanners);
+        }
+
+        [HttpGet]
+        public ActionResult RefreshRandomModelsData()
+        {
+            var randomBanners = this.banners
+                                    .GetRandomBanners(Constants.RandomItemsCount)
+                                    .ToViewModels()
+                                    .Where(x => x.IsActive)
+                                    .ToList();
+
+            return PartialView("_GridPartial", randomBanners);
+        }
+
+        private void SaveToTempData(IList<BannerViewModel> models)
+        {
+
         }
 
         [HttpGet]
@@ -113,16 +115,25 @@
         }
 
         [HttpPost]
-        public void Remove(string id)
+        public ActionResult Remove(string id)
         {
-            int bannerId = int.Parse(id);
-            var banner = this.banners.GetById(bannerId);
-            int picId = banner.PictureId;
-            this.pictures.Delete(picId);
-            this.pictures.SaveChanges();
-            this.banners.Delete(bannerId);
-            this.banners.SaveChanges();
-            
+            try
+            {
+                int bannerId = int.Parse(id);
+                var banner = this.banners.GetById(bannerId);
+                int picId = banner.PictureId;
+                this.pictures.Delete(picId);
+                this.pictures.SaveChanges();
+                this.banners.Delete(bannerId);
+                this.banners.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                HandleErrorInfo err = new HandleErrorInfo(ex, "Banners", "Remove");
+                return View("Error", err);
+            }
+
+            return RedirectToAction("All");
         }
 
         private Picture MakeDbPictureFromFile(HttpPostedFileBase file)

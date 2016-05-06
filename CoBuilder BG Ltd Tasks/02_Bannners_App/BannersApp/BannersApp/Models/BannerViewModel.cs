@@ -21,5 +21,7 @@
         public DateTime ValidTo { get; set; }
 
         public string ImageAddress { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }
