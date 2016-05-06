@@ -3,6 +3,7 @@
     using Attributes;
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Banner
     {
@@ -23,6 +24,8 @@
 
         [Required(ErrorMessage = "An image file is required!")]
         public virtual Picture Picture { get; set; }
-        
+
+        //[NotMapped]
+        //public bool IsActive { get; set; }
     }
 }

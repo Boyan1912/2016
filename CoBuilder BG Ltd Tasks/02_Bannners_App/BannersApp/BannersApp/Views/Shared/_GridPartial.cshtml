@@ -4,7 +4,7 @@
 
 @model List<BannersApp.Models.BannerViewModel>
 
-<table class="table table-striped table-hover" id="table-all">
+<table class="table table-striped table-hover" id="table-random">
     <thead>
         <tr class="danger">
             <th>#</th>
@@ -22,8 +22,8 @@
             {
                 <tr class="success">
                     <td class="vert-align">@(++row)</td>
-                    <td class="vert-align">@banner.Id</td>
-                    <td class="vert-align">@banner.Name</td>
+                    <td class="vert-align banner-id text-info">@banner.Id</td>
+                    <td class="vert-align text-danger">@banner.Name</td>
                     <td class="vert-align"><img src="@banner.ImageAddress" /></td>
                     <td class="vert-align">@banner.ValidFrom</td>
                     <td class="vert-align">@banner.ValidTo</td>

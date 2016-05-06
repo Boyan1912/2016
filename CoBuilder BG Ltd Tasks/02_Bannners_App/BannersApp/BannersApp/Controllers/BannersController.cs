@@ -38,10 +38,10 @@
                               .Take(size)
                               .ToViewModels()
                               .ToList();
-                              
 
-            //Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            //Response.Cache.SetNoStore();
+
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetNoStore();
 
             ViewBag.Page = page;
 
@@ -51,30 +51,56 @@
         [HttpGet]
         public ActionResult Random()
         {
-            var randomBanners = this.banners
-                                    .GetRandomBanners(Constants.RandomItemsCount)
-                                    .ToViewModels()
-                                    .Where(x => x.IsActive)
-                                    .ToList();
+            var randomBanners = this.GetActiveRandomViewModels();
             
             return View(randomBanners);
         }
 
-        [HttpGet]
-        public ActionResult RefreshRandomModelsData()
+        [HttpPost]
+        public ActionResult RefreshRandomModelsData(string[] lastIds)
         {
-            var randomBanners = this.banners
-                                    .GetRandomBanners(Constants.RandomItemsCount)
-                                    .ToViewModels()
-                                    .Where(x => x.IsActive)
-                                    .ToList();
+            var randomBanners = this.GetActiveRandomViewModels();
 
             return PartialView("_GridPartial", randomBanners);
         }
 
-        private void SaveToTempData(IList<BannerViewModel> models)
+        private IList<BannerViewModel> GetActiveRandomViewModels()
         {
+            var models = this.banners.GetAll()
+                                     .ToViewModels()
+                                     .Where(x => x.IsActive)
+                                     .Take(Constants.MaxRandomItemsCount)
+                                     .OrderBy(x => Guid.NewGuid())
+                                     .ToList();
 
+            EnsureNoRepetitions(models);
+
+            return models;
+        }
+
+        private void EnsureNoRepetitions(IList<BannerViewModel> models)
+        {
+            for (int i = 1; i < models.Count; i++)
+            {
+                if(models[i].Id == models[i - 1].Id)
+                {
+                    var replace = this.banners.GetAll()
+                                              .FirstOrDefault(x => x.Id > models[i - 1].Id);
+                    
+                    if (replace == null)
+                    {
+                        replace = this.banners.GetAll()
+                                              .FirstOrDefault(x => x.Id < models[i - 1].Id);    
+                    }
+                    if (replace == null)
+                    {
+                        models.RemoveAt(i);
+                        EnsureNoRepetitions(models);
+                    }
+
+                    models[i] = replace.ToViewModel();
+                }
+            }
         }
 
         [HttpGet]
@@ -121,9 +147,9 @@
             {
                 int bannerId = int.Parse(id);
                 var banner = this.banners.GetById(bannerId);
-                int picId = banner.PictureId;
-                this.pictures.Delete(picId);
-                this.pictures.SaveChanges();
+                //int picId = banner.PictureId;
+                //this.pictures.Delete(picId);
+                //this.pictures.SaveChanges();
                 this.banners.Delete(bannerId);
                 this.banners.SaveChanges();
             }

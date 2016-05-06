@@ -38,8 +38,8 @@
         public IQueryable<Banner> GetRandomBanners(int count)
         {
             return this.banners.All()
-                                .OrderBy(b => Guid.NewGuid())
-                                .Take(count);
+                               .OrderBy(b => Guid.NewGuid())
+                               .Take(count);
         }
 
         public void Add(Banner banner)
@@ -47,6 +47,16 @@
             this.banners.Add(banner);
         }
         
+        public void Update(Banner banner, DateTime? validFrom, DateTime? validTo, string newName = null, Picture newPic = null)
+        {
+            banner.Name = newName ?? newName;
+            banner.ValidFrom = validFrom ?? DateTime.Now;
+            banner.ValidTo = validTo ?? DateTime.Now.AddDays(1);
+            banner.Picture = newPic ?? newPic;
+            
+            this.banners.Update(banner);
+        }
+
         public int SaveChanges()
         {
             return this.banners.SaveChanges();

@@ -15,15 +15,25 @@
         public static IQueryable<BannerViewModel> ToViewModels(this IQueryable<Banner> banners)
         {
             var models = new List<BannerViewModel>();
-            var bannersList = banners.ToList();
+            var bannersList = banners.ToArray();
 
-            for (int i = 0; i < bannersList.Count; i++)
+            for (int i = 0; i < bannersList.Length; i++)
             {
                 var viewModel = bannersList[i].ToViewModel();
                 models.Add(viewModel);
             }
 
             return models.AsQueryable();
+        }
+
+        public static IQueryable<T> ForEach<T>(this IQueryable<T> elements, Action<T>  action)
+        {
+            foreach (var el in elements)
+            {
+                action(el);
+            }
+
+            return elements;
         }
 
         public static BannerViewModel ToViewModel(this Banner banner)
@@ -34,7 +44,7 @@
                 Name = banner.Name,
                 ValidFrom = banner.ValidFrom,
                 ValidTo = banner.ValidTo,
-                IsActive = banner.ValidTo > DateTime.Now
+                IsActive = new Random().Next(1, 3) > 1
             };
 
             var fileName = banner.Picture.Name;

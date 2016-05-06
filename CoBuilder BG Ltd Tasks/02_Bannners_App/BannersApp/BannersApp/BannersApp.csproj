@@ -251,6 +251,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Banners\Create.cshtml" />
     <Content Include="Views\Shared\_GridPartial.cshtml" />
+    <Content Include="Views\Shared\_BannerRandomPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

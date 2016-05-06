@@ -1,6 +1,7 @@
 ﻿namespace BannersApp.Data.Interfaces
 {
     using BannersApp.Data.Models;
+    using System;
     using System.Linq;
 
     public interface IBannersServices
@@ -16,6 +17,8 @@
         IQueryable<Banner> GetRandomBanners(int count);
 
         void Add(Banner banner);
+
+        void Update(Banner banner, DateTime? validFrom, DateTime? validTo, string newName = null, Picture newPic = null);
 
         int SaveChanges();
     }
