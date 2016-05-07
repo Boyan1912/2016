@@ -10,28 +10,40 @@
     <p><a href="Banners/All" class="btn btn-primary btn-lg">View All &raquo;</a></p>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        @*@Html.Action("PopulateDb")*@
-        <h4 class="text-center page-description"><i>Random Banners Examples</i></h4>
+    <div class="row">
+        <div class="col-md-4">
+            @Html.ActionLink($"Populate Database: {Directory.GetFiles(Globals.SampleDataFolder).Length} images available", "PopulateDb", "Home", new { @class = "btn btn-lg btn-success btn-rounded btn-home" })
+        </div>
+       
+        <div class="col-md-4">
+            <h4 class="text-center page-description home"><i>Example Banners:</i></h4>
+        </div>
+
+        <div class="col-md-4">
+            @Html.ActionLink($"Delete Temporary files: {Directory.GetFiles(Globals.TempImagesFolder).Length} available", "RemoveTempData", "Home", new { @class = "btn btn-lg btn-success btn-rounded btn-home pull-right" })
+        </div>
     </div>
 
-    @foreach (var banner in Model)
-    {
-        <a href="/Banners/Details/@banner.Id">
-            <div class="col-md-4">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">@banner.Name</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="image-container">
-                            <img src="@banner.ImageAddress" class="img-rounded" alt="Banner's Picture">
+@for (int i = 0; i < Model.Count; i+=3)
+{
+    <div class="row home-display-row">
+        <div class="col-md-12">
+            @for (int j = 1; j <= 3; j++)
+            {
+                var banner = Model[(i + j) % Model.Count];
+                <a href="/Banners/Details/@banner.Id">
+                    <div class="col-md-4">
+                        <div class="panel panel-info home-display-container">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">@banner.Name</h3>
+                            </div>
+                            <div class="panel-body">
+                                <img src="@banner.ImageAddress" alt="Banner's Picture">
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </a>
-    }
-
-</div>
+                </a>
+            }
+        </div>
+    </div>
+}

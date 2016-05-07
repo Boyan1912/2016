@@ -14,9 +14,7 @@
             <h1 class="text-danger">@Model.Name</h1>
             <p>Update information for banner with ID: @Model.Id</p>
         </div>
-        @*<h3 class="page-description"><i>@ViewBag.Message</i></h3>*@
     </div>
-
 </div>
 
 @using (Html.BeginForm("Details", "Banners", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))

@@ -25,13 +25,14 @@
         {
             this.banners = banners;
             this.pictures = pictures;
+            this.SetRandomItemsActive();
         }
         
         [HttpGet]
         public ActionResult All(int? page)
         {
             page = page ?? 1;
-            int size = Constants.AllItemsPageSize;
+            int size = Globals.AllItemsPageSize;
 
             var data = banners.GetAll()
                               .OrderBy(b => b.Id)
@@ -51,6 +52,7 @@
         [HttpGet]
         public ActionResult Random()
         {
+            this.SwitchActiveItems();
             var randomBanners = this.GetActiveRandomViewModels();
             
             return View(randomBanners);
@@ -59,6 +61,7 @@
         [HttpPost]
         public ActionResult RefreshRandomModelsData(string[] lastIds)
         {
+
             var randomBanners = this.GetActiveRandomViewModels();
 
             return PartialView("_GridPartial", randomBanners);
@@ -78,7 +81,7 @@
 
             if (!this.viewModels.IsImage(picture))
             {
-                HandleErrorInfo err = new HandleErrorInfo(new FormatException(Constants.NotAnImageErrorMessage), "Banners", "Create");
+                HandleErrorInfo err = new HandleErrorInfo(new FormatException(Globals.NotAnImageErrorMessage), "Banners", "Create");
                 return View("Error", err);
             }
             
@@ -160,7 +163,7 @@
             {
                 if (!this.viewModels.IsImage(picture))
                 {
-                    HandleErrorInfo err = new HandleErrorInfo(new FormatException(Constants.NotAnImageErrorMessage), "Banners", "Create");
+                    HandleErrorInfo err = new HandleErrorInfo(new FormatException(Globals.NotAnImageErrorMessage), "Banners", "Create");
                     return View("Error", err);
                 }
 
@@ -170,6 +173,15 @@
 
             this.banners.Update(banner, validFrom, validTo, name, pic);
             this.ModelState.Remove("Picture");
+
+            if(banner.ValidFrom > banner.ValidTo)
+            {
+                this.ModelState.AddModelError("ValidTo", "Value should be greater than \"Valid From\"!");
+            }
+            if(string.IsNullOrEmpty(banner.Name))
+            {
+                this.ModelState.AddModelError("Name", "Name cannot be empty!");
+            }
 
             if (this.ModelState.IsValid)
             {
@@ -183,11 +195,10 @@
 
         private IList<BannerViewModel> GetActiveRandomViewModels()
         {
-            var models = this.banners.GetAll()
-                                     .ToViewModels()
-                                     .Where(x => x.IsActive)
-                                     .Take(Constants.MaxRandomItemsCount)
+            var models = this.banners.GetAllActive()
+                                     .Take(Globals.MaxRandomItemsCount)
                                      .OrderBy(x => Guid.NewGuid())
+                                     .ToViewModels()
                                      .ToList();
 
             this.EnsureNoRepetitions(models);
@@ -220,5 +231,15 @@
             }
         }
 
+        private void SetRandomItemsActive()
+        {
+            this.banners.GetAll().Where(b => b.Id % 2 == 0)
+                                 .ForEach(b => b.IsActive = true);
+        }
+
+        private void SwitchActiveItems()
+        {
+            this.banners.GetAll().ForEach(b => b.IsActive = !b.IsActive);
+        }
     }
 }

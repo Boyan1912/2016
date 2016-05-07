@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "All Banners";
-    ViewBag.Message = "Here you will find all currently available banners";
+    ViewBag.Message = "Click on a banner to change its details. Click on \"Remove\" to delete a banner.";
 }
 
 @model List<BannersApp.Models.BannerViewModel>
@@ -10,7 +10,7 @@
 <h2 class="crush-font">@ViewBag.Title</h2>
 <h3 class="page-description"><i>@ViewBag.Message</i></h3>
 
-<p>Click on a banner to view details, and/or modify it. Click on "Remove" to delete selected banner.</p>
+<p>Here are all currently available banners</p>
 
     <table class="table table-striped table-hover" id="table-all">
         <thead>
@@ -25,7 +25,7 @@
         </thead>
         <tbody>
             @{
-                int row = (ViewBag.Page - 1) * Constants.AllItemsPageSize;
+                int row = (ViewBag.Page - 1) * Globals.AllItemsPageSize;
                 foreach (var banner in Model)
                 {
                     <tr>
@@ -84,15 +84,13 @@
 </div>
 
 @section scripts{
-        <script>
-            
+        <script>            
             // pass banner id to warning panel
             $('tr').hover(function (e) {
                 if(($(this).find('button')[0])){
                     $('#banner-id').text($(this).find('button')[0].value);
                 }
             })
-
 
             $('#table-all').click(function (event) {
                 if (event.target.nodeName === 'BUTTON' || event.target.nodeName === 'SPAN') {
@@ -121,7 +119,6 @@
                     success: window.location.reload(true)
                 })
             }
-
         </script>
     }
 

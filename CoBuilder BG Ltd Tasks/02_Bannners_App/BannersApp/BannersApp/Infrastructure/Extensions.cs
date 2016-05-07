@@ -38,10 +38,6 @@
 
         public static BannerViewModel ToViewModel(this Banner banner)
         {
-            if (banner == null)
-            {
-                throw new NullReferenceException("to view model");
-            }
 
             BannerViewModel vm = new BannerViewModel()
             {
@@ -49,19 +45,20 @@
                 Name = banner.Name,
                 ValidFrom = banner.ValidFrom,
                 ValidTo = banner.ValidTo,
-                IsActive = new Random().Next(1, 3) > 1
+                IsActive = banner.IsActive
             };
 
             var fileName = banner.Picture.Name;
-            var path = Path.Combine(HttpContext.Current.Server.MapPath(Constants.TempResoursesStorageFolder), fileName);
-
+            var path = Path.Combine(HttpContext.Current.Server.MapPath(Globals.TempResoursesStorageFolder), fileName);
+            
+            //save file on server for easy access
             if (!File.Exists(path))
             {
                 SaveImageToFile(banner, path);
             }
 
-            string pathToFolder = Constants.TempResoursesStorageFolder.Replace("~", "");
-            vm.ImageAddress = $"{Constants.ProtocolHostPort}{pathToFolder}{fileName}";
+            string pathToFolder = Globals.TempResoursesStorageFolder.Replace("~", "");
+            vm.ImageAddress = $"{Globals.ProtocolHostPort}{pathToFolder}{fileName}";
 
             return vm;
         }

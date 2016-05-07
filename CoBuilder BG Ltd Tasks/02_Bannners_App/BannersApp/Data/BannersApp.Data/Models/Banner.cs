@@ -1,6 +1,7 @@
 ﻿namespace BannersApp.Data.Models
 {
-    using Attributes;
+    using ValidationAttributes;
+
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -28,7 +29,7 @@
         [Display(Name = "Choose a picture")]
         public virtual Picture Picture { get; set; }
 
-        //[NotMapped]
-        //public bool IsActive { get; set; }
+        [NotMapped]
+        public bool IsActive { get; set; }
     }
 }

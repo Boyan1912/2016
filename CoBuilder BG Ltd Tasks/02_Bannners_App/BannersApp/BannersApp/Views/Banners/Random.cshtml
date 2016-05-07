@@ -5,44 +5,54 @@
 @using BannersApp.Infrastructure;
 @model List<BannersApp.Models.BannerViewModel>
 
-
 <h2 class="crush-font">@ViewBag.Title</h2>
 <h3 class="page-description"><i>@ViewBag.Message</i></h3>
 
+@Html.TextBox("refreshRate", "RefreshRate", new { @class = "hidden", @Value = $"{Globals.BannerActivityInMiliseconds}" })
+
 <div id="randoms">
-    
     @Html.Partial("_GridPartial", Model)
 
-    
 </div>
-
 
 
 @section scripts{
 
     <script>
         var ids = [];
-
         $('.banner-id').each(function () {
             ids.push($(this).text());
         });
-        
-        console.log(ids);
+
+        var refreshRate = $('#refreshRate').val();
+        var seconds = refreshRate / 1000;
 
         setInterval(function () {
             $.ajax({
                 url: 'RefreshRandomModelsData',
                 type: 'POST',
-                data: {lastIds: ids},
+                data: { lastIds: ids },
                 success: function (result) {
-                    console.log('success');
-                    $('#randoms').html(result);
+                    seconds = refreshRate / 1000;
+
+                    //animation
+                    $('#randoms').hide(500, function () {
+                        setTimeout(function () {
+                            $('#randoms').html(result);
+                            $('#randoms').show(500);
+                        }, 500)
+                    })
                 },
                 error: function () {
                     console.log("error");
                 }
             });
-        }, 5000);
-
+        }, refreshRate);
+        
+        // counter
+        setInterval(function () {
+            $('.counter').text(--seconds);
+        }, 1000)
+        
     </script>
 }

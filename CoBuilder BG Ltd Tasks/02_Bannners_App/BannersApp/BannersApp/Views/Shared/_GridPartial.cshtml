@@ -13,20 +13,23 @@
             <th>Banner's Picture</th>
             <th>Valid From</th>
             <th>Valid To</th>
+            <th>Active</th>
         </tr>
     </thead>
     <tbody>
         @{
+            var duration = DateTime.Now.AddSeconds(10);
             int row = 0;
             foreach (var banner in Model)
             {
                 <tr class="active">
                     <td class="vert-align">@(++row)</td>
-                    <td class="vert-align banner-id text-info">@banner.Id</td>
-                    <td class="vert-align text-danger">@banner.Name</td>
-                    <td class="vert-align"><img src="@banner.ImageAddress" /></td>
+                    <td class="vert-align banner-id text-info"><a href="Details/@banner.Id">@banner.Id</a></td>
+                    <td class="vert-align text-danger"><a href="Details/@banner.Id">@banner.Name</a></td>
+                    <td class="vert-align grid-picture"><a href="Details/@banner.Id"><img src="@banner.ImageAddress" /></a></td>
                     <td class="vert-align">@banner.ValidFrom</td>
                     <td class="vert-align">@banner.ValidTo</td>
+                    <td class="vert-align"><span class="glyphicon glyphicon-off text-danger"></span><span class="text-danger counter"></span></td>
                 </tr>
             }
         }
@@ -34,3 +37,6 @@
 </table>
 
 
+@section scripts{
+    
+    }

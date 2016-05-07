@@ -23,7 +23,7 @@
                 return true;
             }
 
-            return Constants.AcceptableImageFormats.Any(item => file.FileName
+            return Globals.AcceptableImageFormats.Any(item => file.FileName
                                                                     .ToLower()
                                                                     .EndsWith(item, StringComparison.OrdinalIgnoreCase));
         }

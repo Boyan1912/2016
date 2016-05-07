@@ -9,7 +9,9 @@
         Banner GetById(int id);
 
         IQueryable<Banner> GetAll();
-        
+
+        IQueryable<Banner> GetAllActive();
+
         void Delete(Banner banner);
 
         void Delete(int id);

@@ -1,4 +1,4 @@
-﻿namespace BannersApp.Data.Attributes
+﻿namespace BannersApp.Data.ValidationAttributes
 {
     using System;
     using System.Collections.Generic;

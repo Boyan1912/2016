@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Banners Application</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    @*@Scripts.Render("~/bundles/modernizr")*@
 
 </head>
 <body>
@@ -22,7 +22,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("View All", "All", "Banners")</li>
+                    <li>@Html.ActionLink("View All / Modify / Delete", "All", "Banners")</li>
                     <li>@Html.ActionLink("View Random", "Random", "Banners")</li>
                     <li>@Html.ActionLink("Add New", "Create", "Banners")</li>
                 </ul>
@@ -34,10 +34,8 @@
     <div class="container body-content">
         @RenderBody()
         
-
         <hr />
         <footer>
-
             <p>&copy; @DateTime.Now.Year - Banners Application &copy;</p>
         </footer>    
     </div>

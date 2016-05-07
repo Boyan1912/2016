@@ -193,7 +193,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\BannerViewModelServices.cs" />
-    <Compile Include="Infrastructure\Constants.cs" />
+    <Compile Include="Infrastructure\Globals.cs" />
     <Compile Include="Infrastructure\Extensions.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BannerViewModel.cs" />
@@ -202,6 +202,21 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Images\samples\sample_image1.jpg" />
+    <Content Include="App_Data\Images\samples\sample_image10.jpg" />
+    <Content Include="App_Data\Images\samples\sample_image11.jpg" />
+    <Content Include="App_Data\Images\samples\sample_image12.jpg" />
+    <Content Include="App_Data\Images\samples\sample_image13.jpg" />
+    <Content Include="App_Data\Images\samples\sample_image14.jpg" />
+    <Content Include="App_Data\Images\samples\sample_image15.jpg" />
+    <Content Include="App_Data\Images\samples\sample_image2.jpg" />
+    <Content Include="App_Data\Images\samples\sample_image3.jpg" />
+    <Content Include="App_Data\Images\samples\sample_image4.png" />
+    <Content Include="App_Data\Images\samples\sample_image5.jpg" />
+    <Content Include="App_Data\Images\samples\sample_image6.jpg" />
+    <Content Include="App_Data\Images\samples\sample_image7.jpg" />
+    <Content Include="App_Data\Images\samples\sample_image8.jpg" />
+    <Content Include="App_Data\Images\samples\sample_image9.jpg" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\jquery-ui.css" />
@@ -252,12 +267,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Banners\Create.cshtml" />
     <Content Include="Views\Shared\_GridPartial.cshtml" />
-    <Content Include="Views\Shared\_BannerRandomPartial.cshtml" />
     <Content Include="Views\Banners\Details.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

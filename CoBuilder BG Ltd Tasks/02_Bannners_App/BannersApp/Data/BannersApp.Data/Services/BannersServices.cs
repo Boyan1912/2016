@@ -29,7 +29,16 @@
         {
             return this.banners.All();
         }
-        
+
+        public IQueryable<Banner> GetAllActive()
+        {
+            return this.banners
+                        .All()
+                        .ToList()
+                        .Where(x => x.IsActive)
+                        .AsQueryable();
+        }
+
         public Banner GetById(int id)
         {
             return this.banners.GetById(id);

@@ -60,11 +60,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\IsDateAfterAttributes.cs" />
+    <Compile Include="ValidationAttributes\IsDateAfterAttributes.cs" />
     <Compile Include="Interfaces\IBannersAppDbContext.cs" />
     <Compile Include="Interfaces\IBannersServices.cs" />
     <Compile Include="Interfaces\IPicturesServices.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BannersAppDbContext.cs" />
     <Compile Include="Models\Banner.cs" />
     <Compile Include="Models\Picture.cs" />
