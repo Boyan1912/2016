@@ -8,7 +8,6 @@
 
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -16,9 +15,11 @@
     public class BannersController : Controller
     {
         [Inject]
-        private IBannersServices banners;
+        private readonly IBannersServices banners;
         [Inject]
-        private IPicturesServices pictures;
+        private readonly IPicturesServices pictures;
+
+        private readonly BannerViewModelServices viewModels = new BannerViewModelServices();
 
         public BannersController(IBannersServices banners, IPicturesServices pictures)
         {
@@ -38,7 +39,6 @@
                               .Take(size)
                               .ToViewModels()
                               .ToList();
-
 
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
             Response.Cache.SetNoStore();
@@ -64,45 +64,6 @@
             return PartialView("_GridPartial", randomBanners);
         }
 
-        private IList<BannerViewModel> GetActiveRandomViewModels()
-        {
-            var models = this.banners.GetAll()
-                                     .ToViewModels()
-                                     .Where(x => x.IsActive)
-                                     .Take(Constants.MaxRandomItemsCount)
-                                     .OrderBy(x => Guid.NewGuid())
-                                     .ToList();
-
-            EnsureNoRepetitions(models);
-
-            return models;
-        }
-
-        private void EnsureNoRepetitions(IList<BannerViewModel> models)
-        {
-            for (int i = 1; i < models.Count; i++)
-            {
-                if(models[i].Id == models[i - 1].Id)
-                {
-                    var replace = this.banners.GetAll()
-                                              .FirstOrDefault(x => x.Id > models[i - 1].Id);
-                    
-                    if (replace == null)
-                    {
-                        replace = this.banners.GetAll()
-                                              .FirstOrDefault(x => x.Id < models[i - 1].Id);    
-                    }
-                    if (replace == null)
-                    {
-                        models.RemoveAt(i);
-                        EnsureNoRepetitions(models);
-                    }
-
-                    models[i] = replace.ToViewModel();
-                }
-            }
-        }
-
         [HttpGet]
         public ActionResult Create()
         {
@@ -115,25 +76,29 @@
         public ActionResult Create(Banner model, HttpPostedFileBase picture)
         {
 
-            if (!IsImage(picture))
+            if (!this.viewModels.IsImage(picture))
             {
                 HandleErrorInfo err = new HandleErrorInfo(new FormatException(Constants.NotAnImageErrorMessage), "Banners", "Create");
                 return View("Error", err);
             }
-
-            // add image to database
-            Picture pic = MakeDbPictureFromFile(picture);
-            this.pictures.Add(pic);
             
-            model.Picture = pic;
+            else
+            {
+                // add image to database
+                Picture pic = this.viewModels.MakeDbPictureFromFile(picture);
+                this.pictures.Add(pic);
+                //connect the new model to the picture and remove "ModelState" mistake, because it doesn't go out otherwise
+                model.Picture = pic;
+                ModelState.Remove("Picture");
+            }
 
-            if (!string.IsNullOrEmpty(model.Name) && model.ValidTo > model.ValidFrom)
+            if (ModelState.IsValid)
             {
                 // add database model to db
                 this.banners.Add(model);
                 this.banners.SaveChanges();
                 
-                return RedirectToAction("All");
+                return RedirectToAction("Index", "Home");
             }
 
             // show invalid input data
@@ -147,9 +112,6 @@
             {
                 int bannerId = int.Parse(id);
                 var banner = this.banners.GetById(bannerId);
-                //int picId = banner.PictureId;
-                //this.pictures.Delete(picId);
-                //this.pictures.SaveChanges();
                 this.banners.Delete(bannerId);
                 this.banners.SaveChanges();
             }
@@ -162,42 +124,101 @@
             return RedirectToAction("All");
         }
 
-        private Picture MakeDbPictureFromFile(HttpPostedFileBase file)
+        [HttpGet]
+        public ActionResult Details(int? id)
         {
-            Picture picture = new Picture();
-
-            picture.Name = file.FileName;
-            picture.ContentType = file.ContentType;
-            
-            using (Stream inputStream = file.InputStream)
+            Banner banner;
+            try
             {
-                MemoryStream memoryStream = inputStream as MemoryStream;
-                if (memoryStream == null)
+                banner = this.banners.GetById((int)id);
+
+                if (banner == null)
                 {
-                    memoryStream = new MemoryStream();
-                    inputStream.CopyTo(memoryStream);
+                    throw new NullReferenceException("Incorrect Id");
                 }
-                picture.Data = memoryStream.ToArray();
+
+            }
+            catch(Exception ex)
+            {
+                string bannerId = id == null ? "N/A" : id.ToString(); 
+                HandleErrorInfo err = new HandleErrorInfo(new ArgumentException($"An item with id {bannerId} was not found in the database!\n\n" + ex.Message), "Banners", "Remove");
+                return View("Error", err);
             }
 
-            return picture;
+            return View(banner);
         }
 
-        private bool IsImage(HttpPostedFileBase file)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Details(string id, string name, DateTime validFrom, DateTime validTo, HttpPostedFileBase picture)
         {
-            if(file == null)
+            int updateModelId = int.Parse(id);
+            Banner banner = this.banners.GetById(updateModelId);
+            Picture pic = banner.Picture;
+
+            if (picture != null)
             {
-                return false;
+                if (!this.viewModels.IsImage(picture))
+                {
+                    HandleErrorInfo err = new HandleErrorInfo(new FormatException(Constants.NotAnImageErrorMessage), "Banners", "Create");
+                    return View("Error", err);
+                }
+
+                pic = this.viewModels.MakeDbPictureFromFile(picture);
+                this.pictures.Add(pic);
             }
 
-            if (file.ContentType.Contains("image"))
+            this.banners.Update(banner, validFrom, validTo, name, pic);
+            this.ModelState.Remove("Picture");
+
+            if (this.ModelState.IsValid)
             {
-                return true;
+                this.banners.SaveChanges();
+                return RedirectToAction("Details", banner.Id);
             }
-            
-            return Constants.AcceptableImageFormats.Any(item => file.FileName
-                                                                    .ToLower()
-                                                                    .EndsWith(item, StringComparison.OrdinalIgnoreCase));
+
+            return View(banner);
         }
+
+
+        private IList<BannerViewModel> GetActiveRandomViewModels()
+        {
+            var models = this.banners.GetAll()
+                                     .ToViewModels()
+                                     .Where(x => x.IsActive)
+                                     .Take(Constants.MaxRandomItemsCount)
+                                     .OrderBy(x => Guid.NewGuid())
+                                     .ToList();
+
+            this.EnsureNoRepetitions(models);
+
+            return models;
+        }
+
+        private void EnsureNoRepetitions(IList<BannerViewModel> models)
+        {
+            for (int i = 1; i < models.Count; i++)
+            {
+                if (models[i].Id == models[i - 1].Id)
+                {
+                    var replace = this.banners.GetAll()
+                                              .FirstOrDefault(x => x.Id > models[i - 1].Id);
+
+                    if (replace == null)
+                    {
+                        replace = this.banners.GetAll()
+                                              .FirstOrDefault(x => x.Id < models[i - 1].Id);
+                    }
+                    if (replace == null)
+                    {
+                        models.RemoveAt(i);
+                        EnsureNoRepetitions(models);
+                    }
+
+                    models[i] = replace.ToViewModel();
+                }
+            }
+        }
+
     }
 }

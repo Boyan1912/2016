@@ -57,6 +57,11 @@
             this.banners.Update(banner);
         }
 
+        public void Update(Banner banner)
+        {
+            this.banners.Update(banner);
+        }
+
         public int SaveChanges()
         {
             return this.banners.SaveChanges();

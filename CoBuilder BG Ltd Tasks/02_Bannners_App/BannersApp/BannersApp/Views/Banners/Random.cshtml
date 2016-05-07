@@ -33,9 +33,7 @@
             $.ajax({
                 url: 'RefreshRandomModelsData',
                 type: 'POST',
-                //contentType: "application/json",
                 data: {lastIds: ids},
-                //dataType: "json",
                 success: function (result) {
                     console.log('success');
                     $('#randoms').html(result);

@@ -192,6 +192,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\BannerViewModelServices.cs" />
     <Compile Include="Infrastructure\Constants.cs" />
     <Compile Include="Infrastructure\Extensions.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -252,6 +253,7 @@
     <Content Include="Views\Banners\Create.cshtml" />
     <Content Include="Views\Shared\_GridPartial.cshtml" />
     <Content Include="Views\Shared\_BannerRandomPartial.cshtml" />
+    <Content Include="Views\Banners\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

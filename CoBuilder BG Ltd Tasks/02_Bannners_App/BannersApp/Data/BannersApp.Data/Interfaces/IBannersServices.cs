@@ -20,6 +20,8 @@
 
         void Update(Banner banner, DateTime? validFrom, DateTime? validTo, string newName = null, Picture newPic = null);
 
+        void Update(Banner banner);
+
         int SaveChanges();
     }
 }

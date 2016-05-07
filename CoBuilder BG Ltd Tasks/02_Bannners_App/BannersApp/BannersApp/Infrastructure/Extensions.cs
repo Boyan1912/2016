@@ -38,6 +38,11 @@
 
         public static BannerViewModel ToViewModel(this Banner banner)
         {
+            if (banner == null)
+            {
+                throw new NullReferenceException("to view model");
+            }
+
             BannerViewModel vm = new BannerViewModel()
             {
                 Id = banner.Id,

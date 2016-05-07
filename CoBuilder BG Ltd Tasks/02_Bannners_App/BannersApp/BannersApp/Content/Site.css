@@ -21,7 +21,7 @@
 input,
 select,
 textarea {
-    max-width: 450px;
+    max-width: 100%;
 }
 
 @font-face {
@@ -76,4 +76,14 @@ img{
 
 #delete-warning{
     display:none;
+}
+
+.custom-jumbo{
+    background-size:100% 100%;
+}
+
+#errors-jumbo{
+    height: 500px;
+    width:900px;
+    opacity:0.4;   
 }

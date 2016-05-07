@@ -1,0 +1,69 @@
+﻿@model BannersApp.Data.Models.Banner
+@{
+    ViewBag.Title = "Banner details page";
+    ViewBag.Message = "Update banner info here";
+}
+@using BannersApp.Infrastructure;
+
+<h2 class="crush-font">@ViewBag.Title</h2>
+<h3 class="page-description"><i>@ViewBag.Message</i></h3>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="jumbotron custom-jumbo" id="details-jumbo" style="background-image:url(@Model.ToViewModel().ImageAddress)" ;>
+            <h1 class="text-danger">@Model.Name</h1>
+            <p>Update information for banner with ID: @Model.Id</p>
+        </div>
+        @*<h3 class="page-description"><i>@ViewBag.Message</i></h3>*@
+    </div>
+
+</div>
+
+@using (Html.BeginForm("Details", "Banners", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.TextBox("id", "", new { @class = "hidden", @Value = $"{Model.Id}" })
+            <hr />
+            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("name", "Name", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBox("name", "", new { @class = "form-control col-md-8 text-danger", @Value = $"{Model.Name}" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("picture", "Choose a new picture", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBox("picture", @Model.ToViewModel().ImageAddress, new { @class = "form-control col-md-8", name = "picture", type = "file" })
+                </div>
+            </div>
+
+            @Html.ValidationMessageFor(m => m.ValidFrom, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("validFrom", "Valid From", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBox("validFrom", "", new { @Value = Model.ValidFrom, id = "datepicker", @class = "form-control col-md-8" })
+                </div>
+            </div>
+
+            @Html.ValidationMessageFor(m => m.ValidTo, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("validTo", "Valid To", new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBox("validTo", "", new { @Value = Model.ValidTo, id = "datepicker-end", @class = "form-control col-md-8" })
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-success btn-lg" value="Update" />
+                </div>
+            </div>
+}
+
+@section scripts{
+    <script src="~/Scripts/datepicker.js" type="text/javascript"></script>
+
+}
