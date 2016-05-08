@@ -3,13 +3,15 @@
 
 @{
     ViewBag.Title = "Error!";
+    ViewBag.Message = "An error occurred while processing your request.";
 }
 
 <h1 >@ViewBag.Title</h1>
+<small>@ViewBag.Message</small>
 <h2 class="text-danger">@Model.Exception.Message</h2>
 
 <div class="jumbotron custom-jumbo" id="errors-jumbo" style="background-image:url(@Globals.ErrorsPageBgImage)">
     <h1><span class="text-warning">@ViewBag.Title</span></h1>
-    <p class="text-warning">An error occurred while processing your request.</p>
+    <p class="text-warning">@ViewBag.Message</p>
     <h2 class="text-danger">@Model.Exception.Message</h2>
 </div>
