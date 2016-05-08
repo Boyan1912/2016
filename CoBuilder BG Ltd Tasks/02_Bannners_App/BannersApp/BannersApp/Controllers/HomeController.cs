@@ -4,6 +4,7 @@
     using Data.Interfaces;
     using Infrastructure;
     using Ninject;
+
     using System;
     using System.IO;
     using System.Linq;
@@ -44,10 +45,5 @@
             return RedirectToAction("Index");
         }
 
-        // lazy exception handler
-        protected override void OnException(ExceptionContext filterContext)
-        {
-            this.View("Error", new HandleErrorInfo(filterContext.Exception, "", ""));
-        }
     }
 }
