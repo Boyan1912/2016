@@ -40,9 +40,6 @@
                               .ToViewModels()
                               .ToList();
 
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            Response.Cache.SetNoStore();
-
             ViewBag.Page = page;
 
             return View(data);
@@ -66,6 +63,7 @@
             {
                 this.SwitchOffAlreadyShown(lastIds);
             }
+
             var randomBanners = this.GetActiveRandomViewModels();
             this.EnsureNoRepetitions(randomBanners);
 
@@ -133,23 +131,23 @@
         }
 
         [HttpGet]
-        public ActionResult Details(int? id)
+        public ActionResult Details(string id)
         {
             Banner banner;
             try
             {
-                banner = this.banners.GetById((int)id);
+                int iD = int.Parse(id);
+                banner = this.banners.GetById(iD);
 
                 if (banner == null)
                 {
-                    throw new NullReferenceException("Incorrect Id");
+                    throw new ArgumentException("Not found!", "ID");
                 }
-
             }
             catch (Exception ex)
             {
                 string bannerId = id == null ? "N/A" : id.ToString();
-                HandleErrorInfo err = new HandleErrorInfo(new ArgumentException($"An item with id {bannerId} was not found in the database!\n\n" + ex.Message), "Banners", "Remove");
+                HandleErrorInfo err = new HandleErrorInfo(new ArgumentException($"An item with id {bannerId} was not found in the database! " + ex.Message), "Banners", "Remove");
                 return View("Error", err);
             }
 
@@ -215,13 +213,13 @@
             {
                 if (models[i].Id == models[i - 1].Id)
                 {
-                    var replace = this.banners.GetAll()
-                                              .FirstOrDefault(x => x.Id > models[i - 1].Id && x.IsActive);
+                    var replace = this.banners.GetAllActiveBanners()
+                                              .FirstOrDefault(x => x.Id > models[i - 1].Id);
 
                     if (replace == null)
                     {
                         replace = this.banners.GetAll()
-                                              .FirstOrDefault(x => x.Id < models[i - 1].Id && x.IsActive);
+                                              .FirstOrDefault(x => x.Id < models[i - 1].Id);
                     }
                     if (replace == null)
                     {

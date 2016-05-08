@@ -117,7 +117,12 @@
                     type: 'POST',
                     data: { id: id },
                     cache: false,
-                    success: window.location.reload(true)
+                    success: function () {
+                        // reload after some delay so that changes are visible
+                        window.setTimeout(function () {
+                            window.location.reload(true);
+                        }, 150);
+                    }
                 })
             }
         </script>
