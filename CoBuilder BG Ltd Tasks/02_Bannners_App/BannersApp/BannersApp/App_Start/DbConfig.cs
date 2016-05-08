@@ -6,6 +6,7 @@
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Linq;
     using System.IO;
 
     public class DbConfig
@@ -44,7 +45,7 @@
                     Name = $"{randName} {i + 1}",
                     ValidFrom = DateTime.Now,
                     ValidTo = DateTime.Now.AddHours(random.Next(100 * 1000)),
-                    Picture = sampleImg
+                    Picture = sampleImg,
                 };
 
                 context.Banners.Add(sampleBanner);

@@ -25,9 +25,8 @@
         {
             this.banners = banners;
             this.pictures = pictures;
-            this.SetRandomItemsActive();
         }
-        
+
         [HttpGet]
         public ActionResult All(int? page)
         {
@@ -48,21 +47,27 @@
 
             return View(data);
         }
-        
+
         [HttpGet]
         public ActionResult Random()
         {
-            this.SwitchActiveItems();
+            this.SetRandomItemsActive(Globals.CountActiveBannersSensitivity);
             var randomBanners = this.GetActiveRandomViewModels();
-            
+
             return View(randomBanners);
         }
 
         [HttpPost]
         public ActionResult RefreshRandomModelsData(string[] lastIds)
         {
-
+            this.SwitchActiveItems();
+            // dont't show last shown banners
+            if (lastIds.Length > 0)
+            {
+                this.SwitchOffAlreadyShown(lastIds);
+            }
             var randomBanners = this.GetActiveRandomViewModels();
+            this.EnsureNoRepetitions(randomBanners);
 
             return PartialView("_GridPartial", randomBanners);
         }
@@ -84,7 +89,7 @@
                 HandleErrorInfo err = new HandleErrorInfo(new FormatException(Globals.NotAnImageErrorMessage), "Banners", "Create");
                 return View("Error", err);
             }
-            
+
             else
             {
                 // add image to database
@@ -100,8 +105,8 @@
                 // add database model to db
                 this.banners.Add(model);
                 this.banners.SaveChanges();
-                
-                return RedirectToAction("Index", "Home");
+
+                return RedirectToAction("Details", "Banners", new { id = model.Id });
             }
 
             // show invalid input data
@@ -118,7 +123,7 @@
                 this.banners.Delete(bannerId);
                 this.banners.SaveChanges();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 HandleErrorInfo err = new HandleErrorInfo(ex, "Banners", "Remove");
                 return View("Error", err);
@@ -141,9 +146,9 @@
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                string bannerId = id == null ? "N/A" : id.ToString(); 
+                string bannerId = id == null ? "N/A" : id.ToString();
                 HandleErrorInfo err = new HandleErrorInfo(new ArgumentException($"An item with id {bannerId} was not found in the database!\n\n" + ex.Message), "Banners", "Remove");
                 return View("Error", err);
             }
@@ -174,11 +179,11 @@
             this.banners.Update(banner, validFrom, validTo, name, pic);
             this.ModelState.Remove("Picture");
 
-            if(banner.ValidFrom > banner.ValidTo)
+            if (banner.ValidFrom > banner.ValidTo)
             {
                 this.ModelState.AddModelError("ValidTo", "Value should be greater than \"Valid From\"!");
             }
-            if(string.IsNullOrEmpty(banner.Name))
+            if (string.IsNullOrEmpty(banner.Name))
             {
                 this.ModelState.AddModelError("Name", "Name cannot be empty!");
             }
@@ -192,12 +197,10 @@
             return View(banner);
         }
 
-
         private IList<BannerViewModel> GetActiveRandomViewModels()
         {
-            var models = this.banners.GetAllActive()
+            var models = this.banners.GetRandomActiveBanners()
                                      .Take(Globals.MaxRandomItemsCount)
-                                     .OrderBy(x => Guid.NewGuid())
                                      .ToViewModels()
                                      .ToList();
 
@@ -213,12 +216,12 @@
                 if (models[i].Id == models[i - 1].Id)
                 {
                     var replace = this.banners.GetAll()
-                                              .FirstOrDefault(x => x.Id > models[i - 1].Id);
+                                              .FirstOrDefault(x => x.Id > models[i - 1].Id && x.IsActive);
 
                     if (replace == null)
                     {
                         replace = this.banners.GetAll()
-                                              .FirstOrDefault(x => x.Id < models[i - 1].Id);
+                                              .FirstOrDefault(x => x.Id < models[i - 1].Id && x.IsActive);
                     }
                     if (replace == null)
                     {
@@ -231,15 +234,26 @@
             }
         }
 
-        private void SetRandomItemsActive()
-        {
-            this.banners.GetAll().Where(b => b.Id % 2 == 0)
-                                 .ForEach(b => b.IsActive = true);
-        }
-
         private void SwitchActiveItems()
         {
             this.banners.GetAll().ForEach(b => b.IsActive = !b.IsActive);
+        }
+
+        private void SetRandomItemsActive(int sensitivity)
+        {
+            var rnd = new Random();
+            this.banners.GetAll()
+                        .ForEach(b => b.IsActive = rnd.Next(1, 11) >= sensitivity);
+        }
+
+        private void SwitchOffAlreadyShown(string[] shownIds)
+        {
+            for (int i = 0; i < shownIds.Length; i++)
+            {
+                int id = int.Parse(shownIds[i]);
+                var banner = this.banners.GetById(id);
+                banner.IsActive = false;
+            }
         }
     }
 }

@@ -10,7 +10,7 @@
 
         IQueryable<Banner> GetAll();
 
-        IQueryable<Banner> GetAllActive();
+        IQueryable<Banner> GetRandomActiveBanners();
 
         void Delete(Banner banner);
 

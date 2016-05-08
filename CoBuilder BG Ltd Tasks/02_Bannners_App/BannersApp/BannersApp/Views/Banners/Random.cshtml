@@ -19,6 +19,7 @@
 @section scripts{
 
     <script>
+        // get shown banners' ids
         var ids = [];
         $('.banner-id').each(function () {
             ids.push($(this).text());
@@ -27,32 +28,31 @@
         var refreshRate = $('#refreshRate').val();
         var seconds = refreshRate / 1000;
 
-        setInterval(function () {
+        window.setInterval(function () {
             $.ajax({
                 url: 'RefreshRandomModelsData',
                 type: 'POST',
+                cache: false,
                 data: { lastIds: ids },
                 success: function (result) {
                     seconds = refreshRate / 1000;
-
-                    //animation
-                    $('#randoms').hide(500, function () {
-                        setTimeout(function () {
-                            $('#randoms').html(result);
-                            $('#randoms').show(500);
-                        }, 500)
-                    })
+                    // animation
+                    $('#randoms').hide(500);
+                    $('#randoms').show(500);
+                    window.setTimeout(function () {
+                        $('#randoms').html(result);
+                    }, 250)
                 },
-                error: function () {
-                    console.log("error");
+                error: function (err) {
+                    console.log("Error: " + err);
                 }
             });
         }, refreshRate);
         
         // counter
-        setInterval(function () {
+        window.setInterval(function () {
             $('.counter').text(--seconds);
         }, 1000)
-        
+
     </script>
 }

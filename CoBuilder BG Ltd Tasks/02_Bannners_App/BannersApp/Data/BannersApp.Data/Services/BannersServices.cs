@@ -30,10 +30,12 @@
             return this.banners.All();
         }
 
-        public IQueryable<Banner> GetAllActive()
+        public IQueryable<Banner> GetRandomActiveBanners()
         {
+            // sends database request earlier because bool property "IsActive" is not supported by Entity Framework
             return this.banners
                         .All()
+                        .OrderBy(b => Guid.NewGuid())
                         .ToList()
                         .Where(x => x.IsActive)
                         .AsQueryable();
@@ -70,7 +72,7 @@
         {
             this.banners.Update(banner);
         }
-
+        
         public int SaveChanges()
         {
             return this.banners.SaveChanges();

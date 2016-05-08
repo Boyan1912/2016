@@ -64,6 +64,7 @@ namespace BannersApp.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<IBannersAppDbContext>().To<BannersAppDbContext>();
             kernel.Bind<IRepository<Banner>>().To<GenericRepository<Banner>>();
             kernel.Bind<IRepository<Picture>>().To<GenericRepository<Picture>>();
             kernel.Bind<IBannersServices>().To<BannersServices>();

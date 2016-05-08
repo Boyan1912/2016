@@ -72,8 +72,8 @@ img{
     cursor: pointer;
 }
 
-.table tbody>tr>td>img {    
-    max-width:500px;
+.table img {    
+    max-width:470px;
     max-height:170px;
 }
 
