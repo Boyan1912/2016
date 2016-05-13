@@ -8,7 +8,7 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl){
         var jinns = modelsCntrl.addEnemiesToGame(Settings.InitialEnemiesCount, Settings.SecondaryEnemyType);
         loopsCntrl.sendModelsTowardsPlayer(jinns,
             Settings.JinnTimeToCrossField, Settings.RadiusJinnsDestinationAroundPlayer);
-        var playerDamageTrackingLoopId = loopsCntrl.setPlayerCollisionDetection();
+        loopsCntrl.setPlayerCollisionDetection();
     }
 
 

@@ -67,11 +67,16 @@ var playerModels = (function(field){
         explosion.id = 0;
         field.addChild(explosion);
 
+        var sound = new Howl({
+            urls: ['sounds/explosion.mp3']
+        });
+
         function explode(settings){
             var clone = explosion.clone({ x: settings.x, y: settings.y });
             clone.id = modelsService.getUniqueId();
             field.addChild(clone);
             clone.startAnimation();
+            sound.play();
             setTimeout(function(){
                 clone.remove();
             }, Settings.DefaultExplosionDuration);

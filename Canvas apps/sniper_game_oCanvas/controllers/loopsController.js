@@ -81,7 +81,6 @@ var loopsController = (function(modelsCntrl, models, calculations){
     function stopLoopIfNotNeeded(loopDetails){
         if(loopDetails.loopingObjectsCount < 1){
             clearInterval(loopDetails.loopId);
-            console.log('stopped ' + loopDetails.loopId);
         }
     }
 

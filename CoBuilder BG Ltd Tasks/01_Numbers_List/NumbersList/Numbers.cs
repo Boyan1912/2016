@@ -27,11 +27,25 @@
                 if (number <= 0)
                 {
                     numbers.RemoveAt(i);
-                    RemoveNegativeValues(numbers);
+                    i--;
                 }
             }
         }
-        
+
+        //// recursion
+        //public static void RemoveNegativeValues(IList<int> numbers)
+        //{
+        //    for (int i = 0; i < numbers.Count; i++)
+        //    {
+        //        int number = numbers[i];
+        //        if (number <= 0)
+        //        {
+        //            numbers.RemoveAt(i);
+        //            RemoveNegativeValues(numbers);
+        //        }
+        //    }
+        //}
+
         static void PrintList(IList<int> numbers)
         {
             if (numbers.Count < 1)
