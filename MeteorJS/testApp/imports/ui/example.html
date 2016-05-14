@@ -1,0 +1,23 @@
+
+<template name="example">
+<div class="panel panel-primary">
+  <div class="panel-heading">Add a new UI example</div>
+  <div class="panel-body">
+    {{> add}}    
+
+  </div>
+</div>
+{{#each latest}}
+<div class="panel panel-default">
+  <div class="panel-heading">Name: {{name}}</div>
+  <div class="panel-heading">Type: {{type}}</div>
+  <div class="panel-heading">Added on: {{createdAt}}</div>
+  <div class="panel-body">Description: {{description}}
+  </div>
+</div>
+<div class="jumbotron">
+  <!-- <h1>Jumbotron</h1> -->
+  {{{content}}}
+</div>
+{{/each}}
+</template>

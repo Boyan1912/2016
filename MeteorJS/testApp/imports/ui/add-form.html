@@ -1,0 +1,44 @@
+<template name="add">
+  <form class="form-horizontal new-example">
+  <fieldset>
+    <legend>Fill in details for a new UI example</legend>
+    <div class="form-group">
+      <label for="name" class="col-lg-2 control-label">Name</label>
+      <div class="col-lg-10">
+        <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="type" class="col-lg-2 control-label">Type</label>
+      <div class="col-lg-10">
+          <select class="form-control" id="type" name="type">
+            {{#each types}}
+                  <option>{{name}}</option>
+              {{/each}}
+          </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description" class="col-lg-2 control-label">Description</label>
+      <div class="col-lg-10">
+        <textarea class="form-control" rows="3" id="description" name="description"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="content" class="col-lg-2 control-label">Html Content</label>
+      <div class="col-lg-10">
+        <textarea class="form-control" rows="3" id="content" name="content"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-lg-10 col-lg-offset-2">
+        <button type="reset" class="btn btn-default">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+</template>

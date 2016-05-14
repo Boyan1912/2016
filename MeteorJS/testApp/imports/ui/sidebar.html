@@ -1,0 +1,22 @@
+<template name="sidebar">
+    <div id="sidebar-wrapper">
+            <ul class="sidebar-nav" >
+                <li class="sidebar-brand text-info" >
+                    <a href="#">
+                        {{title}}
+                    </a>
+                </li>
+                {{#each types}}
+                <li>
+                    <a href="#">{{> type}}</a>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+</template>
+
+<template name="type">
+    <li>
+        <a href="#">{{name}}</a>
+    </li>
+</template>

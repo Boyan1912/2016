@@ -1,0 +1,38 @@
+	cmd commands:
+
+1. meteor create {nameApp}
+	
+//Important - bug fix:	
+2. Go to E:\SERVER\MongoDB\mongod.cfg  and change the dir to meteor's app db dir; then start MongoDb service
+
+(set MONGO_URL=mongodb://localhost:3001/{someDbName}) doesn't work
+	 
+3. cd {nameApp}
+
+// starts the app
+4. meteor
+	or meteor --port ...
+
+// add registration/login form
+5. meteor add accounts-ui accounts-password
+	// in html can now simply add    {{> loginButtons}}   -the form
+	// user id in .js-    Meteor.userId()
+	// user in .html-   currentUser
+	
+// deny delete from db
+6. meteor remove insecure
+
+// don't show added data immediately
+7. meteor remove autopublish
+
+// search lib	
+8. meteor search {lib}
+// add lib
+9. meteor add {lib}
+
+// host the app on meteor's servers
+10. meteor deploy {nameApp}
+
+
+
+
