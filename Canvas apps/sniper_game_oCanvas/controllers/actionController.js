@@ -10,27 +10,6 @@ var actionController = (function(field, loopsCntrl, calculations, models){
         model.rotateTo(angle);
     }
 
-    // function turnToPointAnimated(model, X, Y){
-    //     var angle = calculations.getAngle(model.x, model.y, X, Y);
-    //     model.stop();
-    //     model.startAnimation();
-
-    //     console.log(model.name);
-    //     model.animate({
-    //         rotation: function(){
-    //             this.rotateTo(angle);
-    //         }
-    //     }, {
-    //         easing: 'ease-in-out-cubic',
-    //         duration: 'long',
-    //         callback: function(){
-    //                     console.log('before shooting');
-    //                     enemy.shoot({x: shooter.x, y: shooter.y});
-    //                 }
-    //     });
-    
-    // }
-
     function moveToPoint(model, X, Y, maxTime, sensitivity, maxLength, maxWidth){
         model.stop();
         model.startAnimation();
@@ -66,6 +45,7 @@ var actionController = (function(field, loopsCntrl, calculations, models){
         gun.x = -Settings.PlayFieldWidth; // hide from screen
         // gun.shellsCount--;
 
+        gunShell.playSound();
         gunShell.startAnimation();
         gunShell.animate({
             x: target.x,
@@ -89,10 +69,11 @@ var actionController = (function(field, loopsCntrl, calculations, models){
 
     function explode(model, target, sound, duration){
             var clone = models.cloneModel({ x: target.x, y: target.y }, model);
-            clone.id = modelsService.getUniqueId();
             field.addChild(clone);
             clone.startAnimation();
-            sound.play();
+            if(sound){  
+                sound.play(); 
+            }
             setTimeout(function(){
                 clone.remove();
             }, duration);
@@ -101,7 +82,6 @@ var actionController = (function(field, loopsCntrl, calculations, models){
 
     return {
         turnToPoint: turnToPoint,
-        // turnToPointAnimated: turnToPointAnimated,
         moveToPoint: moveToPoint,
         fireOnTarget: fireOnTarget,
         explode: explode

@@ -49,19 +49,23 @@ var enemyModels = (function(field, actions){
             origin: { x: "center", y: "center" },
             image: "img/jinnbullet.png",
             generate: true,
-            width: 22,
-            height: 22,
+            width: 32,
+            height: 24,
             direction: "x",
             duration: Settings.DefaultSpriteDuration,
             name: 'jinnBullet',
-            damageWeight: Settings.DefaultInitialJinnDamageWeight
+            damageWeight: Settings.DefaultInitialJinnDamageWeight,
+            playSound: function(){
+                // new Howl({
+                //     urls: ['sounds/shotgun.mp3']
+                // }).play();
+            }
             });
 
             jinnBullet.id = 0;
             field.addChild(jinnBullet);
             
 
-        // NOT DONE!
         var blast = (function(){
             var explosion = field.display.sprite({
             x: -1000,
@@ -83,7 +87,7 @@ var enemyModels = (function(field, actions){
             field.addChild(explosion);
 
             var sound = new Howl({
-                urls: ['sounds/shotgun.mp3']
+                // urls: ['sounds/shotgun.mp3']
             });
 
             function explode(target){

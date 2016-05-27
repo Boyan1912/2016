@@ -37,7 +37,12 @@ var playerModels = (function(field, actions){
             direction: "x",
             duration: Settings.DefaultSpriteDuration,
             name: 'rocket',
-            damageWeight: Settings.DefaultInitialRocketDamageWeight
+            damageWeight: Settings.DefaultInitialRocketDamageWeight,
+            playSound: function(){
+                new Howl({
+                    urls: ['sounds/shotgun.mp3']
+                }).play();
+            }
         });
 
         rocket.id = 0;

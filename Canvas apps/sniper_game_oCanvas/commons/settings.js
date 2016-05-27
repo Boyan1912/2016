@@ -50,6 +50,6 @@ var Settings = {
     DetectBlastDamageRefreshTime: 300,
     DetectPlayerCollisionRefreshTime: 400,
     EnemiesShowUpMarginAroundUpperYAxis: 100,
-    JinnsShootingFrequency: 3000
+    JinnsShootingFrequency: 1000
 
 };

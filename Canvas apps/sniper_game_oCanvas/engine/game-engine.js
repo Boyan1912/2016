@@ -1,5 +1,5 @@
 var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl){
-    var tempo = 1;
+    
     function startGame(){
         var mummies = modelsCntrl.addEnemiesToGame(Settings.InitialEnemiesCount, Settings.InitialEnemyType);
         loopsCntrl.sendModelsTowardsPlayer(mummies,
@@ -11,12 +11,6 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl){
         loopsCntrl.setJinnsShooting();
         loopsCntrl.setPlayerCollisionDetection();
 
-
-        setTimeout(function(){
-            startGame();
-        }, 30000 / tempo);
-
-        tempo++;
     }
 
 
