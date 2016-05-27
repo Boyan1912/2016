@@ -3,13 +3,13 @@ var modelsController = (function(field, models){
     function addEnemies(count, type, settings){
         count = count || 1;
         var enemies = [],
-            originalModel = models.getOriginalEnemyModel(type);
-
-        settings = settings || { y: originalModel.y };
+            protoModel = models.getProtoModelByName(type);
+            
+        settings = settings || { y: protoModel.y };
 
         for(var i = 0; i < count; i++){
             settings.x = Math.random() * Settings.PlayFieldLength;
-            var clone = models.cloneModel(settings, originalModel);
+            var clone = models.cloneModel(settings, protoModel);
             enemies.push(clone);
         }
 
@@ -37,7 +37,7 @@ var modelsController = (function(field, models){
 
     function handleDeadEnemyModel(model){
         //console.log('DEAD: ' + model.name);
-        var player = models.getOriginalShooter();
+        var player = models.getShooterFromField();
         player.points += model.killValuePoints;
         //console.log('POINTS: ' + player.points);
         model.stop();

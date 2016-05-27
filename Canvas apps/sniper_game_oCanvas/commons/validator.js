@@ -51,7 +51,8 @@ var validator = (function(){
         validateFunction: validateFunction,
         validateObject: validateObject,
         //validateSprite: validateSprite
-        validateId: validateId
+        validateId: validateId,
+        validateString: validateString
     }
 
 }());

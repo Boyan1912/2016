@@ -24,8 +24,8 @@ var gameController = (function(){
     var playField = (function(){
         return oCanvas.create({
             canvas: "#canvas",
-            background: 'image(img/bg/wolf.jpg)'
-            //background: '#000'
+            // background: 'image(img/bg/wolf.jpg)'
+            background: '#000'
             });
         }());
 

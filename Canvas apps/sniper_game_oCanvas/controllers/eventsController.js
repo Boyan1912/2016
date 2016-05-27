@@ -1,15 +1,15 @@
-var eventsController = (function(field, actionCntrl, models){
+var eventsController = (function(field, models){
 
     function onMouseMove(){
         field.bind('mousemove', function(e){
-            var player = models.getOriginalShooter();
-            actionCntrl.turnToPoint(player, e.x, e.y);
+            var player = models.getShooterFromField();
+            actionController.turnToPoint(player, e.x, e.y);
         })
     }
 
     function onRightButtonClick(){
         var canvas = document.getElementById('canvas'),
-            player = models.getOriginalShooter(),
+            player = models.getShooterFromField(),
             tolerance = Settings.ClickOnPlayerBugFixValue;
         // remove context menu from mouse's right click
         canvas.addEventListener('contextmenu', function(event) {
@@ -24,7 +24,7 @@ var eventsController = (function(field, actionCntrl, models){
                     e.y += tolerance;
                 }
 
-                actionCntrl.moveToPoint(player, e.x, e.y);
+                actionController.moveToPoint(player, e.x, e.y);
             }
         });
     }
@@ -36,9 +36,9 @@ var eventsController = (function(field, actionCntrl, models){
                     x: e.x,
                     y: e.y
                     },
-                    player = models.getOriginalShooter();
+                    player = models.getShooterFromField();
 
-                actionCntrl.fireOnTarget(player, target);
+                player.shoot(target);
             }
         });
     }
@@ -53,4 +53,4 @@ var eventsController = (function(field, actionCntrl, models){
         init: init
     }
 
-}(gameController.playField, actionController, modelsService));
+}(gameController.playField, modelsService));

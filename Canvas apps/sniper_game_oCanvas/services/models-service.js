@@ -1,4 +1,4 @@
-var modelsService = (function(field, plModels, enModels, calculations){
+var modelsService = (function(field, calculations, validator){
 
     var Id = 0;
 
@@ -19,6 +19,13 @@ var modelsService = (function(field, plModels, enModels, calculations){
         })
     }
 
+    function getProtoModelByName(name){
+        validator.validateString(name);
+        return getAllCanvasElements().find(function(model){
+            return model.name === name && model.id === 0;
+        });
+    }
+
     function getByNameAndId(name, id){
         validator.validateId(id);
         return getModelsByName(name).find(function(model){
@@ -37,14 +44,14 @@ var modelsService = (function(field, plModels, enModels, calculations){
 
     function getAllActiveExplosions(){
         return getAllCanvasElements().filter(function(model){
-            return model.name === 'explosion' && model.id > 0 && model.active;
+            return model.name === 'explosion' && model.id > 0;
         })
     }
 
     function getAllEnemyModels(){
         return getAllCanvasElements().filter(function(model){
             return model.name !== 'sniper' && model.name !== 'rocket'
-                && model.name !== 'explosion' && model.id > 0 && !!model.health;
+            && model.id > 0 && !!model.health;
         })
     }
 
@@ -54,20 +61,12 @@ var modelsService = (function(field, plModels, enModels, calculations){
         })
     }
 
-    function getOriginalEnemyModel(name){
-        return enModels.creatures[name];
-    }
-
-    function getOriginalPlayerItem(name){
-        return plModels[name];
-    }
-
-    function getOriginalShooter(){
-        return plModels.shooter;
-    }
-
     function getAllMummies(){
         return getModelsByName('mummy');
+    }
+
+    function getAllJinns(){
+        return getModelsByName('jinn');
     }
 
     function getShooterFromField(){
@@ -75,22 +74,7 @@ var modelsService = (function(field, plModels, enModels, calculations){
             return model.name === 'sniper';
         })
     }
-    //
-    //function getHitObjects(model, others, tolerance){
-    //    var hitObjects = [];
-    //    for (var i = 0; i < others.length; i++) {
-    //        var obj = others[i];
-    //
-    //        if (calculations.isHit(model, obj, tolerance)){
-    //            obj.violator = model;
-    //            obj.damaged = calculations.calculateDamage(model, obj, tolerance);
-    //            hitObjects.push(obj);
-    //        }
-    //    }
-    //
-    //    return hitObjects;
-    //}
-
+    
     function getRandomCoordinatesAroundPlace(place, marginX, marginY){
         marginY = marginY || marginX;
         var sign = Math.random() > 0.5;
@@ -99,8 +83,8 @@ var modelsService = (function(field, plModels, enModels, calculations){
         var y = sign ? (place.y + Math.random() * marginY) : (place.y - Math.random() * marginY);
 
         return {
-            x: x,
-            y: y
+            x: x < 5 ? 5 : x % Settings.PlayFieldWidth, // keep it inside the field
+            y: y < 5 ? 5 : y % Settings.PlayFieldLength
         };
     }
 
@@ -128,13 +112,11 @@ var modelsService = (function(field, plModels, enModels, calculations){
         getModelsByName: getModelsByName,
         getByNameAndId: getByNameAndId,
         getAllMummies: getAllMummies,
+        getAllJinns: getAllJinns,
         getShooterFromField: getShooterFromField,
         getRandomCoordinatesAroundPlace: getRandomCoordinatesAroundPlace,
         cloneModel: cloneModel,
-        getOriginalEnemyModel: getOriginalEnemyModel,
-        getOriginalPlayerItem: getOriginalPlayerItem,
-        getOriginalShooter: getOriginalShooter,
-        //getHitObjects: getHitObjects,
+        getProtoModelByName: getProtoModelByName,
         isDead: isDead,
         isViable: isViable,
         getUniqueId: getUniqueId,
@@ -145,4 +127,4 @@ var modelsService = (function(field, plModels, enModels, calculations){
     }
 
 
-}(gameController.playField, playerModels, enemyModels, calculationsService));
+}(gameController.playField, calculationsService, validator));

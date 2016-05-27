@@ -2,8 +2,34 @@ var actionController = (function(field, loopsCntrl, calculations, models){
 
     function turnToPoint(model, X, Y){
         var angle = calculations.getAngle(model.x, model.y, X, Y);
-        model.rotateTo(angle + Settings.RotationAngleAdjustment);
+
+        if(model.name === 'sniper'){
+            angle += Settings.RotationAngleAdjustment;
+        }
+
+        model.rotateTo(angle);
     }
+
+    // function turnToPointAnimated(model, X, Y){
+    //     var angle = calculations.getAngle(model.x, model.y, X, Y);
+    //     model.stop();
+    //     model.startAnimation();
+
+    //     console.log(model.name);
+    //     model.animate({
+    //         rotation: function(){
+    //             this.rotateTo(angle);
+    //         }
+    //     }, {
+    //         easing: 'ease-in-out-cubic',
+    //         duration: 'long',
+    //         callback: function(){
+    //                     console.log('before shooting');
+    //                     enemy.shoot({x: shooter.x, y: shooter.y});
+    //                 }
+    //     });
+    
+    // }
 
     function moveToPoint(model, X, Y, maxTime, sensitivity, maxLength, maxWidth){
         model.stop();
@@ -23,18 +49,22 @@ var actionController = (function(field, loopsCntrl, calculations, models){
         });
     }
 
-    function fireOnTarget(model, target){
-        var angle = calculations.getAngle(model.x, model.y, target.x, target.y),
-            gun = models.getOriginalPlayerItem('weapon').gun,
-            blast = models.getOriginalPlayerItem('blast');
+    function fireOnTarget(model, target, gun, blast, speed){
+        var angle = calculations.getAngle(model.x, model.y, target.x, target.y);
 
         gun.rotateTo(angle + Settings.RotationAngleAdjustment);
-        calculations.positionWeaponInFrontOfModel(gun, model, angle);
+        
+        if(model.name === 'sniper'){
+            calculations.positionWeaponInFrontOfModel(gun, model, angle);
+        }else if(model.name === 'jinn'){
+            gun.x = model.x;
+            gun.y = model.y;
+        }
 
         var gunShell = models.cloneModel({x: gun.x, y: gun.y}, gun);
         field.addChild(gunShell);
         gun.x = -Settings.PlayFieldWidth; // hide from screen
-        gun.shellsCount--;
+        // gun.shellsCount--;
 
         gunShell.startAnimation();
         gunShell.animate({
@@ -42,7 +72,7 @@ var actionController = (function(field, loopsCntrl, calculations, models){
             y: target.y
         }, {
             easing: 'linear',
-            duration: calculations.calcSpeedOfTravelInSeconds(target.x, gunShell.x, target.y, gunShell.y, Settings.MaxTimeForRocketToCrossField),
+            duration: calculations.calcSpeedOfTravelInSeconds(target.x, gunShell.x, target.y, gunShell.y, speed),
             callback: function(){
 
                 blast.explode(target);
@@ -57,11 +87,24 @@ var actionController = (function(field, loopsCntrl, calculations, models){
         });
     }
 
+    function explode(model, target, sound, duration){
+            var clone = models.cloneModel({ x: target.x, y: target.y }, model);
+            clone.id = modelsService.getUniqueId();
+            field.addChild(clone);
+            clone.startAnimation();
+            sound.play();
+            setTimeout(function(){
+                clone.remove();
+            }, duration);
+        }
+
 
     return {
         turnToPoint: turnToPoint,
+        // turnToPointAnimated: turnToPointAnimated,
         moveToPoint: moveToPoint,
-        fireOnTarget: fireOnTarget
+        fireOnTarget: fireOnTarget,
+        explode: explode
     }
 
 }(gameController.playField, loopsController, calculationsService, modelsService));

@@ -1,5 +1,5 @@
 var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl){
-
+    var tempo = 1;
     function startGame(){
         var mummies = modelsCntrl.addEnemiesToGame(Settings.InitialEnemiesCount, Settings.InitialEnemyType);
         loopsCntrl.sendModelsTowardsPlayer(mummies,
@@ -7,8 +7,16 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl){
 
         var jinns = modelsCntrl.addEnemiesToGame(Settings.InitialEnemiesCount, Settings.SecondaryEnemyType);
         loopsCntrl.sendModelsTowardsPlayer(jinns,
-            Settings.JinnTimeToCrossField, Settings.RadiusJinnsDestinationAroundPlayer);
+            Settings.JinnTimeToCrossField, Settings.RadiusJinnsDestinationAroundPlace);
+        loopsCntrl.setJinnsShooting();
         loopsCntrl.setPlayerCollisionDetection();
+
+
+        setTimeout(function(){
+            startGame();
+        }, 30000 / tempo);
+
+        tempo++;
     }
 
 

@@ -3,17 +3,18 @@ var loopsController = (function(modelsCntrl, models, calculations){
     function sendModelsTowardsPlayer(enemies, speedTime, areaSize){
         enemies = enemies || models.getAllEnemyModels();
         speedTime = speedTime || Settings.DefaultEnemyTimeToCrossField;
-        areaSize = areaSize || Settings.RadiusJinnsDestinationAroundPlayer;
+        areaSize = areaSize || Settings.RadiusJinnsDestinationAroundPlace;
         // returns interval Id
         var loopId = setInterval(function(){
-            var shooter = models.getOriginalShooter();
+            var shooter = models.getShooterFromField();
 
             for (var i = 0; i < enemies.length; i++) {
                 var enemy = enemies[i];
-                var rndPlace = models.getRandomCoordinatesAroundPlace(shooter, areaSize);
+                var place = enemy.name === 'jinn' ? Settings.JinnsAboutPlace : shooter;
+                var rndPlace = models.getRandomCoordinatesAroundPlace(place, areaSize);
+
                 actionController.moveToPoint(enemy, rndPlace.x, rndPlace.y, speedTime);
             }
-
             var loopingObjectsCount = getActiveLoopingObjects(enemies).length;
             var loopDetails = {
                 loopingObjectsCount: loopingObjectsCount,
@@ -24,17 +25,32 @@ var loopsController = (function(modelsCntrl, models, calculations){
         }, Settings.TravelDirectionRefreshTime);
     }
 
-    //function setRocketCollisionDetection(fireShell, others, tolerance){
-    //    return setInterval(function(){
-    //        console.log('in rocket collision detection');
-    //        var hitObjects = models.getHitObjects(fireShell, others, tolerance);
-    //        for (var i = 0; i < hitObjects.length; i++) {
-    //            var obj = hitObjects[i];
-    //            console.log('damage: ' + obj.damaged);
-    //            updateModelState(obj, obj.damaged);
-    //        }
-    //    }, Settings.DetectBlastDamageRefreshTime);
-    //}
+    function setJinnsShooting(){
+        var loopId = setInterval(function(){
+            var jinns = models.getAllJinns();
+
+            for (var i = 0; i < jinns.length; i++) {
+                var jinn = jinns[i];
+                var player = models.getShooterFromField();
+
+                if (jinn.frame > 3 && jinn.frame < 6){
+                    jinn.shoot(models.getRandomCoordinatesAroundPlace(player, Settings.JinnsShotAroundPlace));    
+                }
+                // var shootingInterval = Settings.JinnsShootingFrequency / jinns.length;
+                // setTimeout(function(){
+                //     jinn.shoot(models.getRandomCoordinatesAroundPlace(player, Settings.JinnsShotAroundPlace));
+                // }, parseInt(shootingInterval))
+
+            }
+            var loopingObjectsCount = getActiveLoopingObjects(jinns).length;
+            var loopDetails = {
+                loopingObjectsCount: loopingObjectsCount,
+                loopId: loopId
+            };
+
+            stopLoopIfNotNeeded(loopDetails);
+        }, Settings.JinnsShootingFrequency);
+    }
 
     function setBlastCollisionDetection(blasts, victims, tolerance){
         var loopId = setInterval(function(){
@@ -61,7 +77,7 @@ var loopsController = (function(modelsCntrl, models, calculations){
 
     function setPlayerCollisionDetection(others, tolerance){
         var loopId = setInterval(function(){
-            var player = models.getOriginalShooter();
+            var player = models.getShooterFromField();
             others = others || models.getAllEnemyModels();
             tolerance = tolerance || Settings.PlayerCollisionTolerance;
             var damage = calculations.detectManyToOneCollision(player, others, tolerance);
@@ -100,6 +116,7 @@ var loopsController = (function(modelsCntrl, models, calculations){
         sendModelsTowardsPlayer: sendModelsTowardsPlayer,
         setPlayerCollisionDetection: setPlayerCollisionDetection,
         setBlastCollisionDetection: setBlastCollisionDetection,
+        setJinnsShooting: setJinnsShooting
     };
 
 }(modelsController, modelsService, calculationsService));

@@ -1,4 +1,4 @@
-var playerModels = (function(field){
+var playerModels = (function(field, actions){
 
     var shooter = (function (){
         var sniper = field.display.sprite({
@@ -14,7 +14,10 @@ var playerModels = (function(field){
             name: 'sniper',
             health: Settings.PlayerInitialHealth,
             points: 0,
-            id: 0
+            id: 0,
+            shoot: function(target){
+                actions.fireOnTarget(this, target, weapon.gun, blast, Settings.MaxTimeForRocketToCrossField);
+            }
         });
 
         field.addChild(sniper);
@@ -71,15 +74,8 @@ var playerModels = (function(field){
             urls: ['sounds/explosion.mp3']
         });
 
-        function explode(settings){
-            var clone = explosion.clone({ x: settings.x, y: settings.y });
-            clone.id = modelsService.getUniqueId();
-            field.addChild(clone);
-            clone.startAnimation();
-            sound.play();
-            setTimeout(function(){
-                clone.remove();
-            }, Settings.DefaultExplosionDuration);
+        function explode(target){
+            actions.explode(explosion, target, sound, Settings.RocketExplosionDuration);
         }
 
         return {
@@ -93,4 +89,4 @@ var playerModels = (function(field){
         weapon: weapon,
         blast: blast
     }
-}(gameController.playField));
+}(gameController.playField, actionController));
