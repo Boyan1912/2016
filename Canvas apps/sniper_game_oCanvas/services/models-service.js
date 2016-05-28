@@ -52,15 +52,24 @@ var modelsService = (function(field, calculations, validator){
 
     function getAllActiveExplosions(){
         return getAllCanvasElements().filter(function(model){
-            return model.name === 'explosion' && model.id > 0;
+            return (model.name === 'explosion' && model.id > 0) ||
+                   (model.name === 'fire' && model.id > 0);
         })
     }
 
     function getPlayerActiveExplosions(){
         return getAllCanvasElements().filter(function(model){
-            return model.name === 'explosion' && model.isPlayerOwned && model.id > 0 ||
-            model.name === 'rocket' && model.id > 0;
+            return (model.name === 'explosion' && model.isPlayerOwned && model.id > 0) ||
+            (model.name === 'rocket' && model.id > 0);
         })
+    }
+
+    function getAllActiveAndPotentialExplosions(){
+      return getAllCanvasElements().filter(function(model){
+          return (model.name === 'explosion' && model.id > 0) ||
+          (model.name === 'rocket' && model.id > 0) ||
+          (model.name === 'jinnBullet' && model.id > 0)
+      })
     }
 
     function getAllEnemyModels(){
@@ -157,7 +166,8 @@ var modelsService = (function(field, calculations, validator){
         getPlayerActiveExplosions: getPlayerActiveExplosions,
         getAllDamageableModels: getAllDamageableModels,
         getVariousTypesByName: getVariousTypesByName,
-        getGraveImage: getGraveImage
+        getGraveImage: getGraveImage,
+        getAllActiveAndPotentialExplosions: getAllActiveAndPotentialExplosions
     }
 
 

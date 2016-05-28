@@ -1,4 +1,4 @@
-var actionController = (function(field, loopsCntrl, calculations, models){
+var actionController = (function(field, calculations, models){
 
     function turnToPoint(model, X, Y){
         var angle = calculations.getAngle(model.x, model.y, X, Y);
@@ -92,4 +92,4 @@ var actionController = (function(field, loopsCntrl, calculations, models){
         sendFireDemonsRunning: sendFireDemonsRunning
     }
 
-}(gameController.playField, loopsController, calculationsService, modelsService));
+}(gameController.playField, calculationsService, modelsService));

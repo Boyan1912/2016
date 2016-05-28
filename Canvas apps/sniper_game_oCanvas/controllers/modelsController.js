@@ -58,7 +58,7 @@ var modelsController = (function(field, models){
 
     return {
         addEnemiesToGame: addEnemiesToGame,
-        updateModelHealth: updateModelHealth
+        updateModelHealth: updateModelHealth,
     }
 
 }(gameController.playField, modelsService));

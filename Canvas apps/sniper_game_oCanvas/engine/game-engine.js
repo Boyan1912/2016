@@ -12,14 +12,11 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl){
           Settings.JinnTimeToCrossField, Settings.RadiusJinnsDestinationAroundPlace);
       loopsCntrl.setJinnsShooting(Settings.JinnsShootingChance);
 
-      // testing
-      var demons = modelsCntrl.addEnemiesToGame(2, 'fire_demon', {x: Settings.PlayFieldWidth});
-      actionCntrl.sendFireDemonsRunning();
+      var demons = modelsCntrl.addEnemiesToGame(Settings.InitialEnemiesCount, Settings.ThirtiaryEnemyType, {x: Settings.PlayFieldWidth});
+      actionCntrl.sendFireDemonsRunning(Settings.InitialFireDemonTimeToCrossField, Settings.FireDemonRunAcceleration);
 
-      // var fires = modelsCntrl.addEnemiesToGame(2, 'fire');
-      // loopsCntrl.sendModelsTowardsPlayer(fires,
-      //     Settings.FireTimeToCrossField, 0);
 
+      loopsCntrl.setBlastsConcentrationDetection();
       loopsCntrl.setPlayerCollisionDetection();
       loopsCntrl.setBlastCollisionDetection();
     }

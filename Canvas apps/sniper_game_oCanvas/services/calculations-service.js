@@ -26,7 +26,10 @@ var calculationsService = (function(){
     }
 
     function isHit(model, hitter, tolerance){
-        if(!model || !hitter){
+        if((!model || !hitter)
+        // || (model.name === 'fire_demon' && hitter.name === 'fire') ||
+        // (model.name === 'fire' && hitter.name === 'fire_demon')
+        ){
             return false;
         }
 
@@ -54,9 +57,6 @@ var calculationsService = (function(){
         for (var i = 0; i < hitters.length; i++) {
             var hitter = hitters[i];
             if (isHit(model, hitter, tolerance)){
-                if (hitter.name === 'fire_demon'){
-
-                }
                 damage += calculateDamage(model, hitter, tolerance);
             }
         }

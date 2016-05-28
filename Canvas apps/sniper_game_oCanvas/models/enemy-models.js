@@ -1,7 +1,5 @@
 var enemyModels = (function(field, actions){
-
     var creatures = (function (){
-
         var mummy = field.display.sprite({
             x: 10,
             y: -10,
@@ -27,6 +25,12 @@ var enemyModels = (function(field, actions){
             volume: 0.4
           });
 
+        var burningSound = new Howl({
+            urls: ['sounds/torch.mp3'],
+            loop: false,
+            volume: 0.5
+          });
+
         var fireDemon = field.display.sprite({
             x: 10,
             y: -10,
@@ -38,31 +42,24 @@ var enemyModels = (function(field, actions){
             direction: "x",
             duration: Settings.DefaultSpriteDuration,
             name: 'fire_demon',
+            currentFieldRunoverTime: Settings.InitialFireDemonTimeToCrossField,
             health: Settings.DefaultInitialEnemyHealth,
             damageWeight: Settings.InitialFireDemonDamageWeight,
             killValuePoints: Settings.FireDemonKillValuePoints,
-            tempo: 0,
-            run: function(){
-              // let demonFire = modelsController.addEnemiesToGame(1, 'fire', modelsService.getLatestModelOfType('fire_demon'));
-
-              this.duration = this.duration > 20 ? --this.duration : this.duration;
-              this.tempo += 20;
-              var runSpeed = Settings.FireDemonTimeToCrossField - this.tempo;
-
-              longBurningSound.play();
-              // actions.moveToPoint(demonFire, 200, 200, runSpeed, undefined,
-              //    Settings.PlayFieldLength, Settings.PlayFieldWidth, function(){
-              //       demonFire.fadeOut();
-              //       longBurningSound.stop();
-              //    })
+            tempo: 1,
+            run: function(initialSpeed, acceleration){
+              initialSpeed = initialSpeed || this.currentFieldRunoverTime;
+              this.duration = acceleration > 1 ? --this.duration : ++this.duration;
+              this.tempo *= acceleration;
+              this.currentFieldRunoverTime = initialSpeed - this.tempo;
 
               let y = Math.random() * Settings.PlayFieldLength;
-              actions.moveToPoint(this, 0, y, runSpeed, undefined,
+              actions.moveToPoint(this, 0, y, this.currentFieldRunoverTime, undefined,
                  Settings.PlayFieldLength, Settings.PlayFieldWidth, function(){
-                    this.x = Settings.PlayFieldWidth - 50;
+                    this.x = Settings.PlayFieldWidth;
                     this.run();
-                 })
-            }
+               });
+           }
         });
 
         fireDemon.id = 0;
@@ -80,8 +77,24 @@ var enemyModels = (function(field, actions){
             direction: "x",
             duration: Settings.DefaultSpriteDuration,
             name: 'fire',
-            damageWeight: Settings.InitialFireDemonDamageWeight
-        });
+            playSound: function(){
+              burningSound.play();
+            },
+            stopSound: function(){
+              burningSound.stop();
+            },
+            damageWeight: Settings.InitialFireDamageWeight,
+            burn: function(time){
+              this.stop();
+              this.startAnimation();
+              this.playSound();
+                  setTimeout(() => {
+                    this.fadeOut("long", "ease-in-out-cubic");
+                    this.stopSound();
+                    this.remove();
+                  }, time)
+            }
+         });
 
         fire.id = 0;
         field.addChild(fire);
@@ -107,6 +120,7 @@ var enemyModels = (function(field, actions){
 
         jinn.id = 0;
         field.addChild(jinn);
+
         var fireBallSound = new Howl({
             urls: ['sounds/large-fireball.mp3']
         });
@@ -131,9 +145,6 @@ var enemyModels = (function(field, actions){
             field.addChild(jinnBullet);
 
         var blast = (function(){
-            var burningSound = new Howl({
-                urls: ['sounds/torch.mp3']
-              });
             var explosion = field.display.sprite({
             x: -1000,
             y: 0,
@@ -183,7 +194,8 @@ var enemyModels = (function(field, actions){
             jinn: jinn,
             fireDemon: fireDemon,
             blast: blast,
-            grave: grave
+            grave: grave,
+            fire: fire
         };
 
     }());
