@@ -57,6 +57,7 @@ var calculationsService = (function(){
         for (var i = 0; i < hitters.length; i++) {
             var hitter = hitters[i];
             if (isHit(model, hitter, tolerance)){
+                soundsController.playSoundOnModelContact(model, hitter);
                 damage += calculateDamage(model, hitter, tolerance);
             }
         }

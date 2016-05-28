@@ -8,6 +8,7 @@ var Settings = {
     GraveDisplayTimeDuration: 4500,
     MinModelCoordinateValue: 15,
     ClickOnPlayerBugFixValue: 20,
+    DefaultPlayerAudioVolume: 0.4,
 
     // game performance:
     TravelDirectionRefreshTime: 2000,
@@ -24,15 +25,15 @@ var Settings = {
     RocketExplosionDuration: 3000,
     DefaultExplosionDamageArea: 30,
     DefaultExplosionDamageWeight: 3,
-    PlayerCollisionTolerance: 20,
+    PlayerCollisionTolerance: 30,
     MaxCountShotsAtATime: 4,
 
     // enemies:
     InitialEnemyType: 'mummy',
     SecondaryEnemyType: 'jinn',
     ThirtiaryEnemyType: 'fire_demon',
-    MummyTimeToCrossField: 70000,
-    JinnTimeToCrossField: 20000,
+    MummyTimeToCrossField: 70 * 1000,
+    JinnTimeToCrossField: 35 * 1000,
     FireTimeToCrossField: 100 * 1000,
     FireDemonTimeToCrossField: 100 * 1000,
     DefaultEnemyTimeToCrossField: 35 * 1000,

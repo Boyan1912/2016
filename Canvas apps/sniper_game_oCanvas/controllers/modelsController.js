@@ -38,21 +38,23 @@ var modelsController = (function(field, models){
     }
 
     function handleDeadEnemyModel(model){
-        //console.log('DEAD: ' + model.name);
         var player = models.getShooterFromField();
         player.points += model.killValuePoints;
-        //console.log('POINTS: ' + player.points);
+        soundsController.playSoundOnDeath(model);
         displayImageOnModelDeath(model, models.getGraveImage(), Settings.GraveDisplayTimeDuration);
+        model.remove();
     }
 
     function displayImageOnModelDeath(model, image, displayTime){
-      image = image || models.getGraveImage();
+      image = image || models.getProtoModelByName('grave');
       model.stop();
       var clone = models.cloneModel({x: model.x, y: model.y}, image);
       field.addChild(clone);
       model.remove();
       setTimeout(() => {
-        clone.fadeOut("long", "ease-in-out-cubic");
+        clone.fadeOut("long", "ease-in-out-cubic", () => {
+            clone.remove();
+        });
       }, displayTime);
     }
 

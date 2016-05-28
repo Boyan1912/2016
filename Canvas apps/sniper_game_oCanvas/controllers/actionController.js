@@ -84,12 +84,13 @@ var actionController = (function(field, calculations, models){
         }
       }
 
+
     return {
         turnToPoint: turnToPoint,
         moveToPoint: moveToPoint,
         fireOnTarget: fireOnTarget,
         explode: explode,
-        sendFireDemonsRunning: sendFireDemonsRunning
+        sendFireDemonsRunning: sendFireDemonsRunning,
     }
 
 }(gameController.playField, calculationsService, modelsService));

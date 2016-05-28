@@ -112,7 +112,7 @@ var enemyModels = (function(field, actions){
             name: 'explosion',
             damageWeight: Settings.DefaultExplosionDamageWeight,
             playSound: function(){
-                sounds.burningSound.play();
+                sounds.explosion5.play();
               }
             });
 

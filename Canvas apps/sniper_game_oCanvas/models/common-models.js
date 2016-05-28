@@ -10,17 +10,78 @@ var commonModels = (function(field){
                     });
                 }()),
 
-                burningSound: (function(){
+                torchSound: (function(){
                   return new Howl({
                       urls: ['sounds/torch.mp3'],
                       loop: false,
-                      volume: 0.5
+                      volume: 0.7
                     });
                 }()),
 
                 fireBallSound: (function(){
                     return new Howl({
                         urls: ['sounds/large-fireball.mp3']
+                      });
+                }()),
+
+                burningOne: (function(){
+                    return new Howl({
+                        urls: ['sounds/burning.mp3']
+                      });
+                }()),
+
+                forestFire: (function(){
+                    return new Howl({
+                        urls: ['sounds/forest_fire.mp3'],
+                        volume: 1
+                      });
+                }()),
+
+                explosion5: (function(){
+                    return new Howl({
+                        urls: ['sounds/Explosion+5.mp3'],
+                      });
+                }()),
+
+                electricshock: (function(){
+                    return new Howl({
+                        urls: ['sounds/electricshock.mp3'],
+                        volume: 0.3
+                      });
+                }()),
+
+                male_scream1: (function(){
+                    return new Howl({
+                        urls: ['sounds/scream_male1.mp3'],
+                        volume: Settings.DefaultPlayerAudioVolume
+                      });
+                }()),
+
+                male_scream2: (function(){
+                    return new Howl({
+                        urls: ['sounds/scream_male2.mp3'],
+                        volume: Settings.DefaultPlayerAudioVolume
+                      });
+                }()),
+
+                male_scream3: (function(){
+                    return new Howl({
+                        urls: ['sounds/scream_male3.mp3'],
+                        volume: Settings.DefaultPlayerAudioVolume
+                      });
+                }()),
+
+                applause: (function(){
+                    return new Howl({
+                        urls: ['sounds/applause.mp3'],
+                        // volume: Settings.DefaultPlayerAudioVolume
+                      });
+                }()),
+
+                dying_scream: (function(){
+                    return new Howl({
+                        urls: ['sounds/death-scream.mp3'],
+                        // volume: Settings.DefaultPlayerAudioVolume
                       });
                 }())
           };
@@ -39,10 +100,10 @@ var commonModels = (function(field){
             duration: Settings.DefaultSpriteDuration,
             name: 'fire',
             playSound: function(){
-              sounds.burningSound.play();
+              sounds.burningOne.play();
             },
             stopSound: function(){
-              sounds.burningSound.stop();
+              sounds.burningOne.stop();
             },
             damageWeight: Settings.InitialFireDamageWeight,
             burn: function(time){
@@ -69,8 +130,8 @@ var commonModels = (function(field){
         	 image: "img/grave.gif",
            name: "grave"
          });
+          graveImage.id = 0;
           field.addChild(graveImage);
-
       }());
 
 

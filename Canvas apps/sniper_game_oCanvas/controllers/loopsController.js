@@ -12,10 +12,9 @@ var loopsController = (function(modelsCntrl, models, calculations){
               var enemy = enemies[i];
               var place = enemy.name === 'jinn' ? Settings.JinnsAboutPlace : shooter;
               var rndPlace = models.getRandomCoordinatesAroundPlace(place, areaSize);
-
               actionController.moveToPoint(enemy, rndPlace.x, rndPlace.y, speedTime);
             }
-
+            // console.log(models.getModelsByName('fire'));
             var loopingObjectsCount = getActiveLoopingObjects(enemies).length;
             var loopDetails = {
                 loopingObjectsCount: loopingObjectsCount,
@@ -59,7 +58,6 @@ var loopsController = (function(modelsCntrl, models, calculations){
                 var damage = calculations.detectManyToOneCollision(potentialVictim, blasts, tolerance);
                 if(damage){
                     modelsCntrl.updateModelHealth(potentialVictim, damage);
-                    // console.log(potentialVictim.health);
                 }
             }
             // var loopingObjectsCount = getActiveLoopingObjects(blasts).length;
