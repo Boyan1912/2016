@@ -21,11 +21,16 @@ var playerModels = (function(field, actions){
         });
 
         field.addChild(sniper);
-        
         return sniper;
     }());
 
     var weapon = (function (){
+        var shotgunSound = new Howl({
+            urls: ['sounds/shotgun.mp3']
+        });
+        var emptyGunSound = new Howl({
+            urls: ['sounds/empty_gun.mp3']
+        });
         var rocket = field.display.sprite({
             x: -1000,
             y: 0,
@@ -39,9 +44,10 @@ var playerModels = (function(field, actions){
             name: 'rocket',
             damageWeight: Settings.DefaultInitialRocketDamageWeight,
             playSound: function(){
-                new Howl({
-                    urls: ['sounds/shotgun.mp3']
-                }).play();
+              shotgunSound.play();
+            },
+            playEmptyGunSound: function(){
+              emptyGunSound.play();
             }
         });
 
@@ -56,6 +62,9 @@ var playerModels = (function(field, actions){
     }());
 
     var blast = (function (){
+        var sound = new Howl({
+            urls: ['sounds/explosion.mp3']
+        });
         var explosion = field.display.sprite({
             x: -1000,
             y: 0,
@@ -69,22 +78,21 @@ var playerModels = (function(field, actions){
             frame: 1,
             loop: false,
             name: 'explosion',
-            damageWeight: Settings.DefaultExplosionDamageWeight
+            isPlayerOwned: true,
+            damageWeight: Settings.DefaultExplosionDamageWeight,
+            playSound: function(){
+              sound.play();
+            }
         });
 
         explosion.id = 0;
         field.addChild(explosion);
 
-        var sound = new Howl({
-            urls: ['sounds/explosion.mp3']
-        });
-
         function explode(target){
-            actions.explode(explosion, target, sound, Settings.RocketExplosionDuration);
+            actions.explode(explosion, target, Settings.RocketExplosionDuration);
         }
 
         return {
-            explosion: explosion,
             explode : explode
         }
     }());

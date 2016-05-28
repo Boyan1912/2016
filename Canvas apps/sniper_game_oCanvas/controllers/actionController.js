@@ -10,7 +10,7 @@ var actionController = (function(field, loopsCntrl, calculations, models){
         model.rotateTo(angle);
     }
 
-    function moveToPoint(model, X, Y, maxTime, sensitivity, maxLength, maxWidth){
+    function moveToPoint(model, X, Y, maxTime, sensitivity, maxLength, maxWidth, callbackFunc){
         model.stop();
         model.startAnimation();
 
@@ -22,7 +22,7 @@ var actionController = (function(field, loopsCntrl, calculations, models){
         }, {
             easing: 'linear',
             duration: animationDuration,
-            callback: function(){
+            callback: callbackFunc ? callbackFunc : function(){
                 model.stopAnimation();
             }
         });
@@ -32,8 +32,13 @@ var actionController = (function(field, loopsCntrl, calculations, models){
         var angle = calculations.getAngle(model.x, model.y, target.x, target.y);
 
         gun.rotateTo(angle + Settings.RotationAngleAdjustment);
-        
+
         if(model.name === 'sniper'){
+            var enoughAmo = models.getPlayerActiveExplosions().length <= Settings.MaxCountShotsAtATime;
+            if(!enoughAmo){
+              gun.playEmptyGunSound();
+              return;
+            }
             calculations.positionWeaponInFrontOfModel(gun, model, angle);
         }else if(model.name === 'jinn'){
             gun.x = model.x;
@@ -54,37 +59,37 @@ var actionController = (function(field, loopsCntrl, calculations, models){
             easing: 'linear',
             duration: calculations.calcSpeedOfTravelInSeconds(target.x, gunShell.x, target.y, gunShell.y, speed),
             callback: function(){
-
                 blast.explode(target);
-
-                var allExplosions = models.getAllActiveExplosions();
-
-                loopsCntrl.setBlastCollisionDetection(allExplosions,
-                    models.getAllDamageableModels(), Settings.DefaultExplosionDamageArea);
-
                 field.removeChild(gunShell);
             }
         });
     }
 
-    function explode(model, target, sound, duration){
-            var clone = models.cloneModel({ x: target.x, y: target.y }, model);
-            field.addChild(clone);
-            clone.startAnimation();
-            if(sound){  
-                sound.play(); 
-            }
-            setTimeout(function(){
-                clone.remove();
-            }, duration);
-        }
+    function explode(model, target, duration){
+        var clone = models.cloneModel({ x: target.x, y: target.y }, model);
+        clone.id = models.getUniqueId();
+        field.addChild(clone);
+        clone.startAnimation();
+        clone.playSound();
+        setTimeout(function(){
+            clone.remove();
+        }, duration);
+    }
 
+    function sendFireDemonsRunning(demons){
+        demons = demons || models.getAllFireDemons();
+        for (var i = 0; i < demons.length; i++) {
+          let demon = demons[i];
+          demon.run();
+        }
+      }
 
     return {
         turnToPoint: turnToPoint,
         moveToPoint: moveToPoint,
         fireOnTarget: fireOnTarget,
-        explode: explode
+        explode: explode,
+        sendFireDemonsRunning: sendFireDemonsRunning
     }
 
 }(gameController.playField, loopsController, calculationsService, modelsService));

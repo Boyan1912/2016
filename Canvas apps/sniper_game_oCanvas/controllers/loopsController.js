@@ -1,20 +1,20 @@
 var loopsController = (function(modelsCntrl, models, calculations){
-
     function sendModelsTowardsPlayer(enemies, speedTime, areaSize){
         enemies = enemies || models.getAllEnemyModels();
         speedTime = speedTime || Settings.DefaultEnemyTimeToCrossField;
-        areaSize = areaSize || Settings.RadiusJinnsDestinationAroundPlace;
+        areaSize = areaSize || Settings.DefaultRadius;
         // returns interval Id
         var loopId = setInterval(function(){
-            var shooter = models.getShooterFromField();
 
             for (var i = 0; i < enemies.length; i++) {
-                var enemy = enemies[i];
-                var place = enemy.name === 'jinn' ? Settings.JinnsAboutPlace : shooter;
-                var rndPlace = models.getRandomCoordinatesAroundPlace(place, areaSize);
+              var shooter = models.getShooterFromField();
+              var enemy = enemies[i];
+              var place = enemy.name === 'jinn' ? Settings.JinnsAboutPlace : shooter;
+              var rndPlace = models.getRandomCoordinatesAroundPlace(place, areaSize);
 
-                actionController.moveToPoint(enemy, rndPlace.x, rndPlace.y, speedTime);
+              actionController.moveToPoint(enemy, rndPlace.x, rndPlace.y, speedTime);
             }
+
             var loopingObjectsCount = getActiveLoopingObjects(enemies).length;
             var loopDetails = {
                 loopingObjectsCount: loopingObjectsCount,
@@ -25,23 +25,18 @@ var loopsController = (function(modelsCntrl, models, calculations){
         }, Settings.TravelDirectionRefreshTime);
     }
 
-    function setJinnsShooting(){
+    function setJinnsShooting(frequency){
         var loopId = setInterval(function(){
             var jinns = models.getAllJinns();
-
             for (var i = 0; i < jinns.length; i++) {
-                var jinn = jinns[i];
-                var player = models.getShooterFromField();
-
-                if (jinn.frame > 3 && jinn.frame < 6){
-                    jinn.shoot(models.getRandomCoordinatesAroundPlace(player, Settings.JinnsShotAroundPlace));    
+                var jinn = jinns[i],
+                    player = models.getShooterFromField(),
+                    fires = Math.random() < frequency;
+                if(fires){
+                  jinn.shoot(models.getRandomCoordinatesAroundPlace(player, Settings.JinnsShotAroundPlace));
                 }
-                // var shootingInterval = Settings.JinnsShootingFrequency / jinns.length;
-                // setTimeout(function(){
-                //     jinn.shoot(models.getRandomCoordinatesAroundPlace(player, Settings.JinnsShotAroundPlace));
-                // }, parseInt(shootingInterval))
-
             }
+
             var loopingObjectsCount = getActiveLoopingObjects(jinns).length;
             var loopDetails = {
                 loopingObjectsCount: loopingObjectsCount,
@@ -49,20 +44,21 @@ var loopsController = (function(modelsCntrl, models, calculations){
             };
 
             stopLoopIfNotNeeded(loopDetails);
-        }, Settings.JinnsShootingFrequency);
+        }, Settings.JinnsShootingAttemptFrequency);
     }
 
-    function setBlastCollisionDetection(blasts, victims, tolerance){
+    function setBlastCollisionDetection(tolerance){
         var loopId = setInterval(function(){
-            //logger.monitorBlastsDetection(blasts, victims, tolerance);
+            var blasts = models.getAllActiveExplosions(),
+            victims = models.getAllDamageableModels();
+            tolerance = tolerance || Settings.DefaultExplosionDamageArea;
+
             for (var i = 0; i < victims.length; i++) {
                 var potentialVictim = victims[i];
-                for (var j = 0; j < blasts.length; j++) {
-                    var blast = blasts[j];
-                    if(calculations.isHit(potentialVictim, blast, tolerance) && !models.isDead(potentialVictim)){
-                        var damage = calculations.calculateDamage(potentialVictim, blast, tolerance);
-                        modelsCntrl.updateModelHealth(potentialVictim, damage);
-                    }
+                var damage = calculations.detectManyToOneCollision(potentialVictim, blasts, tolerance);
+                if(damage){
+                    modelsCntrl.updateModelHealth(potentialVictim, damage);
+                    // console.log(potentialVictim.health);
                 }
             }
             var loopingObjectsCount = getActiveLoopingObjects(blasts).length;
@@ -71,15 +67,15 @@ var loopsController = (function(modelsCntrl, models, calculations){
                 loopId: loopId
             };
 
-            stopLoopIfNotNeeded(loopDetails);
+            // stopLoopIfNotNeeded(loopDetails);
         }, Settings.DetectBlastDamageRefreshTime);
     }
 
     function setPlayerCollisionDetection(others, tolerance){
         var loopId = setInterval(function(){
-            var player = models.getShooterFromField();
             others = others || models.getAllEnemyModels();
             tolerance = tolerance || Settings.PlayerCollisionTolerance;
+            var player = models.getShooterFromField();
             var damage = calculations.detectManyToOneCollision(player, others, tolerance);
             if(damage){
                 modelsCntrl.updateModelHealth(player, damage);
@@ -90,7 +86,7 @@ var loopsController = (function(modelsCntrl, models, calculations){
                 loopingObjectsCount: loopingObjectsCount,
                 loopId: loopId
             };
-            stopLoopIfNotNeeded(loopDetails);
+            // stopLoopIfNotNeeded(loopDetails);
         }, Settings.DetectPlayerCollisionRefreshTime);
     }
 

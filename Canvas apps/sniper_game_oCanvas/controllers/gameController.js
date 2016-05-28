@@ -21,6 +21,18 @@ var gameController = (function(){
         $('#wrapper').append($startScreen);
     }
 
+    function playMusic(){
+      var sound = new Howl({
+        urls: ['sounds/EPIC Game of Thrones (Extended Theme) Audio - PiscesRising.mp3'],
+        autoplay: true,
+        loop: true,
+        volume: 0.35,
+        // onend: function() {
+        //   console.log('Finished!');
+        // }
+      });
+    }
+
     var playField = (function(){
         return oCanvas.create({
             canvas: "#canvas",
@@ -31,6 +43,7 @@ var gameController = (function(){
 
     return {
         start: start,
-        playField: playField
+        playField: playField,
+        playMusic: playMusic
     }
 }());

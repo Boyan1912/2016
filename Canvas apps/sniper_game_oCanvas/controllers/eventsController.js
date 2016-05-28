@@ -24,7 +24,7 @@ var eventsController = (function(field, models){
                     e.y += tolerance;
                 }
 
-                actionController.moveToPoint(player, e.x, e.y);
+                actionController.moveToPoint(player, e.x, e.y, Settings.MaxTimeForPlayerToCrossField);
             }
         });
     }

@@ -18,38 +18,32 @@ var calculationsService = (function(){
         var diffX = Math.abs(eX - mX),
             diffY = Math.abs(eY - mY),
             distance = (diffX + diffY) / 2,
-            unitOfMeasure = ((maxLength / sensitivity) + (maxWidth / sensitivity)) / 2,
-            result;
+            maxDistance = (maxLength + maxWidth) / 2,
+            fraction = maxDistance / distance,
+            result = maxTime / fraction;
 
-        for(var i = sensitivity - 1; i >= 0 ; i--){
-            var speedNormaliser = i + 1;
-            if (distance > unitOfMeasure * i && distance <=  unitOfMeasure * speedNormaliser){
-                result = maxTime * (speedNormaliser / sensitivity);
-                break;
-            }
-        }
-
-        return parseInt(result);
+            return parseInt(result);
     }
 
     function isHit(model, hitter, tolerance){
         if(!model || !hitter){
             return false;
         }
-        //console.log(obj.name);
-        //console.log(model.name);
-        return Math.abs(hitter.x - model.x) <= tolerance && Math.abs(hitter.y - model.y) <= tolerance;
+
+        return (Math.abs(hitter.x - model.x) + Math.abs(hitter.y - model.y)) / 2 <= tolerance;
     }
 
     function calculateDamage(model, hitter, tolerance){
         var unit = tolerance * 1 / 3,
+            proximity = (Math.abs(hitter.x - model.x) + Math.abs(hitter.y - model.y)) / 2,
             damage;
-        if(Math.abs(hitter.x - model.x) < unit && Math.abs(hitter.y - model.y) < unit){
-            damage = (1 / 3) * hitter.damageWeight;
-        }else if(Math.abs(hitter.x - model.x) > unit * 2 && Math.abs(hitter.y - model.y) > unit * 2){
-            damage = 1 * hitter.damageWeight;
-        }else{
+
+        if(proximity < unit){
+            damage = hitter.damageWeight;
+        }else if(proximity < unit * 2){
             damage = (2 / 3) * hitter.damageWeight;
+        }else{
+            damage = (1 / 3) * hitter.damageWeight;
         }
 
         return damage;
@@ -60,6 +54,9 @@ var calculationsService = (function(){
         for (var i = 0; i < hitters.length; i++) {
             var hitter = hitters[i];
             if (isHit(model, hitter, tolerance)){
+                if (hitter.name === 'fire_demon'){
+
+                }
                 damage += calculateDamage(model, hitter, tolerance);
             }
         }

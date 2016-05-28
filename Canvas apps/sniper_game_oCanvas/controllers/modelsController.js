@@ -4,11 +4,13 @@ var modelsController = (function(field, models){
         count = count || 1;
         var enemies = [],
             protoModel = models.getProtoModelByName(type);
-            
-        settings = settings || { y: protoModel.y };
+
+        settings = settings || { };
 
         for(var i = 0; i < count; i++){
-            settings.x = Math.random() * Settings.PlayFieldLength;
+            settings.x = settings.x || Math.random() * Settings.PlayFieldLength;
+            settings.y = settings.y  || Math.random() * Settings.PlayFieldWidth;
+
             var clone = models.cloneModel(settings, protoModel);
             enemies.push(clone);
         }
@@ -40,9 +42,18 @@ var modelsController = (function(field, models){
         var player = models.getShooterFromField();
         player.points += model.killValuePoints;
         //console.log('POINTS: ' + player.points);
-        model.stop();
+        displayImageOnModelDeath(model, models.getGraveImage(), Settings.GraveDisplayTimeDuration);
+    }
 
-        model.remove();
+    function displayImageOnModelDeath(model, image, displayTime){
+      image = image || models.getGraveImage();
+      model.stop();
+      var clone = models.cloneModel({x: model.x, y: model.y}, image);
+      field.addChild(clone);
+      model.remove();
+      setTimeout(() => {
+        clone.fadeOut("long", "ease-in-out-cubic");
+      }, displayTime);
     }
 
     return {

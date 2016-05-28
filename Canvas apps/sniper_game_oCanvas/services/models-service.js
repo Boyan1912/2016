@@ -12,6 +12,14 @@ var modelsService = (function(field, calculations, validator){
         })
     }
 
+    function getLatestModelOfType(name){
+        let sorted =  getModelsByName(name).sort(function(a, b){
+            return a.id - b.id;
+        });
+
+        return sorted.pop();
+    }
+
     function getById(id){
         validator.validateId(id);
         return getAllCanvasElements().find(function(model){
@@ -48,6 +56,13 @@ var modelsService = (function(field, calculations, validator){
         })
     }
 
+    function getPlayerActiveExplosions(){
+        return getAllCanvasElements().filter(function(model){
+            return model.name === 'explosion' && model.isPlayerOwned && model.id > 0 ||
+            model.name === 'rocket' && model.id > 0;
+        })
+    }
+
     function getAllEnemyModels(){
         return getAllCanvasElements().filter(function(model){
             return model.name !== 'sniper' && model.name !== 'rocket'
@@ -59,6 +74,14 @@ var modelsService = (function(field, calculations, validator){
         return getAllCanvasElements().filter(function(model){
             return !!model.health && model.id > 0;
         })
+    }
+
+    function getAllFires(){
+        return getModelsByName('fire');
+    }
+
+    function getAllFireDemons(){
+        return getModelsByName('fire_demon');
     }
 
     function getAllMummies(){
@@ -74,7 +97,13 @@ var modelsService = (function(field, calculations, validator){
             return model.name === 'sniper';
         })
     }
-    
+
+    function getGraveImage(){
+        return getAllCanvasElements().find(function(model){
+            return model.name === 'grave';
+        })
+    }
+
     function getRandomCoordinatesAroundPlace(place, marginX, marginY){
         marginY = marginY || marginX;
         var sign = Math.random() > 0.5;
@@ -83,8 +112,8 @@ var modelsService = (function(field, calculations, validator){
         var y = sign ? (place.y + Math.random() * marginY) : (place.y - Math.random() * marginY);
 
         return {
-            x: x < 5 ? 5 : x % Settings.PlayFieldWidth, // keep it inside the field
-            y: y < 5 ? 5 : y % Settings.PlayFieldLength
+            x: x < Settings.MinModelCoordinateValue ? Settings.MinModelCoordinateValue : x % Settings.PlayFieldWidth, // keep it inside the field
+            y: y < Settings.MinModelCoordinateValue ? Settings.MinModelCoordinateValue : y % Settings.PlayFieldLength
         };
     }
 
@@ -113,6 +142,9 @@ var modelsService = (function(field, calculations, validator){
         getByNameAndId: getByNameAndId,
         getAllMummies: getAllMummies,
         getAllJinns: getAllJinns,
+        getAllFireDemons: getAllFireDemons,
+        getAllFires: getAllFires,
+        getLatestModelOfType: getLatestModelOfType,
         getShooterFromField: getShooterFromField,
         getRandomCoordinatesAroundPlace: getRandomCoordinatesAroundPlace,
         cloneModel: cloneModel,
@@ -122,8 +154,10 @@ var modelsService = (function(field, calculations, validator){
         getUniqueId: getUniqueId,
         getAllEnemyModels: getAllEnemyModels,
         getAllActiveExplosions: getAllActiveExplosions,
+        getPlayerActiveExplosions: getPlayerActiveExplosions,
         getAllDamageableModels: getAllDamageableModels,
-        getVariousTypesByName: getVariousTypesByName
+        getVariousTypesByName: getVariousTypesByName,
+        getGraveImage: getGraveImage
     }
 
 
