@@ -2,8 +2,8 @@ var playerModels = (function(field, actions){
 
     var shooter = (function (){
         var sniper = field.display.sprite({
-            x: 150,
-            y: 150,
+            x: Settings.PlayFieldWidth / 2,
+            y: Settings.PlayFieldLength / 2,
             origin: { x: "center", y: "center" },
             image: "img/sniper.png",
             generate: true,
@@ -43,6 +43,7 @@ var playerModels = (function(field, actions){
             duration: Settings.DefaultSpriteDuration,
             name: 'rocket',
             damageWeight: Settings.DefaultInitialRocketDamageWeight,
+            shellsCount: Settings.PlayerInitialGunShellsCount,
             playSound: function(){
               shotgunSound.play();
             },
@@ -53,16 +54,14 @@ var playerModels = (function(field, actions){
 
         rocket.id = 0;
         field.addChild(rocket);
-        var gunShellsCount = Settings.PlayerInitialGunShellsCount;
 
         return {
-            gun: rocket,
-            shellsCount: gunShellsCount
+            gun: rocket
         }
     }());
 
     var blast = (function (){
-        var sound = new Howl({
+        var explosionSound = new Howl({
             urls: ['sounds/explosion.mp3']
         });
         var explosion = field.display.sprite({
@@ -81,7 +80,7 @@ var playerModels = (function(field, actions){
             isPlayerOwned: true,
             damageWeight: Settings.DefaultExplosionDamageWeight,
             playSound: function(){
-              sound.play();
+              explosionSound.play();
             }
         });
 

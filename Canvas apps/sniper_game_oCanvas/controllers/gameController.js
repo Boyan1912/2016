@@ -26,7 +26,7 @@ var gameController = (function(){
         urls: ['sounds/EPIC Game of Thrones (Extended Theme) Audio - PiscesRising.mp3'],
         autoplay: true,
         loop: true,
-        volume: 0.35,
+        volume: 0.5,
         // onend: function() {
         //   console.log('Finished!');
         // }

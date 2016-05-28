@@ -1,5 +1,6 @@
 var enemyModels = (function(field, actions){
     var creatures = (function (){
+      var sounds = commonModels.sounds;
         var mummy = field.display.sprite({
             x: 10,
             y: -10,
@@ -18,18 +19,6 @@ var enemyModels = (function(field, actions){
 
         mummy.id = 0;
         field.addChild(mummy);
-
-        var longBurningSound = new Howl({
-            urls: ['sounds/houseonfire.mp3'],
-            loop: false,
-            volume: 0.4
-          });
-
-        var burningSound = new Howl({
-            urls: ['sounds/torch.mp3'],
-            loop: false,
-            volume: 0.5
-          });
 
         var fireDemon = field.display.sprite({
             x: 10,
@@ -65,40 +54,6 @@ var enemyModels = (function(field, actions){
         fireDemon.id = 0;
         field.addChild(fireDemon);
 
-        // TEST
-        var fire = field.display.sprite({
-            x: -10,
-            y: 10,
-            origin: { x: "center", y: "center" },
-            image: "img/fire.png",
-            generate: true,
-            width: 38,
-            height: 35,
-            direction: "x",
-            duration: Settings.DefaultSpriteDuration,
-            name: 'fire',
-            playSound: function(){
-              burningSound.play();
-            },
-            stopSound: function(){
-              burningSound.stop();
-            },
-            damageWeight: Settings.InitialFireDamageWeight,
-            burn: function(time){
-              this.stop();
-              this.startAnimation();
-              this.playSound();
-                  setTimeout(() => {
-                    this.fadeOut("long", "ease-in-out-cubic");
-                    this.stopSound();
-                    this.remove();
-                  }, time)
-            }
-         });
-
-        fire.id = 0;
-        field.addChild(fire);
-
         var jinn = field.display.sprite({
             x: 50,
             y: -20,
@@ -114,35 +69,32 @@ var enemyModels = (function(field, actions){
             damageWeight: Settings.DefaultInitialJinnDamageWeight,
             killValuePoints: Settings.JinnKillValuePoints,
             shoot: function(target){
-                actions.fireOnTarget(this, target, jinnBullet, blast, Settings.MaxTimeForJinnBulletToCrossField);
+                actions.fireOnTarget(this, target, fireBall, blast, Settings.MaxTimeForFireBallToCrossField);
             }
         });
 
         jinn.id = 0;
         field.addChild(jinn);
 
-        var fireBallSound = new Howl({
-            urls: ['sounds/large-fireball.mp3']
-        });
-        var jinnBullet = field.display.sprite({
+        var fireBall = field.display.sprite({
             x: 50,
             y: 20,
             origin: { x: "center", y: "center" },
-            image: "img/jinnbullet.png",
+            image: "img/fireball.png",
             generate: true,
             width: 32,
             height: 24,
             direction: "x",
             duration: Settings.DefaultSpriteDuration,
-            name: 'jinnBullet',
+            name: 'fireball',
             damageWeight: Settings.DefaultInitialJinnDamageWeight,
             playSound: function(){
-                fireBallSound.play();
+                sounds.fireBallSound.play();
               }
             });
 
-            jinnBullet.id = 0;
-            field.addChild(jinnBullet);
+            fireBall.id = 0;
+            field.addChild(fireBall);
 
         var blast = (function(){
             var explosion = field.display.sprite({
@@ -160,7 +112,7 @@ var enemyModels = (function(field, actions){
             name: 'explosion',
             damageWeight: Settings.DefaultExplosionDamageWeight,
             playSound: function(){
-                burningSound.play();
+                sounds.burningSound.play();
               }
             });
 
@@ -168,25 +120,12 @@ var enemyModels = (function(field, actions){
             field.addChild(explosion);
 
             function explode(target){
-                actions.explode(explosion, target, Settings.JinnBulletExplosionDuration);
+                actions.explode(explosion, target, Settings.FireBallExplosionDuration);
             }
 
             return {
                 explode: explode
             }
-
-        }());
-
-        var grave = (function(){
-          var graveImage = field.display.image({
-             x: -1000,
-             y: 0,
-          	 origin: { x: "center", y: "center" },
-          	 image: "img/grave.gif",
-             name: "grave"
-           });
-
-            field.addChild(graveImage);
         }());
 
         return {
@@ -194,8 +133,6 @@ var enemyModels = (function(field, actions){
             jinn: jinn,
             fireDemon: fireDemon,
             blast: blast,
-            grave: grave,
-            fire: fire
         };
 
     }());

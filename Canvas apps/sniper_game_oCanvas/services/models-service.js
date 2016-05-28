@@ -68,7 +68,7 @@ var modelsService = (function(field, calculations, validator){
       return getAllCanvasElements().filter(function(model){
           return (model.name === 'explosion' && model.id > 0) ||
           (model.name === 'rocket' && model.id > 0) ||
-          (model.name === 'jinnBullet' && model.id > 0)
+          (model.name === 'fireball' && model.id > 0)
       })
     }
 

@@ -76,11 +76,11 @@ var actionController = (function(field, calculations, models){
         }, duration);
     }
 
-    function sendFireDemonsRunning(demons){
+    function sendFireDemonsRunning(demons, options){
         demons = demons || models.getAllFireDemons();
         for (var i = 0; i < demons.length; i++) {
           let demon = demons[i];
-          demon.run();
+          demon.run(options.initialSpeed, options.acceleration);
         }
       }
 
