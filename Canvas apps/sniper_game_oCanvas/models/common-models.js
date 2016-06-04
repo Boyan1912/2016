@@ -2,95 +2,89 @@ var commonModels = (function(field){
 
       var sounds = (function(){
         return {
-                longBurningSound: (function(){
-                return new Howl({
-                      urls: ['sounds/houseonfire.mp3'],
-                      loop: false,
-                      volume: 0.4
-                    });
-                }()),
+            longBurningSound: new Howl({
+                urls: ['sounds/houseonfire.mp3'],
+                loop: false,
+                volume: 0.4
+            }),
 
-                torchSound: (function(){
-                  return new Howl({
-                      urls: ['sounds/torch.mp3'],
-                      loop: false,
-                      volume: 0.7
-                    });
-                }()),
+            torchSound: new Howl({
+                urls: ['sounds/torch.mp3'],
+                loop: false,
+                volume: 0.7
+            }),
 
-                fireBallSound: (function(){
-                    return new Howl({
-                        urls: ['sounds/large-fireball.mp3']
-                      });
-                }()),
+            fireBallSound: new Howl({
+                urls: ['sounds/large-fireball.mp3']
+            }),
 
-                burningOne: (function(){
-                    return new Howl({
-                        urls: ['sounds/burning.mp3']
-                      });
-                }()),
+            burningOne: new Howl({
+                urls: ['sounds/burning.mp3']
+            }),
 
-                forestFire: (function(){
-                    return new Howl({
-                        urls: ['sounds/forest_fire.mp3'],
-                        volume: 1
-                      });
-                }()),
+            forestFire: new Howl({
+                urls: ['sounds/forest_fire.mp3'],
+                volume: 1
+            }),
 
-                explosion5: (function(){
-                    return new Howl({
-                        urls: ['sounds/Explosion+5.mp3'],
-                      });
-                }()),
+            explosion5: new Howl({
+                urls: ['sounds/Explosion+5.mp3'],
+            }),
 
-                electricshock: (function(){
-                    return new Howl({
-                        urls: ['sounds/electricshock.mp3'],
-                        volume: 0.3
-                      });
-                }()),
+            electricshock: new Howl({
+                urls: ['sounds/electricshock.mp3'],
+                volume: 0.3
+            }),
 
-                male_scream1: (function(){
-                    return new Howl({
-                        urls: ['sounds/scream_male1.mp3'],
-                        volume: Settings.DefaultPlayerAudioVolume
-                      });
-                }()),
+            male_scream1: new Howl({
+                urls: ['sounds/scream_male1.mp3'],
+                volume: Settings.DefaultPlayerAudioVolume
+            }),
 
-                male_scream2: (function(){
-                    return new Howl({
-                        urls: ['sounds/scream_male2.mp3'],
-                        volume: Settings.DefaultPlayerAudioVolume
-                      });
-                }()),
+            male_scream2: new Howl({
+                urls: ['sounds/scream_male2.mp3'],
+                volume: Settings.DefaultPlayerAudioVolume
+            }),
 
-                male_scream3: (function(){
-                    return new Howl({
-                        urls: ['sounds/scream_male3.mp3'],
-                        volume: Settings.DefaultPlayerAudioVolume
-                      });
-                }()),
+            male_scream3: new Howl({
+                urls: ['sounds/scream_male3.mp3'],
+                volume: Settings.DefaultPlayerAudioVolume
+            }),
 
-                applause: (function(){
-                    return new Howl({
-                        urls: ['sounds/applause.mp3'],
-                        // volume: Settings.DefaultPlayerAudioVolume
-                      });
-                }()),
+            kick_your_ass_bitch: new Howl({
+                urls: ['sounds/Im gonna kick your ass bitch.mp3'],
+                // volume: Settings.DefaultPlayerAudioVolume
+            }),
 
-                dying_scream: (function(){
-                    return new Howl({
-                        urls: ['sounds/death-scream.mp3'],
-                        // volume: Settings.DefaultPlayerAudioVolume
-                      });
-                }())
+            fuckYouMotherFucker: new Howl({
+                urls: ['sounds/FuckYouMotherFucker.mp3'],
+            }),
+
+            oh_Shit: new Howl({
+                urls: ['sounds/oh_Shit.mp3'],
+            }),
+
+            dying_scream: new Howl({
+                urls: ['sounds/death-scream.mp3'],
+                volume: Settings.DefaultPlayerAudioVolume
+            }),
+
+            shotgunSound: new Howl({
+                urls: ['sounds/shotgun.mp3']
+            }),
+            emptyGunSound: new Howl({
+                urls: ['sounds/empty_gun.mp3']
+            }),
+            explosionSound: new Howl({
+                urls: ['sounds/explosion.mp3']
+            })
           };
       }());
 
       var fire = (function(){
         var fireModel = field.display.sprite({
-            x: -10,
-            y: 10,
+            x: -100,
+            y: 0,
             origin: { x: "center", y: "center" },
             image: "img/fire.png",
             generate: true,
@@ -100,10 +94,7 @@ var commonModels = (function(field){
             duration: Settings.DefaultSpriteDuration,
             name: 'fire',
             playSound: function(){
-              sounds.burningOne.play();
-            },
-            stopSound: function(){
-              sounds.burningOne.stop();
+              soundsController.lazyLoadPlay('burningOne');
             },
             damageWeight: Settings.InitialFireDamageWeight,
             burn: function(time){
@@ -112,7 +103,6 @@ var commonModels = (function(field){
               this.playSound();
                   setTimeout(() => {
                     this.fadeOut("long", "ease-in-out-cubic");
-                    this.stopSound();
                     this.remove();
                   }, time)
             }
@@ -124,7 +114,7 @@ var commonModels = (function(field){
 
       var grave = (function(){
         var graveImage = field.display.image({
-           x: -1000,
+           x: -100,
            y: 0,
         	 origin: { x: "center", y: "center" },
         	 image: "img/grave.gif",

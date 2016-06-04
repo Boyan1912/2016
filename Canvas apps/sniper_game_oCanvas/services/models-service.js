@@ -107,10 +107,8 @@ var modelsService = (function(field, calculations, validator){
         })
     }
 
-    function getGraveImage(){
-        return getAllCanvasElements().find(function(model){
-            return model.name === 'grave';
-        })
+    function getAllGraves(){
+        return getModelsByName('grave');
     }
 
     function getRandomCoordinatesAroundPlace(place, marginX, marginY){
@@ -144,6 +142,10 @@ var modelsService = (function(field, calculations, validator){
         return ++Id;
     }
 
+    function megaDeathCaused() {
+        return getAllGraves().length >= Settings.MinDeathsNeededForMegadeath;
+    }
+    
     return {
         getAllCanvasElements: getAllCanvasElements,
         getById: getById,
@@ -166,8 +168,9 @@ var modelsService = (function(field, calculations, validator){
         getPlayerActiveExplosions: getPlayerActiveExplosions,
         getAllDamageableModels: getAllDamageableModels,
         getVariousTypesByName: getVariousTypesByName,
-        getGraveImage: getGraveImage,
-        getAllActiveAndPotentialExplosions: getAllActiveAndPotentialExplosions
+        getAllGraves: getAllGraves,
+        getAllActiveAndPotentialExplosions: getAllActiveAndPotentialExplosions,
+        megaDeathCaused: megaDeathCaused
     }
 
 

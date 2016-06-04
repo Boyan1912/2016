@@ -58,6 +58,7 @@ var calculationsService = (function(){
             var hitter = hitters[i];
             if (isHit(model, hitter, tolerance)){
                 soundsController.playSoundOnModelContact(model, hitter);
+                gameController.displayModelInfo(hitter);
                 damage += calculateDamage(model, hitter, tolerance);
             }
         }

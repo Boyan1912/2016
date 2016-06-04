@@ -48,7 +48,6 @@ var actionController = (function(field, calculations, models){
         var gunShell = models.cloneModel({x: gun.x, y: gun.y}, gun);
         field.addChild(gunShell);
         gun.x = -Settings.PlayFieldWidth; // hide from screen
-        // gun.shellsCount--;
 
         gunShell.playSound();
         gunShell.startAnimation();

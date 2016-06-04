@@ -1,4 +1,5 @@
 var loopsController = (function(modelsCntrl, models, calculations){
+    
     function sendModelsTowardsPlayer(enemies, speedTime, areaSize, refreshRate){
         enemies = enemies || models.getAllEnemyModels();
         speedTime = speedTime || Settings.DefaultEnemyTimeToCrossField;
@@ -60,6 +61,11 @@ var loopsController = (function(modelsCntrl, models, calculations){
                     modelsCntrl.updateModelHealth(potentialVictim, damage);
                 }
             }
+
+            if (models.megaDeathCaused()){
+                soundsController.playSoundOnMegaDeath();
+            }
+
             // var loopingObjectsCount = getActiveLoopingObjects(blasts).length;
             // var loopDetails = {
             //     loopingObjectsCount: loopingObjectsCount,
@@ -153,7 +159,7 @@ var loopsController = (function(modelsCntrl, models, calculations){
 
         return models.getVariousTypesByName(names);
     }
-
+    
     return {
         sendModelsTowardsPlayer: sendModelsTowardsPlayer,
         setPlayerCollisionDetection: setPlayerCollisionDetection,

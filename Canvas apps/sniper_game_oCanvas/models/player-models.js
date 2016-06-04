@@ -1,5 +1,5 @@
-var playerModels = (function(field, actions){
-
+var playerModels = (function(gameCntrl, actions, sounds){
+    var field = gameCntrl.playField;
     var shooter = (function (){
         var sniper = field.display.sprite({
             x: Settings.PlayFieldWidth / 2,
@@ -16,21 +16,22 @@ var playerModels = (function(field, actions){
             points: 0,
             id: 0,
             shoot: function(target){
-                actions.fireOnTarget(this, target, weapon.gun, blast, Settings.MaxTimeForRocketToCrossField);
+                if(weapon.gun.shellsCount > 0){
+                    actions.fireOnTarget(this, target, weapon.gun, blast, Settings.MaxTimeForRocketToCrossField);
+                    weapon.gun.shellsCount--;
+                    gameCntrl.displayPlayerInfo();
+                }else {
+                    weapon.gun.playEmptyGunSound();
+                }
             }
         });
-
+        
         field.addChild(sniper);
         return sniper;
     }());
 
     var weapon = (function (){
-        var shotgunSound = new Howl({
-            urls: ['sounds/shotgun.mp3']
-        });
-        var emptyGunSound = new Howl({
-            urls: ['sounds/empty_gun.mp3']
-        });
+        
         var rocket = field.display.sprite({
             x: -1000,
             y: 0,
@@ -45,10 +46,10 @@ var playerModels = (function(field, actions){
             damageWeight: Settings.DefaultInitialRocketDamageWeight,
             shellsCount: Settings.PlayerInitialGunShellsCount,
             playSound: function(){
-              shotgunSound.play();
+                sounds.lazyLoadPlay('shotgunSound');
             },
             playEmptyGunSound: function(){
-              emptyGunSound.play();
+                sounds.lazyLoadPlay('emptyGunSound');
             }
         });
 
@@ -61,9 +62,7 @@ var playerModels = (function(field, actions){
     }());
 
     var blast = (function (){
-        var explosionSound = new Howl({
-            urls: ['sounds/explosion.mp3']
-        });
+        
         var explosion = field.display.sprite({
             x: -1000,
             y: 0,
@@ -80,7 +79,7 @@ var playerModels = (function(field, actions){
             isPlayerOwned: true,
             damageWeight: Settings.DefaultExplosionDamageWeight,
             playSound: function(){
-              explosionSound.play();
+              sounds.lazyLoadPlay('explosionSound');
             }
         });
 
@@ -92,7 +91,8 @@ var playerModels = (function(field, actions){
         }
 
         return {
-            explode : explode
+            explode : explode,
+            damageWeight: explosion.damageWeight
         }
     }());
 
@@ -101,4 +101,4 @@ var playerModels = (function(field, actions){
         weapon: weapon,
         blast: blast
     }
-}(gameController.playField, actionController));
+}(gameController, actionController, soundsController));
