@@ -165,12 +165,32 @@ var loopsController = (function(modelsCntrl, models, calculations){
         return models.getVariousTypesByName(names);
     }
     
+    function setRemovalOfUnwantedObjects() {
+        var loopId = setInterval(function(){
+
+            let trash = models.getAllDead();
+
+            for (var i = 0; i < trash.length; i++) {
+                var junk = trash[i];
+                junk.remove();
+            }
+            //
+            // var loopingObjectsCount = getActiveLoopingObjects(trash).length;
+            // var loopDetails = {
+            //     loopingObjectsCount: loopingObjectsCount,
+            //     loopId: loopId
+            // };
+            // stopLoopIfNotNeeded(loopDetails);
+        }, 200);
+    }
+    
     return {
         sendModelsTowardsPlayer: sendModelsTowardsPlayer,
         setPlayerCollisionDetection: setPlayerCollisionDetection,
         setBlastCollisionDetection: setBlastCollisionDetection,
         setJinnsShooting: setJinnsShooting,
-        setBlastsConcentrationDetection: setBlastsConcentrationDetection
+        setBlastsConcentrationDetection: setBlastsConcentrationDetection,
+        setRemovalOfUnwantedObjects: setRemovalOfUnwantedObjects
     };
 
 }(modelsController, modelsService, calculationsService));

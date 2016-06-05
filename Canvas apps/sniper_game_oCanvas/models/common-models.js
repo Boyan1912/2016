@@ -136,7 +136,7 @@ var commonModels = (function(field){
             image: "img/first_aid_kit_small.png",
             name: "health_kit",
             healPoints: Settings.HealthKitHealValue,
-
+            used: false
         });
         health.id = 0;
         field.addChild(health);

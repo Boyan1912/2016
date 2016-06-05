@@ -22,10 +22,12 @@ var soundsController = (function(sounds) {
                     }
                     break;
                 case 'explosion':
-                    if (soundIsActive('male_scream1')){
-                        return;
-                    }
+                    // if (soundIsActive('male_scream1')){
+                    //     // console.log(soundIsActive('male_scream1'));
+                    //     return;
+                    // }
                     if (!soundIsActive('male_scream3')){
+                        // console.log(!soundIsActive('male_scream3'));
                         lazyLoadPlay('male_scream3')
                     }
                     break;
@@ -43,7 +45,7 @@ var soundsController = (function(sounds) {
         } else {
 
         }
-        // console.log(self.activeSounds);
+        console.log(self.activeSounds);
     }
 
     function lazyLoadPlay(name){

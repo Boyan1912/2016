@@ -140,12 +140,15 @@ var modelsService = (function(field, calculations, validator){
         return model.health <= 0;
     }
 
-    function isViable(model){
-        return model.health > Settings.MinViabilityHealthPoints;
-    }
-
     function getUniqueId(){
         return ++Id;
+    }
+
+    function getAllDead() {
+        return getAllCanvasElements().filter(function(model){
+            return (model.health <= 0 && model.name !== 'sniper') ||
+                model.used;
+        })
     }
 
     function megaDeathCaused() {
@@ -167,7 +170,6 @@ var modelsService = (function(field, calculations, validator){
         cloneModel: cloneModel,
         getProtoModelByName: getProtoModelByName,
         isDead: isDead,
-        isViable: isViable,
         getUniqueId: getUniqueId,
         getAllEnemyModels: getAllEnemyModels,
         getAllActiveExplosions: getAllActiveExplosions,
@@ -177,7 +179,8 @@ var modelsService = (function(field, calculations, validator){
         getAllGraves: getAllGraves,
         getAllUtils: getAllUtils,
         getAllActiveAndPotentialExplosions: getAllActiveAndPotentialExplosions,
-        megaDeathCaused: megaDeathCaused
+        megaDeathCaused: megaDeathCaused,
+        getAllDead: getAllDead
     }
 
 

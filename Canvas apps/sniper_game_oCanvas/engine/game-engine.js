@@ -3,7 +3,7 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl){
     function startGame(){
       gameCntrl.playMusic();
 
-      var mummies = modelsCntrl.addEnemiesToGame(0, Settings.InitialEnemyType, {y: -50});
+      var mummies = modelsCntrl.addEnemiesToGame(10, Settings.InitialEnemyType, {y: -50});
       loopsCntrl.sendModelsTowardsPlayer(mummies,
           Settings.MummyTimeToCrossField, Settings.RadiusMummiesDestinationAroundPlayer);
 
@@ -26,6 +26,8 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl){
         setTimeout(function () {
             modelsCntrl.addEnemiesToGame(2, 'health_kit');
         }, 2000);
+
+        loopsCntrl.setRemovalOfUnwantedObjects();
     }
 
 
