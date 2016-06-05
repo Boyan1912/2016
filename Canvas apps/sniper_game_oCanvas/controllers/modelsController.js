@@ -38,7 +38,17 @@ var modelsController = (function(gameCntrl, models){
         }else if(model.name === 'sniper') {
             gameCntrl.displayPlayerInfo(model);
         }
-        
+    }
+
+    function updateModelState(model, attributes){
+        if(model.name === 'sniper' && attributes.bonus){
+            model.points += attributes.bonus;
+        }
+        if(models.isDead(model) && model.name !== 'sniper'){
+            handleDeadEnemyModel(model);
+        }else if(model.name === 'sniper') {
+            gameCntrl.displayPlayerInfo(model);
+        }
     }
     
     function handleDeadEnemyModel(model){

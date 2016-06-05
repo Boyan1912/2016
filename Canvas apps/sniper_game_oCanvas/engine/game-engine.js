@@ -12,7 +12,7 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl){
           Settings.JinnTimeToCrossField, Settings.RadiusJinnsDestinationAroundPlace);
       loopsCntrl.setJinnsShooting(Settings.JinnsShootingChance);
 
-      var demons = modelsCntrl.addEnemiesToGame(4, Settings.ThirtiaryEnemyType, {x: Settings.PlayFieldWidth});
+      var demons = modelsCntrl.addEnemiesToGame(2, Settings.ThirtiaryEnemyType, {x: Settings.PlayFieldWidth});
       var options = {
           initialSpeed: Settings.FireDemonTimeToCrossField,
           acceleration: Settings.FireDemonRunAcceleration
@@ -22,6 +22,10 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl){
       loopsCntrl.setBlastsConcentrationDetection();
       loopsCntrl.setPlayerCollisionDetection();
       loopsCntrl.setBlastCollisionDetection();
+        
+        setTimeout(function () {
+            modelsCntrl.addEnemiesToGame(2, 'health_kit');
+        }, 2000);
     }
 
 

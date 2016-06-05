@@ -7,9 +7,13 @@ var Settings = {
     PointsNeededForNextStage: 120,
     GraveDisplayTimeDuration: 4500,
     MinModelCoordinateValue: 15,
-    ClickOnPlayerBugFixValue: 20,
+    ClickOnPlayerBugFixValue: 10,
     DefaultPlayerAudioVolume: 0.6,
-    MinDeathsNeededForMegadeath: 4,
+
+    //gameplay
+    MinDeathsNeededForMegadeath: 3,
+    BonusForMegadeath: 10,
+    HealthKitHealValue: 20,
 
     // game performance:
     TravelDirectionRefreshTime: 2000,

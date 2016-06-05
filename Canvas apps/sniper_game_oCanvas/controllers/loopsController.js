@@ -63,6 +63,7 @@ var loopsController = (function(modelsCntrl, models, calculations){
             }
 
             if (models.megaDeathCaused()){
+                modelsCntrl.updateModelHealth(models.getShooterFromField(), { bonus: Settings.BonusForMegadeath});
                 soundsController.playSoundOnMegaDeath();
             }
 
@@ -127,6 +128,10 @@ var loopsController = (function(modelsCntrl, models, calculations){
         var loopId = setInterval(function(){
             others = others || models.getAllEnemyModels();
             tolerance = tolerance || Settings.PlayerCollisionTolerance;
+
+            var utils = models.getAllUtils();
+            others = others.concat(utils);
+
             var player = models.getShooterFromField();
             var damage = calculations.detectManyToOneCollision(player, others, tolerance);
             if(damage){

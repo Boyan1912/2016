@@ -77,6 +77,10 @@ var commonModels = (function(field){
             }),
             explosionSound: new Howl({
                 urls: ['sounds/explosion.mp3']
+            }),
+
+            success1: new Howl({
+                urls: ['sounds/success1.mp3']
             })
           };
       }());
@@ -124,11 +128,22 @@ var commonModels = (function(field){
           field.addChild(graveImage);
       }());
 
+    var healthKit = (function(){
+        var health = field.display.image({
+            x: -100,
+            y: 0,
+            origin: { x: "center", y: "center" },
+            image: "img/first_aid_kit_small.png",
+            name: "health_kit",
+            healPoints: Settings.HealthKitHealValue,
+
+        });
+        health.id = 0;
+        field.addChild(health);
+    }());
 
       return {
-        sounds: sounds,
-        grave: grave,
-        fire: fire
+        sounds: sounds
       }
 
 }(gameController.playField));

@@ -85,6 +85,12 @@ var modelsService = (function(field, calculations, validator){
         })
     }
 
+    function getAllUtils(){
+        return getAllCanvasElements().filter(function(model){
+            return (model.name === 'health_kit' && model.id > 0)
+        })
+    }
+
     function getAllFires(){
         return getModelsByName('fire');
     }
@@ -169,6 +175,7 @@ var modelsService = (function(field, calculations, validator){
         getAllDamageableModels: getAllDamageableModels,
         getVariousTypesByName: getVariousTypesByName,
         getAllGraves: getAllGraves,
+        getAllUtils: getAllUtils,
         getAllActiveAndPotentialExplosions: getAllActiveAndPotentialExplosions,
         megaDeathCaused: megaDeathCaused
     }
