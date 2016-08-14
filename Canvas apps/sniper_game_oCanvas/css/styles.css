@@ -2,13 +2,29 @@ body {
     background: #1e1f21;
     align-content: center;
 }
-#canvas {
+.canvas {
     margin: 0 auto;
     display: block;
-    background: #252729;
     width: 90%;
     height: 90%;
+    position: absolute;
+    top: 3%;
+    left: 3%;
 }
+
+#main-canvas{
+    z-index: 100;
+}
+#images{
+    z-index: 99;
+}
+#background{
+    z-index: 0;
+    background: url('../img/bg/wolf.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 #wrapper{
     padding-top: 30px;
     margin: auto;
@@ -22,7 +38,7 @@ body {
     border-radius: 15px;
     width: 80%;
     height: 60%;
-    z-index: 1;
+    z-index: 1000;
     position: absolute;
     top: 10%;
     left: 9%;

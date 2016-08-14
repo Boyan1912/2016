@@ -13,13 +13,14 @@ var Settings = {
     //gameplay
     MinDeathsNeededForMegadeath: 3,
     BonusForMegadeath: 10,
-    HealthKitHealValue: 20,
+    FirstAidKitHealValue: 20,
 
     // game performance:
     TravelDirectionRefreshTime: 2000,
     DetectBlastDamageRefreshTime: 100,
     DetectPlayerCollisionRefreshTime: 100,
     DetectFireIgnitionRefreshTime: 2500,
+    DetectStaticObjectsCollisionRefreshTime: 150,
 
     // player:
     PlayerInitialHealth: 100,
@@ -41,7 +42,7 @@ var Settings = {
     JinnTimeToCrossField: 35 * 1000,
     FireTimeToCrossField: 85 * 1000,
     FireDemonTimeToCrossField: 60 * 1000,
-    FireDemonMinTimeToCrossField: 9 * 1000,
+    FireDemonMinTimeToCrossField: 12 * 1000,
     DefaultEnemyTimeToCrossField: 35 * 1000,
     FireDemonRunAcceleration: 2,
     InitialEnemiesCount: 2,

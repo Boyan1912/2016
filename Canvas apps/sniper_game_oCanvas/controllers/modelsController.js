@@ -2,7 +2,7 @@ var modelsController = (function(gameCntrl, models){
 
     var field = gameCntrl.playField;
     
-    function addEnemies(count, type, settings){
+    function getEnemies(count, type, settings){
         count = count || 1;
         var enemies = [],
             protoModel = models.getProtoModelByName(type);
@@ -20,7 +20,7 @@ var modelsController = (function(gameCntrl, models){
     }
 
     function addEnemiesToGame(count, type, settings){
-        var enemies = addEnemies(count, type, settings);
+        var enemies = getEnemies(count, type, settings);
         for (var i = 0; i < enemies.length; i++) {
             field.addChild(enemies[i]);
         }
@@ -40,14 +40,21 @@ var modelsController = (function(gameCntrl, models){
         }
     }
 
-    function updateModelState(model, attributes){
-        if(model.name === 'sniper' && attributes.bonus){
-            model.points += attributes.bonus;
-        }
+    function updateModelState(model){
         if(models.isDead(model) && model.name !== 'sniper'){
             handleDeadEnemyModel(model);
         }else if(model.name === 'sniper') {
             gameCntrl.displayPlayerInfo(model);
+        }
+    }
+
+    function updatePlayerAttributes(staticObjectType) {
+        var player = models.getShooterFromField();
+        switch (staticObjectType.name){
+            case 'firstAidKit':
+                player.health += Settings.FirstAidKitHealValue;
+                soundsController.lazyLoadPlay('success1');
+                break;
         }
     }
     
@@ -75,7 +82,8 @@ var modelsController = (function(gameCntrl, models){
 
     return {
         addEnemiesToGame: addEnemiesToGame,
-        updateModelHealth: updateModelHealth
+        updateModelHealth: updateModelHealth,
+        updatePlayerAttributes: updatePlayerAttributes
     }
 
 }(gameController, modelsService));

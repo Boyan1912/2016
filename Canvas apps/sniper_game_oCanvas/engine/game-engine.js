@@ -1,13 +1,13 @@
-var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl){
+var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl, staticItems){
 
     function startGame(){
       gameCntrl.playMusic();
 
-      var mummies = modelsCntrl.addEnemiesToGame(10, Settings.InitialEnemyType, {y: -50});
+      var mummies = modelsCntrl.addEnemiesToGame(5, Settings.InitialEnemyType, {y: -50});
       loopsCntrl.sendModelsTowardsPlayer(mummies,
           Settings.MummyTimeToCrossField, Settings.RadiusMummiesDestinationAroundPlayer);
 
-      var jinns = modelsCntrl.addEnemiesToGame(0, Settings.SecondaryEnemyType, {x: -50});
+      var jinns = modelsCntrl.addEnemiesToGame(1, Settings.SecondaryEnemyType, {x: -50});
       loopsCntrl.sendModelsTowardsPlayer(jinns,
           Settings.JinnTimeToCrossField, Settings.RadiusJinnsDestinationAroundPlace);
       loopsCntrl.setJinnsShooting(Settings.JinnsShootingChance);
@@ -22,12 +22,14 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl){
       loopsCntrl.setBlastsConcentrationDetection();
       loopsCntrl.setPlayerCollisionDetection();
       loopsCntrl.setBlastCollisionDetection();
-        
-        setTimeout(function () {
-            modelsCntrl.addEnemiesToGame(2, 'health_kit');
-        }, 2000);
+      loopsCntrl.setStaticObjectsCollisionDetection();
 
-        loopsCntrl.setRemovalOfUnwantedObjects();
+
+      setTimeout(function () {
+          staticItems.addStaticObject('firstAidKit');
+      }, 2000);
+
+      loopsCntrl.setRemovalOfUnwantedObjects();
     }
 
 
@@ -36,4 +38,4 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl){
         startGame: startGame
     }
 
-}(modelsController, actionController, loopsController, gameController));
+}(modelsController, actionController, loopsController, gameController, staticModels));

@@ -85,6 +85,7 @@ var commonModels = (function(field){
           };
       }());
 
+
       var fire = (function(){
         var fireModel = field.display.sprite({
             x: -100,
@@ -128,19 +129,21 @@ var commonModels = (function(field){
           field.addChild(graveImage);
       }());
 
-    var healthKit = (function(){
-        var health = field.display.image({
-            x: -100,
-            y: 0,
-            origin: { x: "center", y: "center" },
-            image: "img/first_aid_kit_small.png",
-            name: "health_kit",
-            healPoints: Settings.HealthKitHealValue,
-            used: false
-        });
-        health.id = 0;
-        field.addChild(health);
-    }());
+    // var healthKit = (function(){
+    //     var health = field.display.image({
+    //         x: -100,
+    //         y: 0,
+    //         origin: { x: "center", y: "center" },
+    //         image: "img/first_aid_kit_small.png",
+    //         name: "health_kit",
+    //         healPoints: Settings.FirstAidKitHealValue,
+    //         used: false
+    //     });
+    //     health.id = 0;
+    //     field.addChild(health);
+    // }());
+
+
 
       return {
         sounds: sounds

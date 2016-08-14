@@ -8,7 +8,7 @@ var eventsController = (function(field, models){
     }
 
     function onRightButtonClick(){
-        var canvas = document.getElementById('canvas'),
+        var canvas = document.getElementById('main-canvas'),
             player = models.getShooterFromField(),
             tolerance = Settings.ClickOnPlayerBugFixValue;
         // remove context menu from mouse's right click

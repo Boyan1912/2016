@@ -27,7 +27,7 @@ var gameController = (function(){
         urls: ['sounds/EPIC Game of Thrones (Extended Theme) Audio - PiscesRising.mp3'],
         autoplay: true,
         loop: true,
-        volume: 0.3,
+        volume: 0.1,
         // onend: function() {
         //   console.log('Finished!');
         // }
@@ -36,9 +36,9 @@ var gameController = (function(){
 
     var playField = (function(){
         return oCanvas.create({
-            canvas: "#canvas",
+            canvas: "#main-canvas",
+            background: "transparent"
             // background: 'image(img/bg/wolf.jpg)'
-            background: '#000'
             });
         }());
 
@@ -67,6 +67,8 @@ var gameController = (function(){
             // playerInfoObj.fill = "#800000";
             // playerInfoObj.font = "bold 26px normal";
             // playerInfoObj.lineHeight = "29px";
+
+            playerInfoObj.stroke = "outside 8px rgba(0, 0, 0, 0.7)";
         }
 
         playField.draw.redraw();
@@ -84,6 +86,7 @@ var gameController = (function(){
 
 
         modelInfoObj.fill = "#800000";
+        modelInfoObj.stroke = "outside 8px rgba(0, 0, 0, 0.5)";
 
         playField.draw.redraw();
     }

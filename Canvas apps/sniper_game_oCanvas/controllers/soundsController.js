@@ -45,7 +45,7 @@ var soundsController = (function(sounds) {
         } else {
 
         }
-        console.log(self.activeSounds);
+        // console.log(self.activeSounds);
     }
 
     function lazyLoadPlay(name){

@@ -54,19 +54,11 @@ var calculationsService = (function(){
 
     function detectManyToOneCollision(model, hitters, tolerance){
         var damage = 0;
-        var previousId;
         for (var i = 0; i < hitters.length; i++) {
             var hitter = hitters[i];
             if (isHit(model, hitter, tolerance)){
-                if(hitter.name === 'health_kit' && model.name === 'sniper' && hitter.id !== previousId && hitter.healPoints){
-                    previousId = hitter.id;
-                    hitter.used = true;
-                    console.log(hitter.id);
-                    model.health += hitter.healPoints;
-                    hitter.healPoints = 0;
-                    soundsController.lazyLoadPlay('success1');
-                    hitter.remove(true);
-                    continue;
+                if (hitter.isStatic && model.name === 'sniper'){
+                    return hitter;
                 }
                 soundsController.playSoundOnModelContact(model, hitter);
                 gameController.displayModelInfo(hitter);

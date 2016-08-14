@@ -1,4 +1,4 @@
-var loopsController = (function(modelsCntrl, models, calculations){
+var loopsController = (function(modelsCntrl, models, calculations, staticModels){
     
     function sendModelsTowardsPlayer(enemies, speedTime, areaSize, refreshRate){
         enemies = enemies || models.getAllEnemyModels();
@@ -129,9 +129,6 @@ var loopsController = (function(modelsCntrl, models, calculations){
             others = others || models.getAllEnemyModels();
             tolerance = tolerance || Settings.PlayerCollisionTolerance;
 
-            var utils = models.getAllUtils();
-            others = others.concat(utils);
-
             var player = models.getShooterFromField();
             var damage = calculations.detectManyToOneCollision(player, others, tolerance);
             if(damage){
@@ -145,6 +142,22 @@ var loopsController = (function(modelsCntrl, models, calculations){
             // };
             // stopLoopIfNotNeeded(loopDetails);
         }, Settings.DetectPlayerCollisionRefreshTime);
+    }
+
+    function setStaticObjectsCollisionDetection(staticObjects, tolerance) {
+        var loopId = setInterval(function(){
+            staticObjects = staticObjects || staticModels.getAllStaticItems();
+            console.log(staticObjects)
+            tolerance = tolerance || Settings.PlayerCollisionTolerance;
+            var player = models.getShooterFromField();
+
+            var staticObjectType = calculations.detectManyToOneCollision(player, staticObjects, tolerance);
+            if(staticObjectType){
+                modelsCntrl.updatePlayerAttributes(staticObjectType);
+                staticObjectType.disappear();
+            }
+
+        }, Settings.DetectStaticObjectsCollisionRefreshTime);
     }
 
     function stopLoopIfNotNeeded(loopDetails){
@@ -190,7 +203,8 @@ var loopsController = (function(modelsCntrl, models, calculations){
         setBlastCollisionDetection: setBlastCollisionDetection,
         setJinnsShooting: setJinnsShooting,
         setBlastsConcentrationDetection: setBlastsConcentrationDetection,
-        setRemovalOfUnwantedObjects: setRemovalOfUnwantedObjects
+        setRemovalOfUnwantedObjects: setRemovalOfUnwantedObjects,
+        setStaticObjectsCollisionDetection: setStaticObjectsCollisionDetection
     };
 
-}(modelsController, modelsService, calculationsService));
+}(modelsController, modelsService, calculationsService, staticModels));
