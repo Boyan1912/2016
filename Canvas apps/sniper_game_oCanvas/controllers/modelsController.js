@@ -1,4 +1,4 @@
-var modelsController = (function(gameCntrl, models){
+var modelsController = (function(gameCntrl, models, staticObjects){
 
     var field = gameCntrl.playField;
     
@@ -48,13 +48,22 @@ var modelsController = (function(gameCntrl, models){
         }
     }
 
-    function updatePlayerAttributes(staticObjectType) {
-        var player = models.getShooterFromField();
+    function updatePlayerAttributes(player, staticObjectType) {
+        player = player || models.getShooterFromField();
         switch (staticObjectType.name){
-            case 'firstAidKit':
+            case 'health':
                 player.health += Settings.FirstAidKitHealValue;
                 soundsController.lazyLoadPlay('success1');
+                gameCntrl.displayPlayerInfo(player);
                 break;
+            case 'ammo':
+                playerModels.weapon.gun.shellsCount += Settings.AmmoGunShellsValue;
+                soundsController.lazyLoadPlay('ammoPick');
+                gameCntrl.displayPlayerInfo(player);
+            case 'ammoBag':
+                playerModels.weapon.gun.shellsCount += Settings.AmmoBagGunShellsValue;
+                soundsController.lazyLoadPlay('ammoBagPick');
+                gameCntrl.displayPlayerInfo(player);
         }
     }
     
@@ -80,10 +89,15 @@ var modelsController = (function(gameCntrl, models){
       }, displayTime);
     }
 
+    function addStaticObjectsToGame(count, type, size, coord) {
+        staticObjects.addManyStaticObjectsByType(count, type, size, coord)
+    }
+
     return {
         addEnemiesToGame: addEnemiesToGame,
         updateModelHealth: updateModelHealth,
-        updatePlayerAttributes: updatePlayerAttributes
+        updatePlayerAttributes: updatePlayerAttributes,
+        addStaticObjectsToGame: addStaticObjectsToGame
     }
 
-}(gameController, modelsService));
+}(gameController, modelsService, staticModels));

@@ -5,7 +5,7 @@ var staticModels = (function(models){
     var staticItems = [];
 
 
-    function addStaticObject(type, coordinates) {
+    function addStaticObject(type, size, coordinates) {
         coordinates = coordinates || {x: Math.random() * staticField.width, y: Math.random() * staticField.height};
         var id = models.getUniqueId();
         var staticItem = {
@@ -14,17 +14,34 @@ var staticModels = (function(models){
             name: type,
             isStatic: true,
             disappear: function () {
-                console.log(this);
                 removeStaticItem(this);
             },
             x: coordinates.x,
             y: coordinates.y
         };
-        staticItem.image.src = "img/" + type + ".png";
+        staticItem.image.src = getItemsImageSource(type);
 
         staticItems.push(staticItem);
 
-        show(staticItem);
+        showScalingUp(staticItem, size);
+    }
+
+    function getItemsImageSource(type) {
+        var destination = 'img/';
+        switch (type){
+            case 'health': return destination + 'firstAidKit.png';
+            break;
+            case 'ammoBag': return destination + 'ammoBag.png';
+            break;
+            case 'ammo': return destination + 'bullet.png';
+                break;
+        }
+    }
+
+    function addManyStaticObjectsByType(count, type, size, coord) {
+        for (var i = 0; i < count; i++) {
+            addStaticObject(type, size)
+        }
     }
 
     function getAllStaticItems() {
@@ -37,24 +54,33 @@ var staticModels = (function(models){
     }
 
 
-    function show(item)
+    function showScalingUp(item, size, speed)
     {
-        var scale = 1.0;
-        var timer = setInterval(function () {
+        speed = speed || 50;
+        size = size || 60; // 60px
+        var scale = 0,
+            image = item.image;
 
-            scale = scale + 0.10;
-            var image = item.image;
-            drawer.drawImage(image, item.x, item.y, (image.width / 2) * scale, (image.height / 2) * scale);
-            if (scale > 2.0)
+        // a rectangular image
+        image.width = 0;
+        image.height = 0;
+        var timer = setInterval(function () {
+            scale = scale + 10;
+            drawer.clearRect(item.x, item.y, image.width, image.height);
+            drawer.drawImage(image, item.x, item.y, image.width, image.height);
+            image.width += 10;
+            image.height += 10;
+            if (scale >= size)
             {
                 clearInterval(timer);
             }
-        }, 100)
+        }, speed)
     }
 
 
     return {
         addStaticObject: addStaticObject,
+        addManyStaticObjectsByType: addManyStaticObjectsByType,
         getAllStaticItems: getAllStaticItems,
         removeStaticItem: removeStaticItem
     }

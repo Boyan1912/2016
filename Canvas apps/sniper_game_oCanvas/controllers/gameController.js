@@ -25,7 +25,7 @@ var gameController = (function(){
     function playMusic(){
       var sound = new Howl({
         urls: ['sounds/EPIC Game of Thrones (Extended Theme) Audio - PiscesRising.mp3'],
-        autoplay: true,
+        // autoplay: true,
         loop: true,
         volume: 0.1,
         // onend: function() {
@@ -58,7 +58,8 @@ var gameController = (function(){
     function displayPlayerInfo(player) {
         player = player || playerModels.shooter;
         if (player.name === 'sniper'){
-            playerInfoObj.text = "Health:  " + Math.floor(player.health) + "\nPoints:  " + player.points + "\n" +
+            var healthText = player.health > 0 ? Math.floor(player.health) : "You're so fuckin' dead!";
+            playerInfoObj.text = "Health:  " + healthText + "\nPoints:  " + player.points + "\n" +
                            "Bullets left:  " + playerModels.weapon.gun.shellsCount + "\n" +
                             // "Weapon type:  " + playerModels.weapon.gun.name.toUpperCase() + "\n" +
                             "Shell damage:  " + playerModels.blast.damageWeight;

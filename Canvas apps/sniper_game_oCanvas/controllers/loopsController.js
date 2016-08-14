@@ -15,14 +15,7 @@ var loopsController = (function(modelsCntrl, models, calculations, staticModels)
               var rndPlace = models.getRandomCoordinatesAroundPlace(place, areaSize);
               actionController.moveToPoint(enemy, rndPlace.x, rndPlace.y, speedTime);
             }
-            // console.log(models.getModelsByName('fire'));
-            var loopingObjectsCount = getActiveLoopingObjects(enemies).length;
-            var loopDetails = {
-                loopingObjectsCount: loopingObjectsCount,
-                loopId: loopId
-            };
 
-            stopLoopIfNotNeeded(loopDetails);
         }, refreshRate);
     }
 
@@ -44,7 +37,6 @@ var loopsController = (function(modelsCntrl, models, calculations, staticModels)
                 loopId: loopId
             };
 
-            stopLoopIfNotNeeded(loopDetails);
         }, Settings.JinnsShootingAttemptFrequency);
     }
 
@@ -67,13 +59,6 @@ var loopsController = (function(modelsCntrl, models, calculations, staticModels)
                 soundsController.playSoundOnMegaDeath();
             }
 
-            // var loopingObjectsCount = getActiveLoopingObjects(blasts).length;
-            // var loopDetails = {
-            //     loopingObjectsCount: loopingObjectsCount,
-            //     loopId: loopId
-            // };
-
-            // stopLoopIfNotNeeded(loopDetails);
         }, Settings.DetectBlastDamageRefreshTime);
     }
 
@@ -135,35 +120,23 @@ var loopsController = (function(modelsCntrl, models, calculations, staticModels)
                 modelsCntrl.updateModelHealth(player, damage);
             }
 
-            // var loopingObjectsCount = getActiveLoopingObjects(others).length;
-            // var loopDetails = {
-            //     loopingObjectsCount: loopingObjectsCount,
-            //     loopId: loopId
-            // };
-            // stopLoopIfNotNeeded(loopDetails);
         }, Settings.DetectPlayerCollisionRefreshTime);
     }
 
     function setStaticObjectsCollisionDetection(staticObjects, tolerance) {
         var loopId = setInterval(function(){
             staticObjects = staticObjects || staticModels.getAllStaticItems();
-            console.log(staticObjects)
             tolerance = tolerance || Settings.PlayerCollisionTolerance;
+
             var player = models.getShooterFromField();
 
             var staticObjectType = calculations.detectManyToOneCollision(player, staticObjects, tolerance);
             if(staticObjectType){
-                modelsCntrl.updatePlayerAttributes(staticObjectType);
+                modelsCntrl.updatePlayerAttributes(player, staticObjectType);
                 staticObjectType.disappear();
             }
 
         }, Settings.DetectStaticObjectsCollisionRefreshTime);
-    }
-
-    function stopLoopIfNotNeeded(loopDetails){
-        if(loopDetails.loopingObjectsCount < 1){
-            clearInterval(loopDetails.loopId);
-        }
     }
 
     function getActiveLoopingObjects(objects){
@@ -182,19 +155,12 @@ var loopsController = (function(modelsCntrl, models, calculations, staticModels)
         var loopId = setInterval(function(){
 
             let trash = models.getAllDead();
-
+            console.log(trash);
             for (var i = 0; i < trash.length; i++) {
                 var junk = trash[i];
                 junk.remove();
             }
-            //
-            // var loopingObjectsCount = getActiveLoopingObjects(trash).length;
-            // var loopDetails = {
-            //     loopingObjectsCount: loopingObjectsCount,
-            //     loopId: loopId
-            // };
-            // stopLoopIfNotNeeded(loopDetails);
-        }, 200);
+        }, 100);
     }
     
     return {
@@ -203,7 +169,7 @@ var loopsController = (function(modelsCntrl, models, calculations, staticModels)
         setBlastCollisionDetection: setBlastCollisionDetection,
         setJinnsShooting: setJinnsShooting,
         setBlastsConcentrationDetection: setBlastsConcentrationDetection,
-        setRemovalOfUnwantedObjects: setRemovalOfUnwantedObjects,
+        // setRemovalOfUnwantedObjects: setRemovalOfUnwantedObjects,
         setStaticObjectsCollisionDetection: setStaticObjectsCollisionDetection
     };
 

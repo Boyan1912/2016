@@ -78,7 +78,12 @@ var commonModels = (function(field){
             explosionSound: new Howl({
                 urls: ['sounds/explosion.mp3']
             }),
-
+            ammoPick: new Howl({
+                urls: ['sounds/ammo.wav']
+            }),
+            ammoBagPick: new Howl({
+                urls: ['sounds/ammo_pickup.mp3']
+            }),
             success1: new Howl({
                 urls: ['sounds/success1.mp3']
             })
@@ -128,22 +133,6 @@ var commonModels = (function(field){
           graveImage.id = 0;
           field.addChild(graveImage);
       }());
-
-    // var healthKit = (function(){
-    //     var health = field.display.image({
-    //         x: -100,
-    //         y: 0,
-    //         origin: { x: "center", y: "center" },
-    //         image: "img/first_aid_kit_small.png",
-    //         name: "health_kit",
-    //         healPoints: Settings.FirstAidKitHealValue,
-    //         used: false
-    //     });
-    //     health.id = 0;
-    //     field.addChild(health);
-    // }());
-
-
 
       return {
         sounds: sounds

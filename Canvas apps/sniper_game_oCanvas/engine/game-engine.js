@@ -1,4 +1,4 @@
-var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl, staticItems){
+var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl){
 
     function startGame(){
       gameCntrl.playMusic();
@@ -22,14 +22,16 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl, stat
       loopsCntrl.setBlastsConcentrationDetection();
       loopsCntrl.setPlayerCollisionDetection();
       loopsCntrl.setBlastCollisionDetection();
-      loopsCntrl.setStaticObjectsCollisionDetection();
-
 
       setTimeout(function () {
-          staticItems.addStaticObject('firstAidKit');
+          modelsCntrl.addStaticObjectsToGame(3, 'ammo');
+          modelsCntrl.addStaticObjectsToGame(3, 'ammoBag');
+          modelsCntrl.addStaticObjectsToGame(3, 'health');
       }, 2000);
 
-      loopsCntrl.setRemovalOfUnwantedObjects();
+      loopsCntrl.setStaticObjectsCollisionDetection();
+
+      // loopsCntrl.setRemovalOfUnwantedObjects();
     }
 
 
@@ -38,4 +40,4 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl, stat
         startGame: startGame
     }
 
-}(modelsController, actionController, loopsController, gameController, staticModels));
+}(modelsController, actionController, loopsController, gameController));

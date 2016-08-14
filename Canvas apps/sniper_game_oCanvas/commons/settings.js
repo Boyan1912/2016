@@ -13,14 +13,14 @@ var Settings = {
     //gameplay
     MinDeathsNeededForMegadeath: 3,
     BonusForMegadeath: 10,
-    FirstAidKitHealValue: 20,
+
 
     // game performance:
     TravelDirectionRefreshTime: 2000,
     DetectBlastDamageRefreshTime: 100,
     DetectPlayerCollisionRefreshTime: 100,
     DetectFireIgnitionRefreshTime: 2500,
-    DetectStaticObjectsCollisionRefreshTime: 150,
+    DetectStaticObjectsCollisionRefreshTime: 200,
 
     // player:
     PlayerInitialHealth: 100,
@@ -68,6 +68,11 @@ var Settings = {
     MummyKillValuePoints: 2,
     JinnKillValuePoints: 4,
     FireDemonKillValuePoints: 5,
+
+    // static items
+    FirstAidKitHealValue: 20,
+    AmmoGunShellsValue: 20,
+    AmmoBagGunShellsValue: 50,
 
     // options for fire on the ground
     MinCountInflamablesOnField: 3,

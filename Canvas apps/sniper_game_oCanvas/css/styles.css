@@ -5,8 +5,8 @@ body {
 .canvas {
     margin: 0 auto;
     display: block;
-    width: 90%;
-    height: 90%;
+    width: 95%;
+    height: 95%;
     position: absolute;
     top: 3%;
     left: 3%;
@@ -20,7 +20,7 @@ body {
 }
 #background{
     z-index: 0;
-    background: url('../img/bg/wolf.jpg');
+    background: url('../img/bg/dragon.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -29,7 +29,7 @@ body {
     padding-top: 30px;
     margin: auto;
     width: 1300px;
-    height: 750px;
+    height: 700px;
     position: relative;
 }
 #startScreen{
