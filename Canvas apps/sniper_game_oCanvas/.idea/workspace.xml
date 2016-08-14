@@ -19,126 +19,108 @@
     <favorites_list name="ocanvas test" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.8187614">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="gameController.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/controllers/gameController.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="402">
-                  <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="actionController.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/controllers/actionController.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="402">
-                  <caret line="88" column="18" selection-start-line="88" selection-start-column="18" selection-end-line="88" selection-end-column="18" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="game-engine.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/engine/game-engine.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="323">
-                  <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="modelsController.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/controllers/modelsController.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="402">
-                  <caret line="37" column="25" selection-start-line="37" selection-start-column="25" selection-end-line="37" selection-end-column="25" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="enemy-models.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/models/enemy-models.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="402">
-                  <caret line="146" column="0" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="player-models.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/models/player-models.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="0">
-                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="loopsController.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/controllers/loopsController.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="334">
-                  <caret line="172" column="34" selection-start-line="172" selection-start-column="34" selection-end-line="172" selection-end-column="34" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/index.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="232">
-                  <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="common-models.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/models/common-models.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="402">
-                  <caret line="113" column="34" selection-start-line="113" selection-start-column="34" selection-end-line="113" selection-end-column="34" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="howler.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/libs/howler.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="164">
-                  <caret line="233" column="13" selection-start-line="233" selection-start-column="9" selection-end-line="233" selection-end-column="13" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="soundsController.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/controllers/soundsController.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="402">
-                  <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="gameController.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/gameController.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="33" selection-start-line="0" selection-start-column="33" selection-end-line="0" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="actionController.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/actionController.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="402">
+              <caret line="88" column="18" selection-start-line="88" selection-start-column="18" selection-end-line="88" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="game-engine.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/engine/game-engine.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="283">
+              <caret line="29" column="10" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="modelsController.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/modelsController.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="402">
+              <caret line="37" column="25" selection-start-line="37" selection-start-column="25" selection-end-line="37" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/commons/settings.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="43" column="33" selection-start-line="43" selection-start-column="33" selection-end-line="43" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="styles.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/css/styles.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="22" column="31" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="enemy-models.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/enemy-models.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="58" selection-start-line="15" selection-start-column="58" selection-end-line="15" selection-end-column="58" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="player-models.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/player-models.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="402">
+              <caret line="81" column="49" selection-start-line="81" selection-start-column="49" selection-end-line="81" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="215">
+              <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common-models.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/common-models.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="67" column="34" selection-start-line="67" selection-start-column="34" selection-end-line="67" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -181,22 +163,22 @@
         <option value="$PROJECT_DIR$/services/action-events-service.js" />
         <option value="$PROJECT_DIR$/commons/logger.js" />
         <option value="$PROJECT_DIR$/app.js" />
-        <option value="$PROJECT_DIR$/models/enemy-models.js" />
         <option value="$PROJECT_DIR$/controllers/actionController.js" />
         <option value="$PROJECT_DIR$/models/player-models.js" />
         <option value="$PROJECT_DIR$/services/models-service.js" />
         <option value="$PROJECT_DIR$/controllers/soundsController.js" />
         <option value="$PROJECT_DIR$/controllers/eventsController.js" />
         <option value="$PROJECT_DIR$/services/calculations-service.js" />
-        <option value="$PROJECT_DIR$/commons/settings.js" />
         <option value="$PROJECT_DIR$/models/common-models.js" />
         <option value="$PROJECT_DIR$/models/static-models.js" />
-        <option value="$PROJECT_DIR$/css/styles.css" />
         <option value="$PROJECT_DIR$/controllers/loopsController.js" />
-        <option value="$PROJECT_DIR$/engine/game-engine.js" />
-        <option value="$PROJECT_DIR$/controllers/gameController.js" />
         <option value="$PROJECT_DIR$/controllers/modelsController.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/controllers/gameController.js" />
+        <option value="$PROJECT_DIR$/commons/settings.js" />
+        <option value="$PROJECT_DIR$/models/enemy-models.js" />
+        <option value="$PROJECT_DIR$/css/styles.css" />
+        <option value="$PROJECT_DIR$/engine/game-engine.js" />
       </list>
     </option>
   </component>
@@ -366,7 +348,7 @@
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="SearchEverywhereHistoryKey" value="comm&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/models/common-models.js&#10;gamec&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/controllers/gameController.js&#10;models&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/models/enemy-models.js&#10;sty&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/css/styles.css&#10;sett&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/commons/settings.js&#10;commo&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/models/common-models.js&#10;modelc&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/controllers/modelsController.js&#10;index&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/index.html&#10;model&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/controllers/modelsController.js&#10;even&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/controllers/eventsController.js&#10;app&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/app.js&#10;gameContr&#9;null&#9;null&#10;applause&#9;null&#9;null&#10;getGraveImage&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="play&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/models/player-models.js&#10;sett&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/commons/settings.js&#10;comm&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/models/common-models.js&#10;gamec&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/controllers/gameController.js&#10;models&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/models/enemy-models.js&#10;sty&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/css/styles.css&#10;commo&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/models/common-models.js&#10;modelc&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/controllers/modelsController.js&#10;index&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/index.html&#10;model&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/controllers/modelsController.js&#10;even&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/controllers/eventsController.js&#10;app&#9;FILE&#9;file://E:/2016/Canvas apps/sniper_game_oCanvas/app.js&#10;gameContr&#9;null&#9;null&#10;applause&#9;null&#9;null&#10;getGraveImage&#9;null&#9;null" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
@@ -450,12 +432,12 @@
       <workItem from="1467542681111" duration="17000" />
       <workItem from="1468768153321" duration="217000" />
       <workItem from="1471077442531" duration="35626000" />
-      <workItem from="1471151905425" duration="16831000" />
+      <workItem from="1471151905425" duration="19391000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="128963000" />
+    <option name="totallyTimeSpent" value="131523000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1320" height="772" extended-state="0" />
@@ -762,34 +744,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/soundsController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/commons/settings.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="74" column="30" selection-start-line="74" selection-start-column="30" selection-end-line="74" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/static-models.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/styles.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="14" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
           <folding />
         </state>
       </provider>
@@ -802,42 +760,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/enemy-models.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="146" column="0" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/engine/game-engine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/player-models.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/actionController.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="402">
           <caret line="88" column="18" selection-start-line="88" selection-start-column="18" selection-end-line="88" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/gameController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="102" column="0" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -850,10 +776,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/common-models.js">
+    <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="113" column="34" selection-start-line="113" selection-start-column="34" selection-end-line="113" selection-end-column="34" />
+        <state relative-caret-position="215">
+          <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
           <folding />
         </state>
       </provider>
@@ -866,10 +792,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
+    <entry file="file://$PROJECT_DIR$/models/common-models.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+        <state relative-caret-position="17">
+          <caret line="67" column="34" selection-start-line="67" selection-start-column="34" selection-end-line="67" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/settings.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="43" column="33" selection-start-line="43" selection-start-column="33" selection-end-line="43" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/player-models.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="81" column="49" selection-start-line="81" selection-start-column="49" selection-end-line="81" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/soundsController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/enemy-models.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="58" selection-start-line="15" selection-start-column="58" selection-end-line="15" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/styles.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="31" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/gameController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="33" selection-start-line="0" selection-start-column="33" selection-end-line="0" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/engine/game-engine.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="29" column="10" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="10" />
           <folding />
         </state>
       </provider>

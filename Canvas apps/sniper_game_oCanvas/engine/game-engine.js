@@ -7,12 +7,12 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl){
       loopsCntrl.sendModelsTowardsPlayer(mummies,
           Settings.MummyTimeToCrossField, Settings.RadiusMummiesDestinationAroundPlayer);
 
-      var jinns = modelsCntrl.addEnemiesToGame(1, Settings.SecondaryEnemyType, {x: -50});
+      var jinns = modelsCntrl.addEnemiesToGame(3, Settings.SecondaryEnemyType, {x: -50});
       loopsCntrl.sendModelsTowardsPlayer(jinns,
           Settings.JinnTimeToCrossField, Settings.RadiusJinnsDestinationAroundPlace);
       loopsCntrl.setJinnsShooting(Settings.JinnsShootingChance);
 
-      var demons = modelsCntrl.addEnemiesToGame(2, Settings.ThirtiaryEnemyType, {x: Settings.PlayFieldWidth});
+      var demons = modelsCntrl.addEnemiesToGame(3, Settings.ThirtiaryEnemyType, {x: Settings.PlayFieldWidth});
       var options = {
           initialSpeed: Settings.FireDemonTimeToCrossField,
           acceleration: Settings.FireDemonRunAcceleration
@@ -24,14 +24,12 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl){
       loopsCntrl.setBlastCollisionDetection();
 
       setTimeout(function () {
-          modelsCntrl.addStaticObjectsToGame(3, 'ammo');
-          modelsCntrl.addStaticObjectsToGame(3, 'ammoBag');
-          modelsCntrl.addStaticObjectsToGame(3, 'health');
-      }, 2000);
+          modelsCntrl.addStaticObjectsToGame(2, 'ammo');
+          modelsCntrl.addStaticObjectsToGame(2, 'ammoBag');
+          modelsCntrl.addStaticObjectsToGame(2, 'health');
+      }, 5000);
 
       loopsCntrl.setStaticObjectsCollisionDetection();
-
-      // loopsCntrl.setRemovalOfUnwantedObjects();
     }
 
 

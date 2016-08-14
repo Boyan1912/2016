@@ -24,10 +24,10 @@ var gameController = (function(){
 
     function playMusic(){
       var sound = new Howl({
-        urls: ['sounds/EPIC Game of Thrones (Extended Theme) Audio - PiscesRising.mp3'],
-        // autoplay: true,
+        urls: ['sounds/Best Brutal Metalstep Mix.mp3'],
+        autoplay: true,
         loop: true,
-        volume: 0.1,
+        volume: 0.5,
         // onend: function() {
         //   console.log('Finished!');
         // }

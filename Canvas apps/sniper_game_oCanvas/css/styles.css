@@ -20,7 +20,7 @@ body {
 }
 #background{
     z-index: 0;
-    background: url('../img/bg/dragon.jpeg');
+    background: url('../img/bg/wolf.jpg');
     background-repeat: no-repeat;
     background-size: cover;
 }
