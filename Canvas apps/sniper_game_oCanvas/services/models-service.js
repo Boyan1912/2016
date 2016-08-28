@@ -1,9 +1,15 @@
-var modelsService = (function(field, calculations, validator){
+var modelsService = (function(field, calculations, validator, statics){
 
     var Id = 0;
 
     function getAllCanvasElements(){
         return field.children;
+    }
+
+    function getAllElementsInPlay() {
+        return getAllCanvasElements().filter(function (model) {
+            return model.id > 0;
+        })
     }
 
     function getModelsByName(name){
@@ -72,6 +78,12 @@ var modelsService = (function(field, calculations, validator){
       })
     }
 
+    function getAllFireBalls() {
+        return getAllCanvasElements().filter(function(model){
+            return (model.name === 'fireball' && model.id > 0);
+        })
+    }
+
     function getAllEnemyModels(){
         return getAllCanvasElements().filter(function(model){
             return model.name !== 'sniper' && model.name !== 'rocket'
@@ -82,12 +94,6 @@ var modelsService = (function(field, calculations, validator){
     function getAllDamageableModels(){
         return getAllCanvasElements().filter(function(model){
             return !!model.health && model.id > 0;
-        })
-    }
-
-    function getAllUtils(){
-        return getAllCanvasElements().filter(function(model){
-            return (model.name === 'health_kit' && model.id > 0)
         })
     }
 
@@ -125,8 +131,8 @@ var modelsService = (function(field, calculations, validator){
         var y = sign ? (place.y + Math.random() * marginY) : (place.y - Math.random() * marginY);
 
         return {
-            x: x < Settings.MinModelCoordinateValue ? Settings.MinModelCoordinateValue : x % Settings.PlayFieldWidth, // keep it inside the field
-            y: y < Settings.MinModelCoordinateValue ? Settings.MinModelCoordinateValue : y % Settings.PlayFieldLength
+            x: x < Settings.General.MinModelCoordinateValue ? Settings.General.MinModelCoordinateValue : x % Settings.General.PlayFieldWidth, // keep it inside the field
+            y: y < Settings.General.MinModelCoordinateValue ? Settings.General.MinModelCoordinateValue : y % Settings.General.PlayFieldLength
         };
     }
 
@@ -152,8 +158,13 @@ var modelsService = (function(field, calculations, validator){
     }
 
     function megaDeathCaused() {
-        return getAllGraves().length >= Settings.MinDeathsNeededForMegadeath;
+        return getAllGraves().length >= Settings.Gameplay.MinDeathsNeededForMegadeath;
     }
+
+    function getAllStaticItems() {
+        return statics.getAllStaticItems()
+    }
+
     
     return {
         getAllCanvasElements: getAllCanvasElements,
@@ -177,11 +188,13 @@ var modelsService = (function(field, calculations, validator){
         getAllDamageableModels: getAllDamageableModels,
         getVariousTypesByName: getVariousTypesByName,
         getAllGraves: getAllGraves,
-        getAllUtils: getAllUtils,
         getAllActiveAndPotentialExplosions: getAllActiveAndPotentialExplosions,
         megaDeathCaused: megaDeathCaused,
-        getAllDead: getAllDead
+        getAllDead: getAllDead,
+        getAllElementsInPlay: getAllElementsInPlay,
+        getAllFireBalls: getAllFireBalls,
+        getAllStaticItems: getAllStaticItems
     }
 
 
-}(gameController.playField, calculationsService, validator));
+}(gameController.playField, calculationsService, validator, staticModels));

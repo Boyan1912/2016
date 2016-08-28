@@ -3,14 +3,17 @@ var modelsController = (function(gameCntrl, models, staticObjects){
     var field = gameCntrl.playField;
     
     function getEnemies(count, type, settings){
-        count = count || 1;
+        if (models.getAllEnemyModels().length >= Settings.GamePerformance.Constraints.MaxPossibleNumberOfEnemies) return false;
+        else if (type === 'jinn' && models.getAllJinns().length >= Settings.GamePerformance.Constraints.MaxNumberOfJinnsAllowed) return false;
+        else if (type === 'jinn' && models.getAllJinns().length + count > Settings.GamePerformance.Constraints.MaxNumberOfJinnsAllowed) count = Settings.GamePerformance.Constraints.MaxNumberOfJinnsAllowed - models.getAllJinns().length;
+        count = count || 0;
         var enemies = [],
             protoModel = models.getProtoModelByName(type);
 
         settings = settings || {};
         for(var i = 0; i < count; i++){
-            var X = settings.x || Math.random() * Settings.PlayFieldWidth,
-                Y = settings.y  || Math.random() * Settings.PlayFieldLength;
+            var X = settings.x || Math.random() * Settings.General.PlayFieldWidth,
+                Y = settings.y  || Math.random() * Settings.General.PlayFieldLength;
 
             var clone = models.cloneModel({x: X, y:Y}, protoModel);
             enemies.push(clone);
@@ -21,29 +24,29 @@ var modelsController = (function(gameCntrl, models, staticObjects){
 
     function addEnemiesToGame(count, type, settings){
         var enemies = getEnemies(count, type, settings);
-        for (var i = 0; i < enemies.length; i++) {
-            field.addChild(enemies[i]);
+        if (enemies){
+            for (var i = 0; i < enemies.length; i++) {
+                field.addChild(enemies[i]);
+            }
         }
 
         return models.getModelsByName(type);
     }
 
     function updateModelHealth(model, damage){
+        if(model.name === 'sniper'){
+            if (model.armour == 'silver'){
+                damage -= damage * Settings.StaticItems.SilverShieldProtection;
+            }else if(model.armour == 'golden'){
+                damage -= damage * Settings.StaticItems.GoldenShieldProtection;
+            }
+        }
         model.health -= damage;
-        if(model.name !== 'sniper'){
-            gameCntrl.displayModelInfo(model);
-        }
+        gameCntrl.displayModelInfo(model);
         if(models.isDead(model) && model.name !== 'sniper'){
             handleDeadEnemyModel(model);
-        }else if(model.name === 'sniper') {
-            gameCntrl.displayPlayerInfo(model);
-        }
-    }
-
-    function updateModelState(model){
-        if(models.isDead(model) && model.name !== 'sniper'){
-            handleDeadEnemyModel(model);
-        }else if(model.name === 'sniper') {
+        }else if(models.isDead(model) && model.name === 'sniper') {
+            // handle Game Over
             gameCntrl.displayPlayerInfo(model);
         }
     }
@@ -52,26 +55,46 @@ var modelsController = (function(gameCntrl, models, staticObjects){
         player = player || models.getShooterFromField();
         switch (staticObjectType.name){
             case 'health':
-                player.health += Settings.FirstAidKitHealValue;
+                player.health += Settings.StaticItems.FirstAidKitHealValue;
                 soundsController.lazyLoadPlay('success1');
-                gameCntrl.displayPlayerInfo(player);
                 break;
             case 'ammo':
-                playerModels.weapon.gun.shellsCount += Settings.AmmoGunShellsValue;
+                playerModels.weapon.gun.shellsCount += Settings.StaticItems.AmmoGunShellsValue;
                 soundsController.lazyLoadPlay('ammoPick');
-                gameCntrl.displayPlayerInfo(player);
+                break;
             case 'ammoBag':
-                playerModels.weapon.gun.shellsCount += Settings.AmmoBagGunShellsValue;
+                playerModels.weapon.gun.shellsCount += Settings.StaticItems.AmmoBagGunShellsValue;
                 soundsController.lazyLoadPlay('ammoBagPick');
-                gameCntrl.displayPlayerInfo(player);
+                break;
+            case 'silverArmour':
+                updatePlayersArmour('silver');
+                break;
+            case 'goldenArmour':
+                updatePlayersArmour('golden');
+                break;
         }
+        gameCntrl.displayPlayerInfo(player);
     }
-    
+
+    function updatePlayersArmour(armour, protectionDuration) {
+        protectionDuration = protectionDuration || Settings.StaticItems.ShieldProtectionDuration;
+        var player = models.getShooterFromField();
+
+        player.armour = armour;
+        clearTimeout(player.timeoutProtection);
+        player.timeoutProtection = setTimeout(function () {
+            player.armour = 'none';
+            gameCntrl.displayPlayerInfo(player);
+        }, protectionDuration, this.name);
+        soundsController.lazyLoadPlay('armourPick');
+    }
+
     function handleDeadEnemyModel(model){
         var player = models.getShooterFromField();
         player.points += model.killValuePoints;
         soundsController.playSoundOnDeath(model);
-        displayImageOnModelDeath(model, models.getProtoModelByName('grave'), Settings.GraveDisplayTimeDuration);
+        // displayImageOnModelDeath(model, models.getProtoModelByName('grave'), Settings.General.GraveDisplayTimeDuration);
+        displayStaticImageOnModelDeath(model, 'grave', Settings.General.GraveDisplayTimeDuration);
         model.remove();
         gameCntrl.displayPlayerInfo(models.getShooterFromField());
     }
@@ -87,6 +110,14 @@ var modelsController = (function(gameCntrl, models, staticObjects){
             clone.remove();
         });
       }, displayTime);
+    }
+
+    function displayStaticImageOnModelDeath(model, image, displayTime) {
+        var staticObj = staticObjects.addStaticObject(image, undefined, {x: model.x, y:model.y}, 80, 4);
+
+        setTimeout(() =>{
+            if (staticObj) staticObj.disappear();
+        }, displayTime)
     }
 
     function addStaticObjectsToGame(count, type, size, coord) {

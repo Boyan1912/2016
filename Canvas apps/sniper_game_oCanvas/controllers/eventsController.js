@@ -10,7 +10,7 @@ var eventsController = (function(field, models){
     function onRightButtonClick(){
         var canvas = document.getElementById('main-canvas'),
             player = models.getShooterFromField(),
-            tolerance = Settings.ClickOnPlayerBugFixValue;
+            tolerance = Settings.General.ClickOnPlayerBugFixValue;
         // remove context menu from mouse's right click
         canvas.addEventListener('contextmenu', function(event) {
             event.preventDefault();
@@ -24,7 +24,7 @@ var eventsController = (function(field, models){
                     e.y += tolerance;
                 }
 
-                actionController.moveToPoint(player, e.x, e.y, Settings.MaxTimeForPlayerToCrossField);
+                actionController.moveToPoint(player, e.x, e.y, Settings.Player.MaxTimeForPlayerToCrossField);
             }
         });
     }

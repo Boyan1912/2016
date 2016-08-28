@@ -9,11 +9,11 @@ var enemyModels = (function(field, actions, sounds){
             width: 40,
             height: 58,
             direction: "x",
-            duration: Settings.DefaultSpriteDuration,
+            duration: Settings.General.DefaultSpriteDuration,
             name: 'mummy',
-            health: Settings.DefaultInitialEnemyHealth,
-            damageWeight: Settings.DefaultInitialMummyDamageWeight,
-            killValuePoints: Settings.MummyKillValuePoints
+            health: Settings.Enemies.DefaultInitialEnemyHealth,
+            damageWeight: Settings.Enemies.Damage.InitialMummyDamageWeight,
+            killValuePoints: Settings.Enemies.KillValues.MummyKillValuePoints
         });
 
         mummy.id = 0;
@@ -28,26 +28,26 @@ var enemyModels = (function(field, actions, sounds){
             width: 34,
             height: 34,
             direction: "x",
-            duration: Settings.DefaultSpriteDuration,
+            duration: Settings.General.DefaultSpriteDuration,
             name: 'fire_demon',
-            currentFieldRunoverTime: Settings.FireDemonTimeToCrossField,
-            health: Settings.DefaultInitialEnemyHealth,
-            damageWeight: Settings.InitialFireDemonDamageWeight,
-            killValuePoints: Settings.FireDemonKillValuePoints,
+            currentFieldRunoverTime: Settings.Enemies.SpeedOptions.FireDemonTimeToCrossField,
+            health: Settings.Enemies.DefaultInitialEnemyHealth,
+            damageWeight: Settings.Enemies.Damage.InitialFireDemonDamageWeight,
+            killValuePoints: Settings.Enemies.KillValues.FireDemonKillValuePoints,
             tempo: 1000,
             run: function(initialSpeed, acceleration){
-                  initialSpeed = initialSpeed || Settings.FireDemonTimeToCrossField;
-                  acceleration = acceleration || Settings.FireDemonRunAcceleration;
-                  acceleration = this.health > (Settings.DefaultInitialEnemyHealth * 2 / 3) ? (acceleration + acceleration * 0.5) : this.health < (Settings.DefaultInitialEnemyHealth / 3) ? acceleration - acceleration * 0.5 : acceleration;
+                  initialSpeed = initialSpeed || Settings.Enemies.SpeedOptions.FireDemonTimeToCrossField;
+                  acceleration = acceleration || Settings.Enemies.FireDemonRunAcceleration;
+                  acceleration = this.health > (Settings.Enemies.DefaultInitialEnemyHealth * 2 / 3) ? (acceleration + acceleration * 0.5) : this.health < (Settings.DefaultInitialEnemyHealth / 3) ? acceleration - acceleration * 0.5 : acceleration;
                   this.duration = acceleration > 1 && this.duration > 25 ? --this.duration : ++this.duration;
                   this.tempo *= acceleration;
-                  this.currentFieldRunoverTime = this.currentFieldRunoverTime < Settings.FireDemonMinTimeToCrossField ? Settings.FireDemonMinTimeToCrossField : (initialSpeed - this.tempo);
-                  if(this.currentFieldRunoverTime < Settings.FireDemonMinTimeToCrossField) {this.currentFieldRunoverTime = Settings.FireDemonMinTimeToCrossField;}
-                  if(this.health < Settings.DefaultInitialEnemyHealth / 4 && this.currentFieldRunoverTime === Settings.FireDemonMinTimeToCrossField) { this.currentFieldRunoverTime *= 4; }
-                  let y = Math.random() * Settings.PlayFieldLength;
+                  this.currentFieldRunoverTime = this.currentFieldRunoverTime < Settings.Enemies.SpeedOptions.FireDemonMinTimeToCrossField ? Settings.Enemies.SpeedOptions.FireDemonMinTimeToCrossField : (initialSpeed - this.tempo);
+                  if(this.currentFieldRunoverTime < Settings.Enemies.SpeedOptions.FireDemonMinTimeToCrossField) {this.currentFieldRunoverTime = Settings.Enemies.SpeedOptions.FireDemonMinTimeToCrossField;}
+                  if(this.health < Settings.Enemies.DefaultInitialEnemyHealth / 4 && this.currentFieldRunoverTime === Settings.Enemies.SpeedOptions.FireDemonMinTimeToCrossField) { this.currentFieldRunoverTime *= 4; }
+                  let y = Math.random() * Settings.General.PlayFieldLength;
                   actions.moveToPoint(this, 0, y, this.currentFieldRunoverTime, undefined,
-                     Settings.PlayFieldLength, Settings.PlayFieldWidth, function(){
-                        this.x = Settings.PlayFieldWidth;
+                     Settings.General.PlayFieldLength, Settings.General.PlayFieldWidth, function(){
+                        this.x = Settings.General.PlayFieldWidth;
                         this.run();
                    });
                }
@@ -65,13 +65,13 @@ var enemyModels = (function(field, actions, sounds){
             width: 60,
             height: 56,
             direction: "x",
-            duration: Settings.DefaultSpriteDuration,
+            duration: Settings.General.DefaultSpriteDuration,
             name: 'jinn',
-            health: Settings.DefaultInitialEnemyHealth,
-            damageWeight: Settings.DefaultInitialJinnDamageWeight,
-            killValuePoints: Settings.JinnKillValuePoints,
+            health: Settings.Enemies.DefaultInitialEnemyHealth,
+            damageWeight: Settings.Enemies.Damage.InitialJinnDamageWeight,
+            killValuePoints: Settings.Enemies.KillValues.JinnKillValuePoints,
             shoot: function(target){
-                actions.fireOnTarget(this, target, fireBall, blast, Settings.MaxTimeForFireBallToCrossField);
+                actions.fireOnTarget(this, target, fireBall, blast, Settings.Enemies.SpeedOptions.MaxTimeForFireBallToCrossField);
             }
         });
 
@@ -87,9 +87,9 @@ var enemyModels = (function(field, actions, sounds){
             width: 32,
             height: 24,
             direction: "x",
-            duration: Settings.DefaultSpriteDuration,
+            duration: Settings.General.DefaultSpriteDuration,
             name: 'fireball',
-            damageWeight: Settings.DefaultInitialJinnDamageWeight,
+            damageWeight: Settings.Enemies.Damage.InitialFireballDamageWeight,
             playSound: function(){
                 sounds.lazyLoadPlay('fireBallSound');
               }
@@ -108,11 +108,11 @@ var enemyModels = (function(field, actions, sounds){
             width: 64,
             height: 62,
             direction: "x",
-            duration: Settings.DefaultSpriteDuration,
+            duration: Settings.General.DefaultSpriteDuration,
             // frame: 1,
             loop: false,
             name: 'explosion',
-            damageWeight: Settings.DefaultExplosionDamageWeight,
+            damageWeight: Settings.Player.DefaultExplosionDamageWeight,
             playSound: function(){
                 sounds.lazyLoadPlay('explosion5');
               }
@@ -122,7 +122,7 @@ var enemyModels = (function(field, actions, sounds){
             field.addChild(explosion);
 
             function explode(target){
-                actions.explode(explosion, target, Settings.FireBallExplosionDuration);
+                actions.explode(explosion, target, Settings.Enemies.FireBallExplosionDuration);
             }
 
             return {

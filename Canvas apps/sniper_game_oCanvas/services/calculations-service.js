@@ -10,10 +10,10 @@ var calculationsService = (function(){
     }
 
     function calcSpeedOfTravelInSeconds(eX, mX, eY, mY, maxTime, sensitivity, maxLength, maxWidth){
-        maxLength = maxLength || Settings.PlayFieldLength;
-        maxWidth = maxWidth || Settings.PlayFieldWidth;
-        maxTime = maxTime || Settings.MaxTimeForPlayerToCrossField;
-        sensitivity = sensitivity || Settings.DefaultSpeedSensitivity;
+        maxLength = maxLength || Settings.General.PlayFieldLength;
+        maxWidth = maxWidth || Settings.General.PlayFieldWidth;
+        maxTime = maxTime || Settings.Player.MaxTimeForPlayerToCrossField;
+        sensitivity = sensitivity || Settings.Player.DefaultSpeedSensitivity;
 
         var diffX = Math.abs(eX - mX),
             diffY = Math.abs(eY - mY),

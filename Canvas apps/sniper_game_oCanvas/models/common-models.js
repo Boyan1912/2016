@@ -38,22 +38,22 @@ var commonModels = (function(field){
 
             male_scream1: new Howl({
                 urls: ['sounds/scream_male1.mp3'],
-                volume: Settings.DefaultPlayerAudioVolume
+                volume: Settings.General.DefaultPlayerAudioVolume
             }),
 
             male_scream2: new Howl({
                 urls: ['sounds/scream_male2.mp3'],
-                volume: Settings.DefaultPlayerAudioVolume
+                volume: Settings.General.DefaultPlayerAudioVolume
             }),
 
             male_scream3: new Howl({
                 urls: ['sounds/scream_male3.mp3'],
-                volume: Settings.DefaultPlayerAudioVolume
+                volume: Settings.General.DefaultPlayerAudioVolume
             }),
 
             kick_your_ass_bitch: new Howl({
                 urls: ['sounds/Im gonna kick your ass bitch.mp3'],
-                // volume: Settings.DefaultPlayerAudioVolume
+                // volume: Settings.General.DefaultPlayerAudioVolume
             }),
 
             fuckYouMotherFucker: new Howl({
@@ -66,7 +66,7 @@ var commonModels = (function(field){
 
             dying_scream: new Howl({
                 urls: ['sounds/death-scream.mp3'],
-                volume: Settings.DefaultPlayerAudioVolume
+                volume: Settings.General.DefaultPlayerAudioVolume
             }),
 
             shotgunSound: new Howl({
@@ -86,6 +86,9 @@ var commonModels = (function(field){
             }),
             success1: new Howl({
                 urls: ['sounds/success1.mp3']
+            }),
+            armourPick: new Howl({
+                urls: ['sounds/collect_armour.mp3']
             })
           };
       }());
@@ -101,12 +104,12 @@ var commonModels = (function(field){
             width: 38,
             height: 35,
             direction: "x",
-            duration: Settings.DefaultSpriteDuration,
+            duration: Settings.General.DefaultSpriteDuration,
             name: 'fire',
             playSound: function(){
               soundsController.lazyLoadPlay('burningOne');
             },
-            damageWeight: Settings.InitialFireDamageWeight,
+            damageWeight: Settings.Enemies.Damage.InitialFireDamageWeight,
             burn: function(time){
               this.stop();
               this.startAnimation();

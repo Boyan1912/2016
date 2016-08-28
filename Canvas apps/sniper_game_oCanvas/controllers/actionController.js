@@ -4,7 +4,7 @@ var actionController = (function(field, calculations, models){
         var angle = calculations.getAngle(model.x, model.y, X, Y);
 
         if(model.name === 'sniper'){
-            angle += Settings.RotationAngleAdjustment;
+            angle += Settings.General.RotationAngleAdjustment;
         }
 
         model.rotateTo(angle);
@@ -31,10 +31,10 @@ var actionController = (function(field, calculations, models){
     function fireOnTarget(model, target, gun, blast, speed){
         var angle = calculations.getAngle(model.x, model.y, target.x, target.y);
 
-        gun.rotateTo(angle + Settings.RotationAngleAdjustment);
+        gun.rotateTo(angle + Settings.General.RotationAngleAdjustment);
 
         if(model.name === 'sniper'){
-            var enoughAmo = models.getPlayerActiveExplosions().length <= Settings.MaxCountShotsAtATime;
+            var enoughAmo = models.getPlayerActiveExplosions().length <= Settings.Player.MaxCountShotsAtATime;
             if(!enoughAmo){
               gun.playEmptyGunSound();
               return;
@@ -47,7 +47,7 @@ var actionController = (function(field, calculations, models){
 
         var gunShell = models.cloneModel({x: gun.x, y: gun.y}, gun);
         field.addChild(gunShell);
-        gun.x = -Settings.PlayFieldWidth; // hide from screen
+        gun.x = -Settings.General.PlayFieldWidth; // hide from screen
 
         gunShell.playSound();
         gunShell.startAnimation();
@@ -72,7 +72,7 @@ var actionController = (function(field, calculations, models){
         clone.playSound();
         setTimeout(function(){
             clone.remove();
-        }, duration);
+        }, duration, this.name);
     }
 
     function sendFireDemonsRunning(demons, options){

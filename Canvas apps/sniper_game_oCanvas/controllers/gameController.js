@@ -23,11 +23,11 @@ var gameController = (function(){
     }
 
     function playMusic(){
-      var sound = new Howl({
-        urls: ['sounds/Best Brutal Metalstep Mix.mp3'],
-        autoplay: true,
+      sound = new Howl({
+        urls: ['sounds/Epic Metalstep Mix.mp3'],
+        autoplay: false,
         loop: true,
-        volume: 0.5,
+        volume: 1,
         // onend: function() {
         //   console.log('Finished!');
         // }
@@ -43,7 +43,7 @@ var gameController = (function(){
         }());
 
     var playerInfoObj = playField.display.text({
-        x: 1100,
+        x: 950,
         y: 15,
         origin: { x: "center", y: "top" },
         font: "bold 32px arial-black",
@@ -51,7 +51,7 @@ var gameController = (function(){
         fill: "#2288aa"
     });
 
-    var modelInfoObj = playerInfoObj.clone({x: playerInfoObj.width + playerInfoObj.x + 20, text: ""});
+    var modelInfoObj = playerInfoObj.clone({x: playerInfoObj.x + 300, text: ""});
     playField.addChild(playerInfoObj);
     playField.addChild(modelInfoObj);
 
@@ -62,14 +62,17 @@ var gameController = (function(){
             playerInfoObj.text = "Health:  " + healthText + "\nPoints:  " + player.points + "\n" +
                            "Bullets left:  " + playerModels.weapon.gun.shellsCount + "\n" +
                             // "Weapon type:  " + playerModels.weapon.gun.name.toUpperCase() + "\n" +
-                            "Shell damage:  " + playerModels.blast.damageWeight;
+                            "Shell damage:  " + playerModels.blast.damageWeight  + "\n" +
+                            "Armour:  " + player.armour;
 
             // playerInfoObj.family = "Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;";
             // playerInfoObj.fill = "#800000";
             // playerInfoObj.font = "bold 26px normal";
             // playerInfoObj.lineHeight = "29px";
 
-            playerInfoObj.stroke = "outside 8px rgba(0, 0, 0, 0.7)";
+            playerInfoObj.stroke = "outside 4px rgba(0, 0, 0, 0.7)";
+            playerInfoObj.font = "bold 16px normal";
+            playerInfoObj.family = "Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;";
         }
 
         playField.draw.redraw();
@@ -87,16 +90,20 @@ var gameController = (function(){
 
 
         modelInfoObj.fill = "#800000";
-        modelInfoObj.stroke = "outside 8px rgba(0, 0, 0, 0.5)";
-
+        modelInfoObj.stroke = "outside 4px rgba(0, 0, 0, 0.7)";
+        modelInfoObj.font = "bold 16px normal";
+        playerInfoObj.family = "Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;";
         playField.draw.redraw();
     }
+
+
 
     return {
         start: start,
         playField: playField,
         playMusic: playMusic,
         displayPlayerInfo: displayPlayerInfo,
-        displayModelInfo: displayModelInfo
+        displayModelInfo: displayModelInfo,
+
     }
 }());

@@ -2,22 +2,24 @@ var playerModels = (function(gameCntrl, actions, sounds){
     var field = gameCntrl.playField;
     var shooter = (function (){
         var sniper = field.display.sprite({
-            x: Settings.PlayFieldWidth / 2,
-            y: Settings.PlayFieldLength / 2,
+            x: Settings.General.PlayFieldWidth / 2,
+            y: Settings.General.PlayFieldLength / 2,
             origin: { x: "center", y: "center" },
             image: "img/sniper.png",
             generate: true,
             width: 53,
             height: 63,
             direction: "x",
-            duration: Settings.DefaultSpriteDuration,
+            duration: Settings.General.DefaultSpriteDuration,
             name: 'sniper',
-            health: Settings.PlayerInitialHealth,
+            health: Settings.Player.PlayerInitialHealth,
             points: 0,
             id: 0,
+            armour: 'none',
+            timeoutProtection: undefined,
             shoot: function(target){
                 if(weapon.gun.shellsCount > 0){
-                    actions.fireOnTarget(this, target, weapon.gun, blast, Settings.MaxTimeForRocketToCrossField);
+                    actions.fireOnTarget(this, target, weapon.gun, blast, Settings.Player.MaxTimeForRocketToCrossField);
                     weapon.gun.shellsCount--;
                     gameCntrl.displayPlayerInfo();
                 }else {
@@ -41,10 +43,10 @@ var playerModels = (function(gameCntrl, actions, sounds){
             width: 26,
             height: 49,
             direction: "x",
-            duration: Settings.DefaultSpriteDuration,
+            duration: Settings.General.DefaultSpriteDuration,
             name: 'rocket',
             damageWeight: Settings.DefaultInitialRocketDamageWeight,
-            shellsCount: Settings.PlayerInitialGunShellsCount,
+            shellsCount: Settings.Player.PlayerInitialGunShellsCount,
             playSound: function(){
                 sounds.lazyLoadPlay('shotgunSound');
             },
@@ -72,12 +74,12 @@ var playerModels = (function(gameCntrl, actions, sounds){
             width: 128,
             height: 128,
             direction: "x",
-            duration: Settings.DefaultSpriteDuration,
+            duration: Settings.General.DefaultSpriteDuration,
             frame: 1,
             loop: false,
             name: 'explosion',
             isPlayerOwned: true,
-            damageWeight: Settings.DefaultExplosionDamageWeight,
+            damageWeight: Settings.Player.DefaultExplosionDamageWeight,
             playSound: function(){
               sounds.lazyLoadPlay('explosionSound');
             }
@@ -87,7 +89,7 @@ var playerModels = (function(gameCntrl, actions, sounds){
         field.addChild(explosion);
 
         function explode(target){
-            actions.explode(explosion, target, Settings.RocketExplosionDuration);
+            actions.explode(explosion, target, Settings.Player.RocketExplosionDuration);
         }
 
         return {

@@ -1,5 +1,5 @@
 body {
-    background: #1e1f21;
+    background-color: black;
     align-content: center;
 }
 .canvas {
@@ -14,15 +14,40 @@ body {
 
 #main-canvas{
     z-index: 100;
+    border: 2px solid lightslategrey;
 }
 #images{
     z-index: 99;
 }
 #background{
     z-index: 0;
-    background: url('../img/bg/wolf.jpg');
+    /*background: url('../img/bg/wolf.jpg');*/
+    /*background: url("https://i.ytimg.com/vi/utgpJHdawHY/maxresdefault.jpg");*/
     background-repeat: no-repeat;
     background-size: cover;
+    /*background: transparent;*/
+    border: 2px solid "#ccc";
+
+}
+
+.changeVideoBg{
+    -webkit-animation-duration: 4s;
+    -webkit-animation-delay: 1s;
+    -webkit-animation-iteration-count: 1;
+
+    -moz-animation-duration: 4s;
+    -moz-animation-delay: 1s;
+    -moz-animation-iteration-count: 1;
+}
+
+.perpetually-animated{
+    -webkit-animation-duration: 3s;
+    -webkit-animation-delay: 2s;
+    -webkit-animation-iteration-count: infinite;
+
+    -moz-animation-duration: 3s;
+    -moz-animation-delay: 2s;
+    -moz-animation-iteration-count: infinite;
 }
 
 #wrapper{
@@ -42,6 +67,7 @@ body {
     position: absolute;
     top: 10%;
     left: 9%;
+    background: url("https://i.ytimg.com/vi/wZS2WefoEIw/hqdefault.jpg?custom=true&w=320&h=180&stc=true&jpg444=true&jpgq=90&sp=68&sigh=8k8wfqsbUzkWfwnBWMi45iYL1HY");
 }
 #startButton{
     background: #8BC558;
@@ -52,11 +78,12 @@ body {
     height: 15%;
     z-index: 2;
     border-radius: 10px;
+    text-align: center;
+    padding-top: 2.5%;
 }
 #startText {
     font-size: 2.5em;
-    color: #F9FCF6;
-    position: absolute;
-    top: 25%;
-    left: 25%;
+    color: Maroon;
 }
+
+

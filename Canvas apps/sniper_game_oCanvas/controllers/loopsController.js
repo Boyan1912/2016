@@ -1,22 +1,30 @@
 var loopsController = (function(modelsCntrl, models, calculations, staticModels){
-    
+    var activeLoops = [],
+        activeTimeouts = [],
+        timerMummies,
+        timerJinns,
+        timerDemons;
+
     function sendModelsTowardsPlayer(enemies, speedTime, areaSize, refreshRate){
         enemies = enemies || models.getAllEnemyModels();
-        speedTime = speedTime || Settings.DefaultEnemyTimeToCrossField;
-        areaSize = areaSize || Settings.DefaultRadius;
-        refreshRate = refreshRate || Settings.TravelDirectionRefreshTime;
+        speedTime = speedTime || Settings.Enemies.SpeedOptions.DefaultEnemyTimeToCrossField;
+        areaSize = areaSize || Settings.Enemies.Positioning.DefaultRadius;
+        refreshRate = refreshRate || Settings.GamePerformance.TravelDirectionRefreshTime;
         // returns interval Id
         var loopId = setInterval(function(){
 
             for (var i = 0; i < enemies.length; i++) {
               var shooter = models.getShooterFromField();
               var enemy = enemies[i];
-              var place = enemy.name === 'jinn' ? Settings.JinnsAboutPlace : shooter;
+              var place = enemy.name === 'jinn' ? Settings.Enemies.Positioning.JinnsAboutPlace : shooter;
               var rndPlace = models.getRandomCoordinatesAroundPlace(place, areaSize);
               actionController.moveToPoint(enemy, rndPlace.x, rndPlace.y, speedTime);
             }
-
         }, refreshRate);
+
+        activeLoops.push(loopId);
+
+        return loopId;
     }
 
     function setJinnsShooting(frequency){
@@ -25,26 +33,22 @@ var loopsController = (function(modelsCntrl, models, calculations, staticModels)
             for (var i = 0; i < jinns.length; i++) {
                 var jinn = jinns[i],
                     player = models.getShooterFromField(),
-                    fires = Math.random() < frequency;
-                if(fires){
-                  jinn.shoot(models.getRandomCoordinatesAroundPlace(player, Settings.JinnsShotAroundPlace));
+                    fires = Math.random() < frequency && i % 2 == 0;
+                if(fires && models.getAllFireBalls().length <= Settings.GamePerformance.Constraints.MaxNumberFireBallsAllowed){
+                  jinn.shoot(models.getRandomCoordinatesAroundPlace(player, Settings.Enemies.Positioning.JinnsShotAroundPlace));
                 }
             }
 
-            var loopingObjectsCount = getActiveLoopingObjects(jinns).length;
-            var loopDetails = {
-                loopingObjectsCount: loopingObjectsCount,
-                loopId: loopId
-            };
+        }, Settings.Enemies.JinnsShootingAttemptFrequency);
 
-        }, Settings.JinnsShootingAttemptFrequency);
+        activeLoops.push(loopId);
     }
 
     function setBlastCollisionDetection(tolerance){
         var loopId = setInterval(function(){
             var blasts = models.getAllActiveExplosions(),
             victims = models.getAllDamageableModels();
-            tolerance = tolerance || Settings.DefaultExplosionDamageArea;
+            tolerance = tolerance || Settings.Player.DefaultExplosionDamageArea;
 
             for (var i = 0; i < victims.length; i++) {
                 var potentialVictim = victims[i];
@@ -53,23 +57,25 @@ var loopsController = (function(modelsCntrl, models, calculations, staticModels)
                     modelsCntrl.updateModelHealth(potentialVictim, damage);
                 }
             }
-
-            if (models.megaDeathCaused()){
-                modelsCntrl.updateModelHealth(models.getShooterFromField(), { bonus: Settings.BonusForMegadeath});
+            // TESTING PERFORMANCE
+            if (staticModels.megaDeathCaused()){  // models.megaDeathCaused()
+                modelsCntrl.updateModelHealth(models.getShooterFromField(), { bonus: Settings.Gameplay.BonusDamageForMegadeath});
                 soundsController.playSoundOnMegaDeath();
             }
 
-        }, Settings.DetectBlastDamageRefreshTime);
+        }, Settings.GamePerformance.DetectBlastDamageRefreshTime);
+
+        activeLoops.push(loopId);
     }
 
     function setBlastsConcentrationDetection(tolerance, options){
       options = options || {};
-      options.countInflamables = options.countInflamables || Settings.MinCountInflamablesOnField;
-      options.maxNumberFires = options.maxNumberFires || Settings.MaxNumberOfFiresPossible;
+      options.countInflamables = options.countInflamables || Settings.FireOptions.MinCountInflamablesOnField;
+      options.maxNumberFires = options.maxNumberFires || Settings.FireOptions.MaxNumberOfFiresPossible;
 
       var loopId = setInterval(function(){
           var blasts = models.getAllActiveAndPotentialExplosions();
-          tolerance = tolerance || Settings.DefaultExplosionDamageArea;
+          tolerance = tolerance || Settings.Player.DefaultExplosionDamageArea;
 
           if (blasts.length >= options.countInflamables && blasts.length < options.maxNumberFires){
             for (var i = 0; i < blasts.length; i++) {
@@ -86,17 +92,19 @@ var loopsController = (function(modelsCntrl, models, calculations, staticModels)
               lightFires(result);
             }
           }
-      }, Settings.DetectFireIgnitionRefreshTime);
+      }, Settings.GamePerformance.DetectFireIgnitionRefreshTime);
+
+        activeLoops.push(loopId);
     }
 
     function lightFires(options){
       options = options || {};
-      options.minDamage = options.minDamage || Settings.MinDamageCausedToIgnite;
-      options.radius = options.radius || Settings.BurningRadius;
-      options.speedOfFire = options.speedOfFire || Settings.FireTimeToCrossField;
-      options.burnDuration = options.burnDuration || Settings.MinBurningTime;
-      options.countNewFires = options.countNewFires || Settings.DefaultNumberNewFiresToAdd;
-      options.fireType = options.fireType || Settings.DefaultFireType;
+      options.minDamage = options.minDamage || Settings.FireOptions.MinDamageCausedToIgnite;
+      options.radius = options.radius || Settings.FireOptions.BurningRadius;
+      options.speedOfFire = options.speedOfFire || Settings.Enemies.SpeedOptions.FireTimeToCrossField;
+      options.burnDuration = options.burnDuration || Settings.FireOptions.MinBurningTime;
+      options.countNewFires = options.countNewFires || Settings.FireOptions.DefaultNumberNewFiresToAdd;
+      options.fireType = options.fireType || Settings.FireOptions.DefaultFireType;
 
       if (options.damage > options.minDamage){
           var fires = modelsCntrl.addEnemiesToGame(options.countNewFires, options.fireType, options.place);
@@ -109,34 +117,35 @@ var loopsController = (function(modelsCntrl, models, calculations, staticModels)
       }
     }
 
-    function setPlayerCollisionDetection(others, tolerance){
+    function setPlayerCollisionDetection(tolerance){
         var loopId = setInterval(function(){
-            others = others || models.getAllEnemyModels();
-            tolerance = tolerance || Settings.PlayerCollisionTolerance;
-
+            tolerance = tolerance || Settings.Player.PlayerCollisionTolerance;
             var player = models.getShooterFromField();
-            var damage = calculations.detectManyToOneCollision(player, others, tolerance);
+            var damage = calculations.detectManyToOneCollision(player, models.getAllEnemyModels(), tolerance);
             if(damage){
                 modelsCntrl.updateModelHealth(player, damage);
             }
+        }, Settings.GamePerformance.DetectPlayerCollisionRefreshTime);
 
-        }, Settings.DetectPlayerCollisionRefreshTime);
+        activeLoops.push(loopId);
     }
 
     function setStaticObjectsCollisionDetection(staticObjects, tolerance) {
         var loopId = setInterval(function(){
             staticObjects = staticObjects || staticModels.getAllStaticItems();
-            tolerance = tolerance || Settings.PlayerCollisionTolerance;
+            tolerance = tolerance || Settings.Player.PlayerCollisionTolerance;
 
             var player = models.getShooterFromField();
 
-            var staticObjectType = calculations.detectManyToOneCollision(player, staticObjects, tolerance);
-            if(staticObjectType){
-                modelsCntrl.updatePlayerAttributes(player, staticObjectType);
-                staticObjectType.disappear();
+            var staticObject = calculations.detectManyToOneCollision(player, staticObjects, tolerance);
+            if(staticObject){
+                modelsCntrl.updatePlayerAttributes(player, staticObject);
+                staticObject.disappear();
             }
 
-        }, Settings.DetectStaticObjectsCollisionRefreshTime);
+        }, Settings.GamePerformance.DetectStaticObjectsCollisionRefreshTime);
+
+        activeLoops.push(loopId);
     }
 
     function getActiveLoopingObjects(objects){
@@ -150,27 +159,111 @@ var loopsController = (function(modelsCntrl, models, calculations, staticModels)
 
         return models.getVariousTypesByName(names);
     }
-    
-    function setRemovalOfUnwantedObjects() {
-        var loopId = setInterval(function(){
 
-            let trash = models.getAllDead();
-            console.log(trash);
-            for (var i = 0; i < trash.length; i++) {
-                var junk = trash[i];
-                junk.remove();
-            }
-        }, 100);
+    function setPlayerProvisionsAppearance(countsOptions, intervalOptions) {
+        countsOptions = countsOptions || Settings.StaticItems.RandomAppearance.Counts;
+        intervalOptions = intervalOptions || Settings.StaticItems.RandomAppearance.Frequency;
+
+        if (staticModels.getAllPlayerProvisions().length >= Settings.StaticItems.MaxAllowedNumberOfItems){
+            stopFutureCalls(activeTimeouts);
+            return;
+        }
+
+        var loopId = setInterval(function () {
+            var timeoutH = setTimeout(function () {
+                var rnd = getRandomInt(countsOptions.MaxHealthKits);
+                modelsCntrl.addStaticObjectsToGame(rnd, 'health');
+            }, getRandomInt(intervalOptions.TimeoutInterval));
+            activeTimeouts.push(timeoutH);
+            var timeoutAB = setTimeout(function () {
+                var rnd = getRandomInt(countsOptions.MaxAmmoBags);
+                modelsCntrl.addStaticObjectsToGame(rnd, 'ammoBag');
+            }, getRandomInt(intervalOptions.TimeoutInterval));
+            activeTimeouts.push(timeoutAB);
+            var timeoutAmmo = setTimeout(function () {
+                var rnd = getRandomInt(countsOptions.MaxAmmoKits);
+                if (playerModels.weapon.gun.shellsCount < 10) rnd++;
+                modelsCntrl.addStaticObjectsToGame(rnd, 'ammo');
+            }, getRandomInt(intervalOptions.TimeoutInterval));
+            activeTimeouts.push(timeoutAmmo);
+            var timeoutSA = setTimeout(function () {
+                var rnd = getRandomInt(countsOptions.MaxSilverArmours);
+                modelsCntrl.addStaticObjectsToGame(rnd, 'silverArmour');
+            }, getRandomInt(intervalOptions.TimeoutInterval));
+            activeTimeouts.push(timeoutSA);
+            var timeoutGA = setTimeout(function () {
+                var rnd = getRandomInt(countsOptions.MaxGoldenArmours);
+                modelsCntrl.addStaticObjectsToGame(rnd, 'goldenArmour');
+            }, getRandomInt(intervalOptions.TimeoutInterval));
+            activeTimeouts.push(timeoutGA);
+        }, intervalOptions.InitialFrequency);
+
+        activeLoops.push(loopId);
+        return loopId;
     }
-    
+
+    function setUpRandomEnemiesAppearance(interval, maxMummies, maxJinns, maxDemons) {
+        interval = interval || Settings.Enemies.RandomAppearance.InitialFrequency;
+        maxMummies = maxMummies || Settings.Enemies.RandomAppearance.Counts.MaxMummies;
+        maxJinns = maxJinns || Settings.Enemies.RandomAppearance.Counts.MaxJinns;
+        maxDemons = maxDemons || Settings.Enemies.RandomAppearance.Counts.MaxDemons;
+
+        var loopId = setInterval(function () {
+            var mummiesCount = getRandomInt(maxMummies),
+                jinnsCount = getRandomInt(maxJinns),
+                demonsCount = getRandomInt(maxDemons);
+
+            clearInterval(timerMummies);
+            clearInterval(timerJinns);
+            clearInterval(timerDemons);
+
+            var coord = [{y: Settings.General.PlayFieldLength + 20}, {y: -20}, {x: Settings.General.PlayFieldWidth + 20}, {x: - 20} ];
+
+            var mummies = modelsCntrl.addEnemiesToGame(mummiesCount, Settings.Enemies.Mummy, coord[getRandomInt(4)]);
+            timerMummies = sendModelsTowardsPlayer(models.getAllMummies(),
+                Settings.Enemies.SpeedOptions.MummyTimeToCrossField, Settings.Enemies.Positioning.RadiusMummiesDestinationAroundPlayer);
+
+            var jinns = modelsCntrl.addEnemiesToGame(jinnsCount, Settings.Enemies.Jinn, {x: -50});
+            timerJinns = sendModelsTowardsPlayer(models.getAllJinns(),
+                Settings.Enemies.SpeedOptions.JinnTimeToCrossField, Settings.Enemies.Positioning.RadiusJinnsDestinationAroundPlace);
+            setJinnsShooting(Settings.Enemies.JinnsShootingChance);
+
+            var demons = modelsCntrl.addEnemiesToGame(demonsCount, Settings.Enemies.FireDemon, {x: Settings.General.PlayFieldWidth});
+            var options = {
+                initialSpeed: Settings.Enemies.SpeedOptions.FireDemonTimeToCrossField,
+                acceleration: Settings.Enemies.FireDemonRunAcceleration
+            };
+            timerDemons = actionController.sendFireDemonsRunning(models.getAllFireDemons(), options);
+        }, interval);
+
+        activeLoops.push(loopId);
+        return loopId;
+    }
+
+
+    function stopLoops(array) {
+        for (var i = 0; i < array.length; i++) {
+            var id = array[i];
+            clearInterval(id);
+        }
+    }
+
+    function stopFutureCalls(array) {
+        for (var i = 0; i < array.length; i++) {
+            var id = array[i];
+            clearTimeout(id);
+        }
+    }
+
     return {
         sendModelsTowardsPlayer: sendModelsTowardsPlayer,
         setPlayerCollisionDetection: setPlayerCollisionDetection,
         setBlastCollisionDetection: setBlastCollisionDetection,
         setJinnsShooting: setJinnsShooting,
         setBlastsConcentrationDetection: setBlastsConcentrationDetection,
-        // setRemovalOfUnwantedObjects: setRemovalOfUnwantedObjects,
-        setStaticObjectsCollisionDetection: setStaticObjectsCollisionDetection
+        setPlayerProvisionsAppearance: setPlayerProvisionsAppearance,
+        setStaticObjectsCollisionDetection: setStaticObjectsCollisionDetection,
+        setUpRandomEnemiesAppearance: setUpRandomEnemiesAppearance
     };
 
 }(modelsController, modelsService, calculationsService, staticModels));
