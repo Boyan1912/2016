@@ -75,8 +75,10 @@ var AnimationTypes = [
     'slideOutRight              ',
     'slideOutUp                 '];
 
+
 var musicSources = {
-    startGameSrc : {
+    // startGameSrc
+    src0 : {
         videoId: 'wZS2WefoEIw',
         time0: {
             start: 0,
@@ -87,7 +89,8 @@ var musicSources = {
             end: 3655
         }
     },
-    dubstepGamingMix2016 : {
+    // dubstepGamingMix2016
+    src1 : {
         videoId: 'utgpJHdawHY',
         time0: {
             start: 50,
@@ -120,14 +123,16 @@ var musicSources = {
             end: 3054
         }
     },
-    dubstepMixRed: {
+    //dubstepMixRed
+    src2 : {
       videoId: '--cMOM8NJeQ',
         time0: {
           start: 2660,
           end: 2850
         }
     },
-    dubstepMixBlueRed: {
+    //dubstepMixBlueRed
+    src3 : {
         videoId: 'CNgCiZ1jz9w',
         time0: {
             start: 80,
@@ -150,7 +155,8 @@ var musicSources = {
             end: 3173
         }
     },
-    dubstepMixUrban: {
+    // dubstepMixUrban
+    src4: {
         videoId: '6zVVHGRCEK4',
         time0: {
             start: 297,
@@ -169,8 +175,8 @@ var musicSources = {
             end: 3603
         }
     },
-
-    epicMetalstepMix : {
+    // epicMetalstepMix
+    src5 : {
         videoId: 'D9WF5mm4D4I',
         time0: {
             start: 564,
@@ -194,7 +200,7 @@ var musicSources = {
             end: 3840
         }
     },
-    epicMetalstepMixVol2 : {
-        videoId: 'NQyyFHADm_U'
-    }
+    // epicMetalstepMixVol2 : {
+    //     videoId: 'NQyyFHADm_U'
+    // }
 }

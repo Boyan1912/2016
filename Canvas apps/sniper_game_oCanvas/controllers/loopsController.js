@@ -1,4 +1,4 @@
-var loopsController = (function(modelsCntrl, models, calculations, staticModels){
+var loopsController = (function(modelsCntrl, bgCntrl, models, calculations, staticModels){
     var activeLoops = [],
         activeTimeouts = [],
         timerMummies,
@@ -60,6 +60,7 @@ var loopsController = (function(modelsCntrl, models, calculations, staticModels)
             // TESTING PERFORMANCE
             if (staticModels.megaDeathCaused()){  // models.megaDeathCaused()
                 modelsCntrl.updateModelHealth(models.getShooterFromField(), { bonus: Settings.Gameplay.BonusDamageForMegadeath});
+                bgCntrl.animateBgOnce('tada');
                 soundsController.playSoundOnMegaDeath();
             }
 
@@ -266,4 +267,4 @@ var loopsController = (function(modelsCntrl, models, calculations, staticModels)
         setUpRandomEnemiesAppearance: setUpRandomEnemiesAppearance
     };
 
-}(modelsController, modelsService, calculationsService, staticModels));
+}(modelsController, bgController, modelsService, calculationsService, staticModels));

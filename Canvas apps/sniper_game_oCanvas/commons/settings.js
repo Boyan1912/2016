@@ -8,7 +8,12 @@ var Settings = {
         GraveDisplayTimeDuration: 5000,
         MinModelCoordinateValue: 15,
         ClickOnPlayerBugFixValue: 10,
-        DefaultPlayerAudioVolume: 0.6
+        DefaultPlayerAudioVolume: 0.4,
+        DefaultGameSoundsAudioVolume: 0.2,
+        DefaultBgVideoUrlPrefix: 'https://www.youtube.com/embed/',
+        DefaultBgVideoUrlOptionsSuffix: '?autoplay=1&controls=0&frameborder=0&cc_load_policy=0&enablejsapi=1&iv_load_policy=3&modestbranding=1&rel=0',
+        DefaultBgVideoQuality: 'tiny',
+        InitialBgVideoUrl: 'https://www.youtube.com/embed/wZS2WefoEIw?controls=0&autoplay=1&frameborder=0&cc_load_policy=0&enablejsapi=1&iv_load_policy=3&modestbranding=1&rel=0&vq=tiny'
     },
 
     Gameplay: {
@@ -21,14 +26,14 @@ var Settings = {
         DetectBlastDamageRefreshTime: 100,
         DetectPlayerCollisionRefreshTime: 100,
         DetectFireIgnitionRefreshTime: 3000,
-        DetectStaticObjectsCollisionRefreshTime: 180,
-        UpdatePlayDurationInterval: 2000,
+        DetectStaticObjectsCollisionRefreshTime: 150,
+        UpdatePlayDurationInterval: 5000,
 
         Constraints: {
             MaxNumberFireBallsAllowed: 4,
             MaxNumberOfJinnsAllowed: 5,
             MaxPossibleNumberOfEnemies: 8,
-            MaxLoopingObjectsAllowedToDisplayBackground: 15,
+            MaxLoopingObjectsAllowedToDisplayBackground: 11,
             MaxStaticItemsAllowed: 6
         }
     },
@@ -56,14 +61,14 @@ var Settings = {
             JinnTimeToCrossField: 55 * 1000,
             FireTimeToCrossField: 85 * 1000,
             FireDemonTimeToCrossField: 60 * 1000,
-            FireDemonMinTimeToCrossField: 16 * 1000,
+            FireDemonMinTimeToCrossField: 20 * 1000,
             DefaultEnemyTimeToCrossField: 50 * 1000,
             MaxTimeForFireBallToCrossField: 5 * 1000
         },
 
         Positioning: {
             DefaultRadius: 350,
-            RadiusMummiesDestinationAroundPlayer: 350,
+            RadiusMummiesDestinationAroundPlayer: 150,
             RadiusJinnsDestinationAroundPlace: 700,
             JinnsAboutPlace: {
                 x: 300,
@@ -130,7 +135,7 @@ var Settings = {
     // options for fire on the ground
     FireOptions: {
         MinCountInflamablesOnField: 4,
-        MinDamageCausedToIgnite: 15,
+        MinDamageCausedToIgnite: 10,
         DefaultNumberNewFiresToAdd: 1,
         BurningRadius: 40,
         MinBurningTime: 1500,

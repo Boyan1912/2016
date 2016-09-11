@@ -8,13 +8,15 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl, diff
             if (duration > milisecToNextLevel){
                 console.log('level reached');
                 start = new Date();
-                // difficultyCntrl.changeDifficultyLevel(-0.01, 0.01);
-                // difficultyCntrl.changeRandomEnemiesCountAppearance(0.2);
-                bgCntrl.stopBgAnim();
+                difficultyCntrl.changeDifficultyLevel(0.001, 0.001);
+                difficultyCntrl.changeRandomEnemiesCountAppearance(0.03);
                 difficultyCntrl.changeRandomProvisionsCountAppearance(0.1);
                 difficultyCntrl.changeRandomProvisionsFrequencyAppearance(-0.1);
                 difficultyCntrl.changeEnemiesDamage(0.1);
                 difficultyCntrl.changeEnemiesSpeed(0.1);
+
+                // if (Settings.GamePerformance.Constraints.MaxLoopingObjectsAllowedToDisplayBackground > 9)
+                //     Settings.GamePerformance.Constraints.MaxLoopingObjectsAllowedToDisplayBackground -= 1;
             }
         }, Settings.GamePerformance.UpdatePlayDurationInterval)
     }
@@ -23,9 +25,8 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl, diff
         start = new Date();
         controlGamePlay();
 
-        // testing
-        // bgCntrl.changeBgVideoAnimated(undefined, AnimationTypes[getRandomInt(AnimationTypes.types.length)], AnimationTypes[getRandomInt(AnimationTypes.types.length)]);
-
+        // bgCntrl.animateBg('shake');
+        // bgCntrl.changeBgRandomly();
         bgCntrl.optimizePerformance();
         loopsCntrl.setUpRandomEnemiesAppearance();
         loopsCntrl.setPlayerCollisionDetection();
@@ -34,7 +35,22 @@ var gameEngine = (function(modelsCntrl, actionCntrl, loopsCntrl, gameCntrl, diff
         loopsCntrl.setPlayerProvisionsAppearance();
         loopsCntrl.setStaticObjectsCollisionDetection();
 
-
+        $('#btnMusic').on('click', function (e) {
+            // var index = getRandomInt(AnimationTypes.length);
+            // var index2 = index;
+            // var animIn = AnimationTypes[index];
+            // var animOut = AnimationTypes[index];
+            //
+            // while (!animIn.indexOf('In') < 0){
+            //     index = index < 1 ? AnimationTypes.length - 1 : index;
+            //     animIn = AnimationTypes[index];
+            // }
+            // while (!animOut.indexOf('Out') < 0){
+            //     index2 = index2 >= AnimationTypes.length ? 0 : index2 + 1;
+            //     animIn = AnimationTypes[index2];
+            // }
+            bgCntrl.changeBgRandomly(true, true);
+        });
     }
 
 

@@ -15,11 +15,13 @@ var commonModels = (function(field){
             }),
 
             fireBallSound: new Howl({
-                urls: ['sounds/large-fireball.mp3']
+                urls: ['sounds/large-fireball.mp3'],
+                volume: Settings.General.DefaultGameSoundsAudioVolume
             }),
 
             burningOne: new Howl({
-                urls: ['sounds/burning.mp3']
+                urls: ['sounds/burning.mp3'],
+                volume: Settings.General.DefaultGameSoundsAudioVolume
             }),
 
             forestFire: new Howl({
@@ -29,6 +31,7 @@ var commonModels = (function(field){
 
             explosion5: new Howl({
                 urls: ['sounds/Explosion+5.mp3'],
+                volume: Settings.General.DefaultGameSoundsAudioVolume
             }),
 
             electricshock: new Howl({
@@ -70,25 +73,32 @@ var commonModels = (function(field){
             }),
 
             shotgunSound: new Howl({
-                urls: ['sounds/shotgun.mp3']
+                urls: ['sounds/shotgun.mp3'],
+                volume: Settings.General.DefaultGameSoundsAudioVolume
             }),
             emptyGunSound: new Howl({
-                urls: ['sounds/empty_gun.mp3']
+                urls: ['sounds/empty_gun.mp3'],
+                volume: Settings.General.DefaultGameSoundsAudioVolume
             }),
             explosionSound: new Howl({
-                urls: ['sounds/explosion.mp3']
+                urls: ['sounds/explosion.mp3'],
+                volume: Settings.General.DefaultGameSoundsAudioVolume
             }),
             ammoPick: new Howl({
-                urls: ['sounds/ammo.wav']
+                urls: ['sounds/ammo.wav'],
+                volume: Settings.General.DefaultGameSoundsAudioVolume
             }),
             ammoBagPick: new Howl({
-                urls: ['sounds/ammo_pickup.mp3']
+                urls: ['sounds/ammo_pickup.mp3'],
+                volume: Settings.General.DefaultGameSoundsAudioVolume
             }),
             success1: new Howl({
-                urls: ['sounds/success1.mp3']
+                urls: ['sounds/success1.mp3'],
+                volume: Settings.General.DefaultGameSoundsAudioVolume
             }),
             armourPick: new Howl({
-                urls: ['sounds/collect_armour.mp3']
+                urls: ['sounds/collect_armour.mp3'],
+                volume: Settings.General.DefaultGameSoundsAudioVolume
             })
           };
       }());

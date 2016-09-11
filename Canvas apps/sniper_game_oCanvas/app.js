@@ -1,3 +1,4 @@
+
 gameController.start();
 eventsController.init();
 

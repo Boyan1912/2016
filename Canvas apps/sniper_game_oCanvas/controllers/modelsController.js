@@ -1,4 +1,4 @@
-var modelsController = (function(gameCntrl, models, staticObjects){
+var modelsController = (function(gameCntrl, bgCntrl, models, staticObjects){
 
     var field = gameCntrl.playField;
     
@@ -131,4 +131,4 @@ var modelsController = (function(gameCntrl, models, staticObjects){
         addStaticObjectsToGame: addStaticObjectsToGame
     }
 
-}(gameController, modelsService, staticModels));
+}(gameController, bgController, modelsService, staticModels));

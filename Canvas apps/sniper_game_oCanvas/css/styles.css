@@ -1,15 +1,16 @@
 body {
     background-color: black;
     align-content: center;
+    padding: 5%;
 }
 .canvas {
     margin: 0 auto;
     display: block;
-    width: 95%;
-    height: 95%;
+    width: 100%;
+    height: 100%;
     position: absolute;
-    top: 3%;
-    left: 3%;
+    top: 0;
+    left: 0;
 }
 
 #main-canvas{
@@ -41,13 +42,23 @@ body {
 }
 
 .perpetually-animated{
-    -webkit-animation-duration: 3s;
+    -webkit-animation-duration: 12s;
     -webkit-animation-delay: 2s;
     -webkit-animation-iteration-count: infinite;
 
-    -moz-animation-duration: 3s;
+    -moz-animation-duration: 12s;
     -moz-animation-delay: 2s;
     -moz-animation-iteration-count: infinite;
+}
+
+.tada{
+    -webkit-animation-duration: 1s;
+    -webkit-animation-delay: 0s;
+    -webkit-animation-iteration-count: 1;
+
+    -moz-animation-duration: 1s;
+    -moz-animation-delay: 0s;
+    -moz-animation-iteration-count: 1;
 }
 
 #wrapper{
