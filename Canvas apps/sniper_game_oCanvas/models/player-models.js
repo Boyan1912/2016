@@ -20,7 +20,6 @@ var playerModels = (function(gameCntrl, actions, sounds){
             shoot: function(target){
                 if(weapon.gun.shellsCount > 0){
                     actions.fireOnTarget(this, target, weapon.gun, blast, Settings.Player.MaxTimeForRocketToCrossField);
-                    weapon.gun.shellsCount--;
                     gameCntrl.displayPlayerInfo();
                 }else {
                     weapon.gun.playEmptyGunSound();
@@ -45,7 +44,7 @@ var playerModels = (function(gameCntrl, actions, sounds){
             direction: "x",
             duration: Settings.General.DefaultSpriteDuration,
             name: 'rocket',
-            damageWeight: Settings.DefaultInitialRocketDamageWeight,
+            damageWeight: Settings.Player.DefaultExplosionDamageWeight,
             shellsCount: Settings.Player.PlayerInitialGunShellsCount,
             playSound: function(){
                 sounds.lazyLoadPlay('shotgunSound');

@@ -72,6 +72,8 @@ var modelsController = (function(gameCntrl, bgCntrl, models, staticObjects){
             case 'goldenArmour':
                 updatePlayersArmour('golden');
                 break;
+            case 'ice':
+                loopsController.freezeEnemies(Settings.StaticItems.IceFreezeTime);
         }
         gameCntrl.displayPlayerInfo(player);
     }
@@ -87,6 +89,14 @@ var modelsController = (function(gameCntrl, bgCntrl, models, staticObjects){
             gameCntrl.displayPlayerInfo(player);
         }, protectionDuration, this.name);
         soundsController.lazyLoadPlay('armourPick');
+    }
+
+    function stopEnemyModelsAnimation() {
+        var enemies = models.getAllEnemyModels();
+        for (var i = 0; i < enemies.length; i++) {
+            var enemy = enemies[i];
+            enemy.stop();
+        }
     }
 
     function handleDeadEnemyModel(model){
@@ -128,7 +138,8 @@ var modelsController = (function(gameCntrl, bgCntrl, models, staticObjects){
         addEnemiesToGame: addEnemiesToGame,
         updateModelHealth: updateModelHealth,
         updatePlayerAttributes: updatePlayerAttributes,
-        addStaticObjectsToGame: addStaticObjectsToGame
+        addStaticObjectsToGame: addStaticObjectsToGame,
+        stopEnemyModelsAnimation: stopEnemyModelsAnimation
     }
 
 }(gameController, bgController, modelsService, staticModels));

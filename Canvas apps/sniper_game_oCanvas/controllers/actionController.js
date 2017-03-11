@@ -39,6 +39,7 @@ var actionController = (function(field, calculations, models){
               gun.playEmptyGunSound();
               return;
             }
+            model.weapon.gun.shellsCount--;
             calculations.positionWeaponInFrontOfModel(gun, model, angle);
         }else if(model.name === 'jinn'){
             gun.x = model.x;
@@ -77,6 +78,8 @@ var actionController = (function(field, calculations, models){
 
     function sendFireDemonsRunning(demons, options){
         demons = demons || models.getAllFireDemons();
+        options = options || {initialSpeed: Settings.Enemies.SpeedOptions.FireDemonTimeToCrossField, acceleration: Settings.Enemies.FireDemonRunAcceleration};
+
         for (var i = 0; i < demons.length; i++) {
           let demon = demons[i];
           demon.run(options.initialSpeed, options.acceleration);

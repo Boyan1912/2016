@@ -6,17 +6,26 @@ var bgController = (function (models) {
         $videoTag = $('#yt-video');
 
     function getVideoLink(videoObj) {
-        return Settings.General.DefaultBgVideoUrlPrefix + videoObj.videoId + Settings.General.DefaultBgVideoUrlOptionsSuffix + '&start=' + videoObj.startTime + '&end=' + videoObj.endTime + '&version=3 + &vq=' + videoObj.quality;
+        return Settings.General.DefaultBgVideoUrlPrefix + videoObj.videoId + Settings.General.DefaultBgVideoUrlOptionsSuffix + '&start=' + videoObj.start + '&end=' + videoObj.end + '&version=3 + &vq=' + videoObj.quality;
     }
 
+    // function startBgVideo(link) {
+    //     link = link || getVideoLink(getRandomVideoBg());
+    //
+    //     loopsController.freezeEnemies(7500);
+    //     $videoTag.attr('src', link);
+    //     setTimeout(function () {
+    //         $videoTag.fadeIn(4000);
+    //     }, 7500);
+    // }
+    
     function changeBgVideoAnimated(videoObj, animOut, animIn) {
-        console.log('changeBgVideoAnimated');
         animOut = animOut || AnimationTypes.filter(function (item) {
                 return item.indexOf('Out') > 0;
-            })[getRandomInt(10)];
+            })[getRandomInt(15)];
         animIn = animIn || AnimationTypes.filter(function (item) {
                 return item.indexOf('In') > 0;
-            })[getRandomInt(10)];
+            })[getRandomInt(15)];
 
         var link = getVideoLink(videoObj);
 
@@ -24,34 +33,29 @@ var bgController = (function (models) {
             .one(animated, function () {
                 $videoTag.attr('src', link);
                 $bg.css('display', 'none');
-                $bg.attr('class', 'canvas');
-                // $videoTag.css('display', 'none');
-
-                // $bg.addClass('changeVideoBg ' + animIn, function () {
-                //     // $videoTag.css('display', 'block');
-                //     $bg.attr('class', 'canvas');
-                // });
+                $bg.removeClass(animOut);
             });
         setTimeout(function () {
-            $bg.css('display', 'block');
-            $bg.addClass('changeVideoBg ' + animIn)
+            $bg.addClass(animIn)
+                .css('display', 'block')
                 .one(animated, function () {
-                    $bg.removeClass('changeVideoBg ' + animIn);
+                    $bg.removeClass(animIn);
                 })
-        }, 8000)
+        }, 7500)
     }
 
     function changeVideoBgFading(videoObj, duration) {
+        videoObj = videoObj || getRandomVideoBg();
         var link = getVideoLink(videoObj);
-        duration = duration || 5000;
+        duration = duration || 3000;
         $videoTag.fadeOut(duration, function () {
-            $videoTag.css('display', 'none');
-            $videoTag.attr('src', link);
-            setTimeout(function () {
-                $videoTag.css('display', 'block');
-                $videoTag.fadeIn(duration);
-            }, 5000);
-        })
+            loopsController.freezeEnemies(6000);
+            $videoTag.css('display', 'none')
+                     .attr('src', link);
+                     setTimeout(function () {
+                         $videoTag.fadeIn(duration);
+                     }, 5000);
+        });
     }
 
     function animateBgOnce(style, callBack) {
@@ -63,7 +67,7 @@ var bgController = (function (models) {
     }
 
     function animateBg(style) {
-        style = style || AnimationTypes[getRandomInt(9)];
+        style = style || AnimationTypes[getRandomInt(15)];
         console.log(style);
         $bg.addClass('perpetually-animated ' + style.trim())
     }
@@ -104,11 +108,11 @@ var bgController = (function (models) {
         setInterval(switchOnOff, 400);
     }
 
-    function getRandomVideoBg() {
-        var rndIndex = getRandomInt(5);
+    function getRandomVideoBg(sourceIndex, numberPiece) {
+        var rndIndex = sourceIndex || getRandomInt(6);
         var mix = musicSources['src' + rndIndex];
 
-        rndIndex = getRandomInt(7);
+        rndIndex = numberPiece || getRandomInt(7);
         var piece = mix['time' + rndIndex];
         while (!piece){
             piece = mix['time' + --rndIndex];
@@ -120,7 +124,6 @@ var bgController = (function (models) {
     }
 
     function changeBgRandomly(animated, force, fadeDur) {
-        console.log('changeBgRandomly');
         var videoOptions = getRandomVideoBg();
 
         if (animated)
@@ -128,13 +131,13 @@ var bgController = (function (models) {
         else
             changeVideoBgFading(videoOptions, fadeDur);
 
-        // if (force) clearTimeout(changeBgTimeout);
+        if (force) clearTimeout(changeBgTimeout);
 
         var duration = (videoOptions.end - videoOptions.start) * 1000;
 
-        // changeBgTimeout = setTimeout(function(){
-        //     changeBgRandomly(getRandomInt(10) > 6);
-        // }, duration);
+        changeBgTimeout = setTimeout(function(){
+            changeBgRandomly(getRandomInt(10) > 6);
+        }, duration);
     }
 
     return {
@@ -148,7 +151,8 @@ var bgController = (function (models) {
         switchOnOff: switchOnOff,
         optimizePerformance: optimizePerformance,
         changeBgRandomly: changeBgRandomly,
-        animateBgOnce: animateBgOnce
+        animateBgOnce: animateBgOnce,
+        // startBgVideo: startBgVideo
     };
 
     // YOUTUBE PLAYER

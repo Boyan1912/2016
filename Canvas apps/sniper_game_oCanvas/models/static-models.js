@@ -24,8 +24,29 @@ var staticModels = (function(){
         staticItem.image.src = getItemImageSource(type);
         staticItems.push(staticItem);
         showScalingUp(staticItem, size, showInterval, showSpeed);
+        if (staticItem.name != 'grave') fade(staticItem, Settings.StaticItems.MaxTimeForStaticItemOnField);
+        else fade(staticItem, Settings.General.GraveDisplayTimeDuration);
 
         return staticItem;
+    }
+
+    function fade(staticItem, time) {
+        var opacity = 1;
+        var fadeInterval = setInterval(function () {
+            opacity -= 0.2;
+            if (staticItems.find(function (item) {
+                    return item == staticItem;
+                })){
+                drawer.globalAlpha = opacity;
+                drawer.clearRect(staticItem.x, staticItem.y, staticItem.width, staticItem.height);
+                drawer.drawImage(staticItem.image, staticItem.x, staticItem.y, staticItem.width, staticItem.height);
+                drawer.globalAlpha = 1.0;
+                if (opacity <= 0.1) {
+                    clearInterval(fadeInterval);
+                    removeStaticItem(staticItem);
+                }
+            }
+        }, time);
     }
 
     function getItemImageSource(type) {
@@ -42,6 +63,8 @@ var staticModels = (function(){
             case 'silverArmour': return destination + 'shield_silver.png';
             break;
             case 'goldenArmour': return destination + 'shield_gold.png';
+            break;
+            case 'ice': return destination + 'ice.png';
             break;
             default: break;
         }
@@ -87,7 +110,6 @@ var staticModels = (function(){
         return getAllStaticItemsByName('grave').length >= Settings.Gameplay.MinDeathsNeededForMegadeath;
     }
 
-
     function showScalingUp(item, size, interval, speed) {
         interval = interval || 35;
         size = size || 50; // 50px
@@ -107,8 +129,10 @@ var staticModels = (function(){
             if (scale >= size)
             {
                 window.clearInterval(timer);
+                item.width = size;
+                item.height = size;
             }
-        }, interval, 'showScalingUp')
+        }, interval)
     }
 
 

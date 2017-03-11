@@ -6,7 +6,9 @@ var loopsController = (function(modelsCntrl, bgCntrl, models, calculations, stat
         timerDemons;
 
     function sendModelsTowardsPlayer(enemies, speedTime, areaSize, refreshRate){
-        enemies = enemies || models.getAllEnemyModels();
+        enemies = enemies || models.getAllEnemyModels().filter(function (mod) {
+                return mod.name != 'fire_demon';
+            });
         speedTime = speedTime || Settings.Enemies.SpeedOptions.DefaultEnemyTimeToCrossField;
         areaSize = areaSize || Settings.Enemies.Positioning.DefaultRadius;
         refreshRate = refreshRate || Settings.GamePerformance.TravelDirectionRefreshTime;
@@ -59,7 +61,6 @@ var loopsController = (function(modelsCntrl, bgCntrl, models, calculations, stat
             }
             // TESTING PERFORMANCE
             if (staticModels.megaDeathCaused()){  // models.megaDeathCaused()
-                modelsCntrl.updateModelHealth(models.getShooterFromField(), { bonus: Settings.Gameplay.BonusDamageForMegadeath});
                 bgCntrl.animateBgOnce('tada');
                 soundsController.playSoundOnMegaDeath();
             }
@@ -165,7 +166,7 @@ var loopsController = (function(modelsCntrl, bgCntrl, models, calculations, stat
         countsOptions = countsOptions || Settings.StaticItems.RandomAppearance.Counts;
         intervalOptions = intervalOptions || Settings.StaticItems.RandomAppearance.Frequency;
 
-        if (staticModels.getAllPlayerProvisions().length >= Settings.StaticItems.MaxAllowedNumberOfItems){
+        if (staticModels.getAllPlayerProvisions().length >= Settings.GamePerformance.Constraints.MaxStaticItemsAllowed){
             stopFutureCalls(activeTimeouts);
             return;
         }
@@ -197,6 +198,11 @@ var loopsController = (function(modelsCntrl, bgCntrl, models, calculations, stat
                 modelsCntrl.addStaticObjectsToGame(rnd, 'goldenArmour');
             }, getRandomInt(intervalOptions.TimeoutInterval));
             activeTimeouts.push(timeoutGA);
+            var timeoutIce = setTimeout(function () {
+                var rnd = getRandomInt(countsOptions.MaxIceBlocks);
+                modelsCntrl.addStaticObjectsToGame(rnd, 'ice');
+            }, getRandomInt(intervalOptions.TimeoutInterval));
+            activeTimeouts.push(timeoutIce);
         }, intervalOptions.InitialFrequency);
 
         activeLoops.push(loopId);
@@ -241,7 +247,6 @@ var loopsController = (function(modelsCntrl, bgCntrl, models, calculations, stat
         return loopId;
     }
 
-
     function stopLoops(array) {
         for (var i = 0; i < array.length; i++) {
             var id = array[i];
@@ -249,10 +254,33 @@ var loopsController = (function(modelsCntrl, bgCntrl, models, calculations, stat
         }
     }
 
+    function stopAllActiveLoops() {
+        stopLoops(activeLoops);
+    }
+
     function stopFutureCalls(array) {
         for (var i = 0; i < array.length; i++) {
             var id = array[i];
             clearTimeout(id);
+        }
+    }
+
+    function freezeEnemies(unfreezeTime) {
+        stopAllActiveLoops();
+        setPlayerCollisionDetection();
+        setBlastCollisionDetection();
+        setBlastsConcentrationDetection();
+        setPlayerProvisionsAppearance();
+        setStaticObjectsCollisionDetection();
+        modelsCntrl.stopEnemyModelsAnimation();
+
+        if (unfreezeTime){
+            setTimeout(function () {
+                sendModelsTowardsPlayer();
+                setUpRandomEnemiesAppearance();
+                setJinnsShooting();
+                actionController.sendFireDemonsRunning(models.getAllFireDemons());
+            }, unfreezeTime);
         }
     }
 
@@ -264,7 +292,9 @@ var loopsController = (function(modelsCntrl, bgCntrl, models, calculations, stat
         setBlastsConcentrationDetection: setBlastsConcentrationDetection,
         setPlayerProvisionsAppearance: setPlayerProvisionsAppearance,
         setStaticObjectsCollisionDetection: setStaticObjectsCollisionDetection,
-        setUpRandomEnemiesAppearance: setUpRandomEnemiesAppearance
+        setUpRandomEnemiesAppearance: setUpRandomEnemiesAppearance,
+        stopAllActiveLoops: stopAllActiveLoops,
+        freezeEnemies: freezeEnemies
     };
 
 }(modelsController, bgController, modelsService, calculationsService, staticModels));

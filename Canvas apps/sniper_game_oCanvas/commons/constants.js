@@ -155,52 +155,12 @@ var musicSources = {
             end: 3173
         }
     },
-    // dubstepMixUrban
     src4: {
-        videoId: '6zVVHGRCEK4',
+        videoId: '_-tF5h5WHMs',
         time0: {
-            start: 297,
-            end: 530
+            start: 0,
+            end: 2000
         },
-        time1: {
-            start: 1060,
-            end: 1256
-        },
-        time2: {
-            start: 2990,
-            end: 3117
-        },
-        time2: {
-            start: 3507,
-            end: 3603
-        }
     },
-    // epicMetalstepMix
-    src5 : {
-        videoId: 'D9WF5mm4D4I',
-        time0: {
-            start: 564,
-            end: 810
-        },
-        time1: {
-            start: 2710,
-            end: 2898
-        },
-        time2: {
-            start: 2913,
-            end: 3121
-        },
-        // best
-        time3: {
-            start: 3138,
-            end: 3360
-        },
-        time4: {
-            start: 3622,
-            end: 3840
-        }
-    },
-    // epicMetalstepMixVol2 : {
-    //     videoId: 'NQyyFHADm_U'
-    // }
-}
+    src5: { videoId: 'BzgrPWrOJB4'}
+};
